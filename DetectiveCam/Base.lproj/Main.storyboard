@@ -26,9 +26,9 @@
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                             </textView>
-                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="natural" id="kOi-2E-VCC">
-                                <rect key="frame" x="0.0" y="487" width="375" height="180"/>
-                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="natural" id="DSI-pF-7KD">
+                                <rect key="frame" x="0.0" y="467" width="375" height="200"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
                                 <animations/>
                                 <color key="backgroundColor" white="0.0" alpha="0.5" colorSpace="calibratedWhite"/>
                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -42,7 +42,7 @@
                     <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina47"/>
                     <connections>
                         <outlet property="logCoefficientMatrix" destination="uR5-w5-o0o" id="crl-Wz-dVQ"/>
-                        <outlet property="logHashDictionary" destination="kOi-2E-VCC" id="ui9-X8-bVd"/>
+                        <outlet property="logHashTable" destination="DSI-pF-7KD" id="434-RF-8rL"/>
                         <outlet property="opencvScreen" destination="Vxo-nb-fFw" id="y1z-95-ndh"/>
                     </connections>
                 </viewController>

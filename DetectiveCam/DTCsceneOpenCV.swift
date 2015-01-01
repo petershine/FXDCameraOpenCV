@@ -12,7 +12,7 @@ class DTCsceneOpenCV: UIViewController {
 
 	@IBOutlet weak var opencvScreen: UIImageView!
 	@IBOutlet weak var logCoefficientMatrix: UITextView!
-	@IBOutlet weak var logHashDictionary: UITextView!
+	@IBOutlet weak var logHashTable: UITextView!
 
 	var opencvModule : DTCmoduleOpenCV! = nil
 
@@ -54,9 +54,9 @@ class DTCsceneOpenCV: UIViewController {
 		}
 	}
 
-	func logHashDictionary(hashDictionary: [String:Int]) {
+	func logHashTable(hashTable: [AnyObject]) {
 		dispatch_async(dispatch_get_main_queue()) { () -> Void in
-			self.logHashDictionary.text = "\(hashDictionary)"
+			self.logHashTable.text = "\(hashTable)"
 		}
 	}
 

@@ -24,6 +24,7 @@
 	NSAssert(self.count == coefficientGroup.count, @"1.Element count differenct");
 
 	BOOL isSame = YES;
+
 	for (NSInteger outerIndex = 0; outerIndex < self.count; outerIndex++) {
 
 		NSArray *coefficientMatrix_0 = self[outerIndex];
@@ -31,7 +32,9 @@
 		NSAssert(coefficientMatrix_0.count == coefficientMatrix_1.count, @"2.Element count differenct");
 
 		for (NSInteger innerIndex = 0; innerIndex < coefficientMatrix_0.count; innerIndex++) {
-			if ([(NSNumber*)coefficientMatrix_0[innerIndex] isEqualToNumber:coefficientMatrix_1[innerIndex]]) {
+
+			if ([(NSNumber*)coefficientMatrix_0[innerIndex] isEqualToNumber:coefficientMatrix_1[innerIndex]] == NO) {
+
 				isSame = NO;
 				break;
 			}
@@ -41,6 +44,8 @@
 			break;
 		}
 	}
+
+	NSLog(@"isSame: %d", isSame);
 
 	return isSame;
 }
@@ -141,8 +146,6 @@
 
 	NSArray *coefficientMatrix = @[@(iterator[0]), @(iterator[1]), @(iterator[2])];
 
-	[self.opencvScene performSelector:@selector(logCoefficientMatrix:) withObject:[coefficientMatrix copy]];
-
 
 	if (_coefficientGroup == nil) {
 		_coefficientGroup = [[NSMutableArray alloc] initWithCapacity:0];
@@ -152,35 +155,42 @@
 		[_coefficientGroup removeObjectAtIndex:0];
 	}
 
-	[_coefficientGroup addObject:coefficientMatrix];
+	NSArray *integerMatrix = @[@([coefficientMatrix[0] integerValue]), @([coefficientMatrix[1] integerValue]), @([coefficientMatrix[2] integerValue])];
+	[_coefficientGroup addObject:integerMatrix];
 
 	if (_coefficientGroup.count < 6) {
+		[self.opencvScene performSelector:@selector(logCoefficientMatrix:) withObject:[coefficientMatrix copy]];
 		return;
 	}
 
 
-	NSLog(@"%@", _coefficientGroup);
-	NSLog(@"%@", @(_hashDictionary.count));
+	//NSLog(@"%@", _coefficientGroup);
 
+	NSNumber *matchCount = [_hashDictionary objectForKey:_coefficientGroup];
+	NSArray *hashKey = (NSArray*)_hashTable.lastObject;
 
-	if (_hashTable == nil) {
-		_hashTable = [[NSMutableArray alloc] initWithCapacity:0];
+	if ([hashKey isSameCoefficientGroup:_coefficientGroup] == NO) {
+		matchCount = @(0);
+		hashKey = _coefficientGroup;
+
+		if (_hashTable == nil) {
+			_hashTable = [[NSMutableArray alloc] initWithCapacity:0];
+		}
+
+		[_hashTable addObject:hashKey];
 	}
 
 	if (_hashDictionary == nil) {
 		_hashDictionary = [[NSMutableDictionary alloc] initWithCapacity:0];
 	}
 
-	if (_hashTable.count == 0 || [(NSArray*)_hashTable.lastObject isSameCoefficientGroup:_coefficientGroup] == NO) {
-		[_hashTable addObject:[_coefficientGroup copy]];
-		[_hashDictionary setObject:@(1) forKey:_coefficientGroup.description];
-	}
-	else if (_hashDictionary.count > 0) {
-		NSNumber *matchCount = [_hashDictionary objectForKey:_coefficientGroup.description];
-		[_hashDictionary setObject:@(matchCount.integerValue+1) forKey:_coefficientGroup.description];
-	}
+	[_hashDictionary setObject:@(matchCount.integerValue+1) forKey:hashKey];
 
-	//[self.opencvScene performSelector:@selector(logHashDictionary:) withObject:[_hashDictionary copy]];
+	NSLog(@"%@", _hashTable);
+
+	[self.opencvScene performSelector:@selector(logCoefficientMatrix:) withObject:[coefficientMatrix copy]];
+
+	[self.opencvScene performSelector:@selector(logHashTable:) withObject:[_hashTable copy]];
 }
 
 @end
