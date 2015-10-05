@@ -15,6 +15,9 @@
 		D9E7C2AF1BC334A90071582B /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D9E7C2AD1BC334A90071582B /* LaunchScreen.storyboard */; };
 		D9E7C2BA1BC334A90071582B /* DetectiveCamTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9E7C2B91BC334A90071582B /* DetectiveCamTests.swift */; };
 		D9E7C2C51BC334A90071582B /* DetectiveCamUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9E7C2C41BC334A90071582B /* DetectiveCamUITests.swift */; };
+		D9E7C2D31BC336BD0071582B /* DTCpreviewCapture.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9E7C2D21BC336BD0071582B /* DTCpreviewCapture.swift */; };
+		D9E7C2D41BC336BD0071582B /* DTCpreviewCapture.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9E7C2D21BC336BD0071582B /* DTCpreviewCapture.swift */; };
+		D9E7C2D51BC336BD0071582B /* DTCpreviewCapture.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9E7C2D21BC336BD0071582B /* DTCpreviewCapture.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -49,6 +52,7 @@
 		D9E7C2C01BC334A90071582B /* DetectiveCamUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DetectiveCamUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		D9E7C2C41BC334A90071582B /* DetectiveCamUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetectiveCamUITests.swift; sourceTree = "<group>"; };
 		D9E7C2C61BC334A90071582B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		D9E7C2D21BC336BD0071582B /* DTCpreviewCapture.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DTCpreviewCapture.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -106,6 +110,7 @@
 				D9E7C2AD1BC334A90071582B /* LaunchScreen.storyboard */,
 				D9E7C2B01BC334A90071582B /* Info.plist */,
 				D9E7C2A81BC334A90071582B /* DetectiveCam.xcdatamodeld */,
+				D9E7C2D21BC336BD0071582B /* DTCpreviewCapture.swift */,
 			);
 			path = DetectiveCam;
 			sourceTree = "<group>";
@@ -261,6 +266,7 @@
 				D9E7C2AA1BC334A90071582B /* DetectiveCam.xcdatamodeld in Sources */,
 				D9E7C2A41BC334A90071582B /* ViewController.swift in Sources */,
 				D9E7C2A21BC334A90071582B /* AppDelegate.swift in Sources */,
+				D9E7C2D31BC336BD0071582B /* DTCpreviewCapture.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -269,6 +275,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				D9E7C2BA1BC334A90071582B /* DetectiveCamTests.swift in Sources */,
+				D9E7C2D41BC336BD0071582B /* DTCpreviewCapture.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -277,6 +284,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				D9E7C2C51BC334A90071582B /* DetectiveCamUITests.swift in Sources */,
+				D9E7C2D51BC336BD0071582B /* DTCpreviewCapture.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
