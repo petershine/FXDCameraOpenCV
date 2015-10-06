@@ -32,6 +32,9 @@
                             <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="qf9-L0-yvu" secondAttribute="bottom" id="sH2-IY-5Ac"/>
                         </constraints>
                     </view>
+                    <connections>
+                        <outlet property="capturedPreview" destination="qf9-L0-yvu" id="pIw-JJ-g6h"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
