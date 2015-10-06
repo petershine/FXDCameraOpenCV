@@ -64,6 +64,7 @@ class ViewController: UIViewController {
 
 		dispatch_async(sessionQueue) { () -> Void in
 			if (self.shouldRunSession == false) {
+				self.session.stopRunning()
 				return
 			}
 
@@ -99,23 +100,18 @@ class ViewController: UIViewController {
 			}
 
 			self.session.commitConfiguration()
+
+
+			self.session.startRunning()
 		}
 	}
 
 	override func viewDidAppear(animated: Bool) {
 		super.viewDidAppear(animated)
-
-		print(shouldRunSession)
-		if shouldRunSession {
-			session.startRunning()
-		}
 	}
 
 	override func viewDidDisappear(animated: Bool) {
 		super.viewDidDisappear(animated)
-
-		print(shouldRunSession)
-		session.stopRunning()
 	}
 }
 
