@@ -21,9 +21,8 @@
 		D9E7C2D81BC35B280071582B /* opencv2.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D9E7C2D71BC35B280071582B /* opencv2.framework */; };
 		D9E7C2D91BC35B280071582B /* opencv2.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D9E7C2D71BC35B280071582B /* opencv2.framework */; };
 		D9E7C2DA1BC35B280071582B /* opencv2.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D9E7C2D71BC35B280071582B /* opencv2.framework */; };
-		D9E7C2E01BC35C060071582B /* DCTmoduleOpenCV.m in Sources */ = {isa = PBXBuildFile; fileRef = D9E7C2DF1BC35C060071582B /* DCTmoduleOpenCV.m */; };
-		D9E7C2E11BC35C060071582B /* DCTmoduleOpenCV.m in Sources */ = {isa = PBXBuildFile; fileRef = D9E7C2DF1BC35C060071582B /* DCTmoduleOpenCV.m */; };
-		D9E7C2E21BC35C060071582B /* DCTmoduleOpenCV.m in Sources */ = {isa = PBXBuildFile; fileRef = D9E7C2DF1BC35C060071582B /* DCTmoduleOpenCV.m */; };
+		D9E7C3211BC37AF20071582B /* DTCmoduleOpenCV.mm in Sources */ = {isa = PBXBuildFile; fileRef = D9E7C3201BC37AF20071582B /* DTCmoduleOpenCV.mm */; };
+		D9E7C3231BC37E070071582B /* AssetsLibrary.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D9E7C3221BC37E070071582B /* AssetsLibrary.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -63,8 +62,9 @@
 		D9E7C2DB1BC35C050071582B /* DetectiveCam-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "DetectiveCam-Bridging-Header.h"; sourceTree = "<group>"; };
 		D9E7C2DC1BC35C050071582B /* DetectiveCamTests-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "DetectiveCamTests-Bridging-Header.h"; path = "../DetectiveCam/DetectiveCamTests-Bridging-Header.h"; sourceTree = "<group>"; };
 		D9E7C2DD1BC35C060071582B /* DetectiveCamUITests-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "DetectiveCamUITests-Bridging-Header.h"; path = "../DetectiveCam/DetectiveCamUITests-Bridging-Header.h"; sourceTree = "<group>"; };
-		D9E7C2DE1BC35C060071582B /* DCTmoduleOpenCV.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DCTmoduleOpenCV.h; sourceTree = "<group>"; };
-		D9E7C2DF1BC35C060071582B /* DCTmoduleOpenCV.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DCTmoduleOpenCV.m; sourceTree = "<group>"; };
+		D9E7C31F1BC37AF20071582B /* DTCmoduleOpenCV.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DTCmoduleOpenCV.h; path = ../../DetectiveCam/DetectiveCam/DTCmoduleOpenCV.h; sourceTree = "<group>"; };
+		D9E7C3201BC37AF20071582B /* DTCmoduleOpenCV.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = DTCmoduleOpenCV.mm; path = ../../DetectiveCam/DetectiveCam/DTCmoduleOpenCV.mm; sourceTree = "<group>"; };
+		D9E7C3221BC37E070071582B /* AssetsLibrary.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AssetsLibrary.framework; path = System/Library/Frameworks/AssetsLibrary.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -72,6 +72,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D9E7C3231BC37E070071582B /* AssetsLibrary.framework in Frameworks */,
 				D9E7C2D81BC35B280071582B /* opencv2.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -98,6 +99,7 @@
 		D9E7C2951BC334A90071582B = {
 			isa = PBXGroup;
 			children = (
+				D9E7C3221BC37E070071582B /* AssetsLibrary.framework */,
 				D9E7C2D61BC35B280071582B /* _Submodules */,
 				D9E7C2A01BC334A90071582B /* DetectiveCam */,
 				D9E7C2B81BC334A90071582B /* DetectiveCamTests */,
@@ -119,6 +121,9 @@
 		D9E7C2A01BC334A90071582B /* DetectiveCam */ = {
 			isa = PBXGroup;
 			children = (
+				D9E7C2DB1BC35C050071582B /* DetectiveCam-Bridging-Header.h */,
+				D9E7C31F1BC37AF20071582B /* DTCmoduleOpenCV.h */,
+				D9E7C3201BC37AF20071582B /* DTCmoduleOpenCV.mm */,
 				D9E7C2A11BC334A90071582B /* AppDelegate.swift */,
 				D9E7C2A31BC334A90071582B /* ViewController.swift */,
 				D9E7C2A51BC334A90071582B /* Main.storyboard */,
@@ -127,9 +132,6 @@
 				D9E7C2B01BC334A90071582B /* Info.plist */,
 				D9E7C2A81BC334A90071582B /* DetectiveCam.xcdatamodeld */,
 				D9E7C2D21BC336BD0071582B /* DTCpreviewCapture.swift */,
-				D9E7C2DE1BC35C060071582B /* DCTmoduleOpenCV.h */,
-				D9E7C2DF1BC35C060071582B /* DCTmoduleOpenCV.m */,
-				D9E7C2DB1BC35C050071582B /* DetectiveCam-Bridging-Header.h */,
 			);
 			path = DetectiveCam;
 			sourceTree = "<group>";
@@ -293,9 +295,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D9E7C2E01BC35C060071582B /* DCTmoduleOpenCV.m in Sources */,
 				D9E7C2AA1BC334A90071582B /* DetectiveCam.xcdatamodeld in Sources */,
 				D9E7C2A41BC334A90071582B /* ViewController.swift in Sources */,
+				D9E7C3211BC37AF20071582B /* DTCmoduleOpenCV.mm in Sources */,
 				D9E7C2A21BC334A90071582B /* AppDelegate.swift in Sources */,
 				D9E7C2D31BC336BD0071582B /* DTCpreviewCapture.swift in Sources */,
 			);
@@ -306,7 +308,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				D9E7C2BA1BC334A90071582B /* DetectiveCamTests.swift in Sources */,
-				D9E7C2E11BC35C060071582B /* DCTmoduleOpenCV.m in Sources */,
 				D9E7C2D41BC336BD0071582B /* DTCpreviewCapture.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -316,7 +317,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				D9E7C2C51BC334A90071582B /* DetectiveCamUITests.swift in Sources */,
-				D9E7C2E21BC35C060071582B /* DCTmoduleOpenCV.m in Sources */,
 				D9E7C2D51BC336BD0071582B /* DTCpreviewCapture.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -444,6 +444,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
+				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/DetectiveCam/_Submodules",
@@ -463,6 +464,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
+				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/DetectiveCam/_Submodules",
@@ -569,6 +571,7 @@
 				D9E7C2CB1BC334A90071582B /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		D9E7C2CC1BC334A90071582B /* Build configuration list for PBXNativeTarget "DetectiveCamTests" */ = {
 			isa = XCConfigurationList;
@@ -577,6 +580,7 @@
 				D9E7C2CE1BC334A90071582B /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		D9E7C2CF1BC334A90071582B /* Build configuration list for PBXNativeTarget "DetectiveCamUITests" */ = {
 			isa = XCConfigurationList;
@@ -585,6 +589,7 @@
 				D9E7C2D11BC334A90071582B /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 
