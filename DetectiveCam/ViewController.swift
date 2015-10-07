@@ -11,16 +11,18 @@ import UIKit
 import AVFoundation
 
 
-class ViewController: UIViewController {
+class ViewController: UIViewController, AVCaptureVideoDataOutputSampleBufferDelegate {
+
 	@IBOutlet weak var capturedPreview: DTCpreviewCapture!
 
-
-	var session : AVCaptureSession! = nil
-	var videoDeviceInput : AVCaptureDeviceInput! = nil
-
-	var sessionQueue : dispatch_queue_t! = nil
-
+	var capturingQueue : dispatch_queue_t! = nil
 	var shouldRunSession : Bool = false
+
+	var captureSession : AVCaptureSession! = nil
+	var captureVideoInput : AVCaptureDeviceInput! = nil
+
+	var videoOutputQueue : dispatch_queue_t! = nil
+	var captureVideoOutput : AVCaptureVideoDataOutput! = nil
 
 
 	deinit {
@@ -36,16 +38,13 @@ class ViewController: UIViewController {
 		super.viewDidLoad()
 		// Do any additional setup after loading the view, typically from a nib.
 
-		session = AVCaptureSession()
-		capturedPreview.session = self.session
-
-		sessionQueue = dispatch_queue_create("session queue", DISPATCH_QUEUE_SERIAL)
+		capturingQueue = dispatch_queue_create("session queue", DISPATCH_QUEUE_SERIAL)
 
 		let authorizationStatus = AVCaptureDevice.authorizationStatusForMediaType(AVMediaTypeVideo)
 		print(authorizationStatus)
 
 		if (authorizationStatus != .Authorized) {
-			dispatch_suspend(sessionQueue)
+			dispatch_suspend(capturingQueue)
 
 			AVCaptureDevice
 			.requestAccessForMediaType(AVMediaTypeVideo,
@@ -54,7 +53,7 @@ class ViewController: UIViewController {
 
 					self.shouldRunSession = granted
 
-					dispatch_resume(self.sessionQueue)
+					dispatch_resume(self.capturingQueue)
 			})
 		}
 		else {
@@ -62,9 +61,19 @@ class ViewController: UIViewController {
 		}
 
 
-		dispatch_async(sessionQueue) { () -> Void in
-			if (self.shouldRunSession == false) {
-				self.session.stopRunning()
+		captureSession = AVCaptureSession()
+		capturedPreview.session = self.captureSession
+
+		captureVideoOutput = AVCaptureVideoDataOutput();
+		captureVideoOutput.alwaysDiscardsLateVideoFrames = true
+
+		captureVideoOutput.videoSettings = [kCVPixelBufferPixelFormatTypeKey: UInt(kCVPixelFormatType_32BGRA)]
+		videoOutputQueue = dispatch_queue_create("outputQueue", DISPATCH_QUEUE_SERIAL)
+
+
+		dispatch_async(capturingQueue) { () -> Void in
+			guard (self.shouldRunSession) else {
+				self.captureSession.stopRunning()
 				return
 			}
 
@@ -82,36 +91,36 @@ class ViewController: UIViewController {
 
 
 			do {
-				self.videoDeviceInput = try AVCaptureDeviceInput(device: videoDevice)
+				self.captureVideoInput = try AVCaptureDeviceInput(device: videoDevice)
 			}
 			catch {
-				print("Could not create video device input: \(error)");
 			}
 
 
-			self.session.beginConfiguration()
+			self.captureSession.beginConfiguration()
 
-			if (self.session.canAddInput(self.videoDeviceInput)) {
-				self.session.addInput(self.videoDeviceInput)
+			if (self.captureSession.canAddInput(self.captureVideoInput)) {
+				self.captureSession.addInput(self.captureVideoInput)
 			}
 			else {
-				print("Could not add video device input to the session");
 				self.shouldRunSession = false
 			}
 
-			self.session.commitConfiguration()
+			if (self.captureSession.canAddOutput(self.captureVideoOutput)) {
+				self.captureVideoOutput.setSampleBufferDelegate(self, queue: self.videoOutputQueue)
+				self.captureSession.addOutput(self.captureVideoOutput)
+			}
+
+			self.captureSession.commitConfiguration()
 
 
-			self.session.startRunning()
+			self.captureSession.startRunning()
 		}
 	}
 
-	override func viewDidAppear(animated: Bool) {
-		super.viewDidAppear(animated)
-	}
 
-	override func viewDidDisappear(animated: Bool) {
-		super.viewDidDisappear(animated)
+	func captureOutput(captureOutput: AVCaptureOutput!, didOutputSampleBuffer sampleBuffer: CMSampleBuffer!, fromConnection connection: AVCaptureConnection!) {
+		print(sampleBuffer)
 	}
 }
 
