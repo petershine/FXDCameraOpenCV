@@ -41,9 +41,10 @@ class ViewController: UIViewController, AVCaptureVideoDataOutputSampleBufferDele
 		capturingQueue = dispatch_queue_create("session queue", DISPATCH_QUEUE_SERIAL)
 
 		let authorizationStatus = AVCaptureDevice.authorizationStatusForMediaType(AVMediaTypeVideo)
-		print(authorizationStatus)
 
 		if (authorizationStatus != .Authorized) {
+			print(authorizationStatus)
+
 			dispatch_suspend(capturingQueue)
 
 			AVCaptureDevice
@@ -87,7 +88,6 @@ class ViewController: UIViewController, AVCaptureVideoDataOutputSampleBufferDele
 					break
 				}
 			}
-			print(videoDevice)
 
 
 			do {
@@ -120,7 +120,8 @@ class ViewController: UIViewController, AVCaptureVideoDataOutputSampleBufferDele
 
 
 	func captureOutput(captureOutput: AVCaptureOutput!, didOutputSampleBuffer sampleBuffer: CMSampleBuffer!, fromConnection connection: AVCaptureConnection!) {
-		print(sampleBuffer)
+		let pixelbuffer : CVPixelBufferRef! = CMSampleBufferGetImageBuffer(sampleBuffer)
+		print(pixelbuffer)
 	}
 }
 
