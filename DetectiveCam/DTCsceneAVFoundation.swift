@@ -1,5 +1,5 @@
 //
-//  ViewController.swift
+//  DTCsceneAVFoundation.swift
 //  DetectiveCam
 //
 //  Created by petershine on 10/5/15.
@@ -11,9 +11,10 @@ import UIKit
 import AVFoundation
 
 
-class ViewController: UIViewController, AVCaptureVideoDataOutputSampleBufferDelegate {
+class DTCsceneAVFoundation: UIViewController, AVCaptureVideoDataOutputSampleBufferDelegate {
 
 	@IBOutlet weak var capturedPreview: DTCpreviewCapture!
+
 
 	var capturingQueue : dispatch_queue_t! = nil
 	var shouldRunSession : Bool = false
@@ -30,7 +31,6 @@ class ViewController: UIViewController, AVCaptureVideoDataOutputSampleBufferDele
 
 	override func didReceiveMemoryWarning() {
 		super.didReceiveMemoryWarning()
-		// Dispose of any resources that can be recreated.
 	}
 
 
@@ -70,6 +70,8 @@ class ViewController: UIViewController, AVCaptureVideoDataOutputSampleBufferDele
 
 		captureVideoOutput.videoSettings = [kCVPixelBufferPixelFormatTypeKey: UInt(kCVPixelFormatType_32BGRA)]
 		videoOutputQueue = dispatch_queue_create("outputQueue", DISPATCH_QUEUE_SERIAL)
+
+
 
 
 		dispatch_async(capturingQueue) { () -> Void in
