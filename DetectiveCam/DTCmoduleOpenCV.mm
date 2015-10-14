@@ -160,6 +160,7 @@
 
 
 	NSLog(@"%@", _coefficientGroup);
+	NSLog(@"%@", @(_hashDictionary.count));
 
 
 	if (_hashTable == nil) {
@@ -179,7 +180,7 @@
 		[_hashDictionary setObject:@(matchCount.integerValue+1) forKey:_coefficientGroup.description];
 	}
 
-	[self.opencvScene performSelector:@selector(logHashDictionary:) withObject:[_hashDictionary copy]];
+	//[self.opencvScene performSelector:@selector(logHashDictionary:) withObject:[_hashDictionary copy]];
 }
 
 @end
