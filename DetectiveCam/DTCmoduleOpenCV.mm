@@ -56,10 +56,19 @@
 	cv::Mat outputStdDev;
 	cv::meanStdDev(image, outputMean, outputStdDev);
 
-	cv:: Mat coeffiVariation;
-	cv::divide(outputMean, outputStdDev, coeffiVariation);
+	cv::Mat coefficient;
+	cv::divide(outputMean, outputStdDev, coefficient);
 
-	NSLog(@"%f", cv::mean(coeffiVariation)[0]);
+
+	NSString *valueString = @"";
+
+	cv::MatIterator_<double> _it = coefficient.begin<double>();
+	
+	for(; _it != coefficient.end<double>(); _it++){
+		valueString = [valueString stringByAppendingFormat:@"%d ", (int)*_it];
+	}
+
+	NSLog(@"%@", valueString);
 }
 
 @end
