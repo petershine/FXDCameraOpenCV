@@ -38,9 +38,19 @@ class DTCsceneOpenCV: UIViewController {
 	}
 
 
-	func logCoefficientString(logString: NSString) {
-		//logDisplay.text = logDisplay.text.stringByAppendingString("\n\(logString)")
-		logDisplay.text = "\(logString)"
+	func logCoefficientArray(coefficientArray: [AnyObject]) {
+		let integerArray = [coefficientArray[0] as! Int,
+			coefficientArray[1] as! Int,
+			coefficientArray[2] as! Int]
+
+		let floatArray = [coefficientArray[0] as! Float,
+			coefficientArray[1] as! Float,
+			coefficientArray[2] as! Float]
+
+
+		dispatch_async(dispatch_get_main_queue()) { () -> Void in
+			self.logDisplay.text = "\(integerArray)\n\(floatArray)"
+		}
 	}
 
 

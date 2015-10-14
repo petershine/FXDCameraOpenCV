@@ -105,13 +105,9 @@
 
 	cv::MatIterator_<double> iterator = coefficient.begin<double>();
 
-	NSString *coefficientString = [NSString stringWithFormat:@"%f %f %f", iterator[0], iterator[1], iterator[2]];
-	NSLog(@"%@", coefficientString);
+	NSArray *coefficientArray = @[@(iterator[0]), @(iterator[1]), @(iterator[2])];
 
-	[[NSOperationQueue mainQueue]
-	 addOperationWithBlock:^{
-		 [self.opencvScene performSelector:@selector(logCoefficientString:) withObject:coefficientString];
-	 }];
+	[self.opencvScene performSelector:@selector(logCoefficientArray:) withObject:coefficientArray];
 }
 
 @end
