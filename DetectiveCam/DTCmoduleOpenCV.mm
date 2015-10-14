@@ -16,7 +16,7 @@
 @interface DTCmoduleOpenCV () {
 	CvVideoCamera *_videoCamera;
 
-	cv::Mat _previousImage;
+	NSMutableArray *_cvArray;
 }
 
 @property (strong, nonatomic) CvVideoCamera *videoCamera;
@@ -60,15 +60,15 @@
 	cv::divide(outputMean, outputStdDev, coefficient);
 
 
-	NSString *valueString = @"";
+	cv::MatIterator_<double> iterator = coefficient.begin<double>();
 
-	cv::MatIterator_<double> _it = coefficient.begin<double>();
-	
-	for(; _it != coefficient.end<double>(); _it++){
-		valueString = [valueString stringByAppendingFormat:@"%d ", (int)*_it];
-	}
+	NSString *coefficientString = [NSString stringWithFormat:@"%f %f %f", iterator[0], iterator[1], iterator[2]];
+	NSLog(@"%@", coefficientString);
 
-	NSLog(@"%@", valueString);
+	[[NSOperationQueue mainQueue]
+	 addOperationWithBlock:^{
+		 [self.opencvScene performSelector:@selector(logCoefficientString:) withObject:coefficientString];
+	 }];
 }
 
 @end

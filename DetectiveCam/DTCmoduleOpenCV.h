@@ -14,6 +14,9 @@
 
 @interface DTCmoduleOpenCV : NSObject <CvVideoCameraDelegate>
 
+@property (weak, nonatomic) UIViewController *opencvScene;
+
+
 - (id)opencvVideoCamera;
 
 

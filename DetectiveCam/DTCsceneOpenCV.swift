@@ -10,6 +10,9 @@ import UIKit
 
 class DTCsceneOpenCV: UIViewController {
 
+	@IBOutlet weak var opencvScreen: UIImageView!
+	@IBOutlet weak var logDisplay: UITextView!
+
 	var opencvModule : DTCmoduleOpenCV! = nil
 
 
@@ -25,8 +28,20 @@ class DTCsceneOpenCV: UIViewController {
         super.viewDidLoad()
 
 		opencvModule = DTCmoduleOpenCV();
-		opencvModule.prepareWithOpenCVpreview(self.view);
+		opencvModule.opencvScene = self;
+		opencvModule.prepareWithOpenCVpreview(opencvScreen);
     }
+
+
+	override func prefersStatusBarHidden() -> Bool {
+		return true
+	}
+
+
+	func logCoefficientString(logString: NSString) {
+		//logDisplay.text = logDisplay.text.stringByAppendingString("\n\(logString)")
+		logDisplay.text = "\(logString)"
+	}
 
 
     /*
