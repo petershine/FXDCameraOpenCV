@@ -18,7 +18,16 @@
                                 <animations/>
                             </imageView>
                             <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" text="TESTING Coefficient of Variation" textAlignment="natural" id="uR5-w5-o0o">
-                                <rect key="frame" x="0.0" y="617" width="375" height="50"/>
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="50"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
+                                <animations/>
+                                <color key="backgroundColor" white="0.0" alpha="0.5" colorSpace="calibratedWhite"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                            </textView>
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="natural" id="kOi-2E-VCC">
+                                <rect key="frame" x="0.0" y="487" width="375" height="180"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
                                 <animations/>
                                 <color key="backgroundColor" white="0.0" alpha="0.5" colorSpace="calibratedWhite"/>
@@ -32,7 +41,8 @@
                     </view>
                     <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina47"/>
                     <connections>
-                        <outlet property="logDisplay" destination="uR5-w5-o0o" id="QP3-Tb-1DH"/>
+                        <outlet property="logCoefficientMatrix" destination="uR5-w5-o0o" id="crl-Wz-dVQ"/>
+                        <outlet property="logHashDictionary" destination="kOi-2E-VCC" id="ui9-X8-bVd"/>
                         <outlet property="opencvScreen" destination="Vxo-nb-fFw" id="y1z-95-ndh"/>
                     </connections>
                 </viewController>

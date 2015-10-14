@@ -11,7 +11,8 @@ import UIKit
 class DTCsceneOpenCV: UIViewController {
 
 	@IBOutlet weak var opencvScreen: UIImageView!
-	@IBOutlet weak var logDisplay: UITextView!
+	@IBOutlet weak var logCoefficientMatrix: UITextView!
+	@IBOutlet weak var logHashDictionary: UITextView!
 
 	var opencvModule : DTCmoduleOpenCV! = nil
 
@@ -38,18 +39,24 @@ class DTCsceneOpenCV: UIViewController {
 	}
 
 
-	func logCoefficientArray(coefficientArray: [AnyObject]) {
-		let integerArray = [coefficientArray[0] as! Int,
-			coefficientArray[1] as! Int,
-			coefficientArray[2] as! Int]
+	func logCoefficientMatrix(coefficientMatrix: [AnyObject]) {
+		let integerArray = [coefficientMatrix[0] as! Int,
+			coefficientMatrix[1] as! Int,
+			coefficientMatrix[2] as! Int]
 
-		let floatArray = [coefficientArray[0] as! Float,
-			coefficientArray[1] as! Float,
-			coefficientArray[2] as! Float]
+		let floatArray = [coefficientMatrix[0] as! Float,
+			coefficientMatrix[1] as! Float,
+			coefficientMatrix[2] as! Float]
 
 
 		dispatch_async(dispatch_get_main_queue()) { () -> Void in
-			self.logDisplay.text = "\(integerArray)\n\(floatArray)"
+			self.logCoefficientMatrix.text = "\(integerArray)\n\(floatArray)"
+		}
+	}
+
+	func logHashDictionary(hashDictionary: [String:Int]) {
+		dispatch_async(dispatch_get_main_queue()) { () -> Void in
+			self.logHashDictionary.text = "\(hashDictionary)"
 		}
 	}
 

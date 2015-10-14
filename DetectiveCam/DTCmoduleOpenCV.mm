@@ -15,6 +15,38 @@
 #import <opencv2/videoio/cap_ios.h>
 
 
+@interface NSMutableArray (AddedForOpenCV)
+- (BOOL)isSameCoefficientGroup:(NSArray*)coefficientGroup;
+@end
+
+@implementation NSArray (AddedForOpenCV)
+- (BOOL)isSameCoefficientGroup:(NSArray*)coefficientGroup {
+	NSAssert(self.count == coefficientGroup.count, @"1.Element count differenct");
+
+	BOOL isSame = YES;
+	for (NSInteger outerIndex = 0; outerIndex < self.count; outerIndex++) {
+
+		NSArray *coefficientMatrix_0 = self[outerIndex];
+		NSArray *coefficientMatrix_1 = coefficientGroup[outerIndex];
+		NSAssert(coefficientMatrix_0.count == coefficientMatrix_1.count, @"2.Element count differenct");
+
+		for (NSInteger innerIndex = 0; innerIndex < coefficientMatrix_0.count; innerIndex++) {
+			if ([(NSNumber*)coefficientMatrix_0[innerIndex] isEqualToNumber:coefficientMatrix_1[innerIndex]]) {
+				isSame = NO;
+				break;
+			}
+		}
+
+		if (isSame == NO) {
+			break;
+		}
+	}
+
+	return isSame;
+}
+@end
+
+
 @interface DTCcameraOpenCV : CvVideoCamera
 - (void)updateOrientation;
 - (void)layoutPreviewLayer;
@@ -59,7 +91,9 @@
 @interface DTCmoduleOpenCV () {
 	CvVideoCamera *_videoCamera;
 
-	NSMutableArray *_cvArray;
+	NSMutableArray *_coefficientGroup;
+	NSMutableArray *_hashTable;
+	NSMutableDictionary *_hashDictionary;
 }
 
 @property (strong, nonatomic) CvVideoCamera *videoCamera;
@@ -105,9 +139,47 @@
 
 	cv::MatIterator_<double> iterator = coefficient.begin<double>();
 
-	NSArray *coefficientArray = @[@(iterator[0]), @(iterator[1]), @(iterator[2])];
+	NSArray *coefficientMatrix = @[@(iterator[0]), @(iterator[1]), @(iterator[2])];
 
-	[self.opencvScene performSelector:@selector(logCoefficientArray:) withObject:coefficientArray];
+	[self.opencvScene performSelector:@selector(logCoefficientMatrix:) withObject:[coefficientMatrix copy]];
+
+
+	if (_coefficientGroup == nil) {
+		_coefficientGroup = [[NSMutableArray alloc] initWithCapacity:0];
+	}
+
+	if (_coefficientGroup.count >= 6) {
+		[_coefficientGroup removeObjectAtIndex:0];
+	}
+
+	[_coefficientGroup addObject:coefficientMatrix];
+
+	if (_coefficientGroup.count < 6) {
+		return;
+	}
+
+
+	NSLog(@"%@", _coefficientGroup);
+
+
+	if (_hashTable == nil) {
+		_hashTable = [[NSMutableArray alloc] initWithCapacity:0];
+	}
+
+	if (_hashDictionary == nil) {
+		_hashDictionary = [[NSMutableDictionary alloc] initWithCapacity:0];
+	}
+
+	if (_hashTable.count == 0 || [(NSArray*)_hashTable.lastObject isSameCoefficientGroup:_coefficientGroup] == NO) {
+		[_hashTable addObject:[_coefficientGroup copy]];
+		[_hashDictionary setObject:@(1) forKey:_coefficientGroup.description];
+	}
+	else if (_hashDictionary.count > 0) {
+		NSNumber *matchCount = [_hashDictionary objectForKey:_coefficientGroup.description];
+		[_hashDictionary setObject:@(matchCount.integerValue+1) forKey:_coefficientGroup.description];
+	}
+
+	[self.opencvScene performSelector:@selector(logHashDictionary:) withObject:[_hashDictionary copy]];
 }
 
 @end
