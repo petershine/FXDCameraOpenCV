@@ -172,9 +172,9 @@
 	cv::divide(outputMean, outputStdDev, coefficient);
 	NSLog(@"coefficient.dims: %d, coefficient.rows: %d, coefficient.cols: %d", coefficient.dims, coefficient.rows, coefficient.cols);
 
-	cv::MatIterator_<double> iterator = coefficient.begin<double>();
+	cv::MatIterator_<double> cvIterator = coefficient.begin<double>();
 
-	NSArray *coefficientMatrix = @[@(iterator[0]), @(iterator[1]), @(iterator[2])];
+	NSArray *coefficientMatrix = @[@(cvIterator[0]), @(cvIterator[1]), @(cvIterator[2])];
 	NSLog(@"coefficientMatrix: %@", coefficientMatrix);
 
 
