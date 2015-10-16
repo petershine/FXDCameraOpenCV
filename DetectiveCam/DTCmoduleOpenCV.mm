@@ -45,7 +45,7 @@
 		}
 	}
 
-	NSLog(@"isSame: %d", isSame);
+	//NSLog(@"isSame: %d", isSame);
 
 	return isSame;
 }
@@ -122,10 +122,37 @@
 
 	self.videoCamera = [[DTCcameraOpenCV alloc] initWithParentView:opencvPreview];
 	self.videoCamera.defaultAVCaptureDevicePosition = AVCaptureDevicePositionBack;
-	self.videoCamera.defaultAVCaptureSessionPreset = AVCaptureSessionPresetHigh;
+	self.videoCamera.defaultAVCaptureSessionPreset = AVCaptureSessionPresetiFrame1280x720;
 	self.videoCamera.defaultAVCaptureVideoOrientation = AVCaptureVideoOrientationPortrait;
-	self.videoCamera.defaultFPS = 30;
+
 	self.videoCamera.grayscaleMode = NO;
+
+
+	self.videoCamera.defaultFPS = 30;
+
+	AVCaptureDevice *cameraDevice = [AVCaptureDevice defaultDeviceWithMediaType:AVMediaTypeVideo];
+	NSLog(@"cameraDevice: %@", cameraDevice);
+
+	NSLog(@"[videoDevice supportsAVCaptureSessionPreset:AVCaptureSessionPreset1280x720]: %d", [cameraDevice supportsAVCaptureSessionPreset:AVCaptureSessionPreset1280x720]);
+	NSLog(@"cameraDevice.formats: %@", cameraDevice.formats);
+
+
+	NSArray *frameRateRanges = cameraDevice.activeFormat.videoSupportedFrameRateRanges;
+	NSLog(@"frameRateRanges: %@", frameRateRanges);
+
+	AVFrameRateRange *defaultFrameRate = frameRateRanges.firstObject;
+
+	NSError *error = nil;
+
+	if ([cameraDevice lockForConfiguration:&error]) {
+		[cameraDevice setActiveVideoMinFrameDuration:defaultFrameRate.minFrameDuration];
+		[cameraDevice setActiveVideoMaxFrameDuration:defaultFrameRate.maxFrameDuration];
+	}
+
+	NSLog(@"error: %@", error);
+	[cameraDevice unlockForConfiguration];
+
+
 	self.videoCamera.delegate = self;
 
 	[self.videoCamera start];
@@ -133,18 +160,22 @@
 
 
 - (void)processImage:(cv::Mat&)image {
+	NSLog(@"image.dims: %d, image.rows: %d, image.cols: %d", image.dims, image.rows, image.cols);
 
 	cv::Mat outputMean;
 	cv::Mat outputStdDev;
 	cv::meanStdDev(image, outputMean, outputStdDev);
+	NSLog(@"outputMean.dims: %d, outputMean.rows: %d, outputMean.cols: %d", outputMean.dims, outputMean.rows, outputMean.cols);
+	NSLog(@"outputStdDev.dims: %d, outputStdDev.rows: %d, outputStdDev.cols: %d", outputStdDev.dims, outputStdDev.rows, outputStdDev.cols);
 
 	cv::Mat coefficient;
 	cv::divide(outputMean, outputStdDev, coefficient);
-
+	NSLog(@"coefficient.dims: %d, coefficient.rows: %d, coefficient.cols: %d", coefficient.dims, coefficient.rows, coefficient.cols);
 
 	cv::MatIterator_<double> iterator = coefficient.begin<double>();
 
 	NSArray *coefficientMatrix = @[@(iterator[0]), @(iterator[1]), @(iterator[2])];
+	NSLog(@"coefficientMatrix: %@", coefficientMatrix);
 
 
 	if (_coefficientGroup == nil) {
@@ -186,7 +217,7 @@
 
 	[_hashDictionary setObject:@(matchCount.integerValue+1) forKey:hashKey];
 
-	NSLog(@"%@", _hashTable);
+	//NSLog(@"%@", _hashTable);
 
 	[self.opencvScene performSelector:@selector(logCoefficientMatrix:) withObject:[coefficientMatrix copy]];
 
