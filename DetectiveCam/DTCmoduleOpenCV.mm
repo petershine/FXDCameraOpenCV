@@ -160,23 +160,56 @@
 
 
 - (void)processImage:(cv::Mat&)image {
-	NSLog(@"image.dims: %d, image.rows: %d, image.cols: %d", image.dims, image.rows, image.cols);
+	cv::MatIterator_<uchar> imageIterator, endOfMatrix;
+
+	NSInteger elementCount = 0;
+
+	Float64 sum = 0.0;
+
+	for (imageIterator = image.begin<uchar>(), endOfMatrix = image.end<uchar>(); imageIterator != endOfMatrix; ++imageIterator) {
+		//NSLog(@"%d", *it);
+		sum += *imageIterator;
+
+		elementCount++;
+	}
+
+	Float64 mean = ((elementCount > 0) ? (sum/(Float64)elementCount):0.0);
+
+	Float64 sumOfSquaredDifferences = 0.0;
+
+	for (imageIterator = image.begin<uchar>(), endOfMatrix = image.end<uchar>(); imageIterator != endOfMatrix; ++imageIterator) {
+		Float64 difference = ((Float64)*imageIterator) - mean;
+		sumOfSquaredDifferences += (difference * difference);
+	}
+
+	Float64 stdDeviation = sqrt(sumOfSquaredDifferences / (Float64)elementCount);
+	Float64 coefficientVar = (stdDeviation/mean);
+
+	NSLog(@"image.rows: %d, image.cols: %d, sum: %f mean: %f stdDeviation: %f coefficient: %f", image.rows, image.cols, sum, mean, stdDeviation, coefficientVar);
+
 
 	cv::Mat outputMean;
 	cv::Mat outputStdDev;
 	cv::meanStdDev(image, outputMean, outputStdDev);
-	NSLog(@"outputMean.dims: %d, outputMean.rows: %d, outputMean.cols: %d", outputMean.dims, outputMean.rows, outputMean.cols);
-	NSLog(@"outputStdDev.dims: %d, outputStdDev.rows: %d, outputStdDev.cols: %d", outputStdDev.dims, outputStdDev.rows, outputStdDev.cols);
+
+	cv::MatIterator_<double> meanIterator = outputMean.begin<double>();
+	NSLog(@"meanIterator: %@ %@ %@ %@", @(meanIterator[0]), @(meanIterator[1]), @(meanIterator[2]), @(meanIterator[3]));
+
+	cv::MatIterator_<double> stddevIterator = outputStdDev.begin<double>();
+	NSLog(@"stddevIterator: %@ %@ %@ %@", @(stddevIterator[0]), @(stddevIterator[1]), @(stddevIterator[2]), @(stddevIterator[3]));
 
 	cv::Mat coefficient;
-	cv::divide(outputMean, outputStdDev, coefficient);
-	NSLog(@"coefficient.dims: %d, coefficient.rows: %d, coefficient.cols: %d", coefficient.dims, coefficient.rows, coefficient.cols);
+	cv::divide(outputStdDev, outputMean, coefficient);
 
 	cv::MatIterator_<double> cvIterator = coefficient.begin<double>();
+	NSLog(@"cvIterator: %@ %@ %@ %@", @(cvIterator[0]), @(cvIterator[1]), @(cvIterator[2]), @(cvIterator[3]));
+
+
+	return;
+
+
 
 	NSArray *coefficientMatrix = @[@(cvIterator[0]), @(cvIterator[1]), @(cvIterator[2])];
-	NSLog(@"coefficientMatrix: %@", coefficientMatrix);
-
 
 	if (_coefficientGroup == nil) {
 		_coefficientGroup = [[NSMutableArray alloc] initWithCapacity:0];
