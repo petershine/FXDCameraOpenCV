@@ -15,6 +15,10 @@ class DTCsceneAVFoundation: UIViewController, AVCaptureVideoDataOutputSampleBuff
 
 	@IBOutlet weak var capturedPreview: DTCpreviewCapture!
 
+	@IBOutlet weak var opencvScreen: UIImageView!
+	@IBOutlet weak var logCoefficientMatrix: UITextView!
+	@IBOutlet weak var logHashTable: UITextView!
+	
 
 	var capturingQueue : dispatch_queue_t! = nil
 	var shouldRunSession : Bool = false
@@ -63,7 +67,9 @@ class DTCsceneAVFoundation: UIViewController, AVCaptureVideoDataOutputSampleBuff
 
 
 		captureSession = AVCaptureSession()
+		captureSession.sessionPreset = AVCaptureSessionPresetiFrame1280x720
 		capturedPreview.session = self.captureSession
+
 
 		captureVideoOutput = AVCaptureVideoDataOutput();
 		captureVideoOutput.alwaysDiscardsLateVideoFrames = true
@@ -81,19 +87,41 @@ class DTCsceneAVFoundation: UIViewController, AVCaptureVideoDataOutputSampleBuff
 			}
 
 
-			var videoDevice : AVCaptureDevice! = nil
+			var cameraDevice : AVCaptureDevice! = nil
 			let devices = AVCaptureDevice.devicesWithMediaType(AVMediaTypeVideo)
 
 			for device in devices as! [AVCaptureDevice] {
 				if (device.position == .Back) {
-					videoDevice = device
+					cameraDevice = device
 					break
 				}
 			}
 
+			if (cameraDevice != nil) {
+				NSLog("[videoDevice supportsAVCaptureSessionPreset:AVCaptureSessionPreset1280x720]: %d", cameraDevice.supportsAVCaptureSessionPreset(AVCaptureSessionPresetiFrame1280x720))
+
+				NSLog("cameraDevice.formats: %@", cameraDevice.formats);
+			}
+
+			let frameRateRanges: Array = cameraDevice.activeFormat.videoSupportedFrameRateRanges
+			NSLog("frameRateRanges: %@", frameRateRanges);
+
+			let defaultFrameRate: AVFrameRateRange = frameRateRanges.first as! AVFrameRateRange
 
 			do {
-				self.captureVideoInput = try AVCaptureDeviceInput(device: videoDevice)
+				try cameraDevice.lockForConfiguration()
+				cameraDevice.activeVideoMinFrameDuration = defaultFrameRate.minFrameDuration
+				cameraDevice.activeVideoMaxFrameDuration = defaultFrameRate.maxFrameDuration
+			}
+			catch {
+				print(error)
+			}
+
+			cameraDevice.unlockForConfiguration()
+
+
+			do {
+				self.captureVideoInput = try AVCaptureDeviceInput(device: cameraDevice)
 			}
 			catch {
 			}
@@ -124,6 +152,14 @@ class DTCsceneAVFoundation: UIViewController, AVCaptureVideoDataOutputSampleBuff
 	func captureOutput(captureOutput: AVCaptureOutput!, didOutputSampleBuffer sampleBuffer: CMSampleBuffer!, fromConnection connection: AVCaptureConnection!) {
 		let pixelbuffer : CVPixelBufferRef! = CMSampleBufferGetImageBuffer(sampleBuffer)
 		print(pixelbuffer)
+
+		//TODO: check if pixel buffer is h.264
+		//process it to be readable
+		//refer to Direct Encode And Decode WWDC 2014 video for better understanding.
+		//learn about CMBlockBuffer is compressed data. Check if it's h.264 with motion vectors
+		//AVSampleBufferDisplayLayer
+		//VTCompressionSession
+
 	}
 }
 
