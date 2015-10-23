@@ -9,11 +9,10 @@
 import UIKit
 
 import AVFoundation
+import VideoToolbox
 
 
-class DTCsceneAVFoundation: UIViewController, AVCaptureVideoDataOutputSampleBufferDelegate {
-
-	@IBOutlet weak var capturedPreview: DTCpreviewCapture!
+class DTCsceneAVFoundation: UIViewController {
 
 	@IBOutlet weak var opencvScreen: UIImageView!
 	@IBOutlet weak var logCoefficientMatrix: UITextView!
@@ -29,6 +28,8 @@ class DTCsceneAVFoundation: UIViewController, AVCaptureVideoDataOutputSampleBuff
 	var videoOutputQueue : dispatch_queue_t! = nil
 	var captureVideoOutput : AVCaptureVideoDataOutput! = nil
 
+	var bufferingModule: DTCmoduleBuffer! = nil
+
 
 	deinit {
 	}
@@ -40,9 +41,22 @@ class DTCsceneAVFoundation: UIViewController, AVCaptureVideoDataOutputSampleBuff
 
 	override func viewDidLoad() {
 		super.viewDidLoad()
+
 		// Do any additional setup after loading the view, typically from a nib.
 
+		captureSession = AVCaptureSession()
+		captureSession.sessionPreset = AVCaptureSessionPresetiFrame1280x720
 		capturingQueue = dispatch_queue_create("session queue", DISPATCH_QUEUE_SERIAL)
+
+
+		captureVideoOutput = AVCaptureVideoDataOutput();
+		captureVideoOutput.alwaysDiscardsLateVideoFrames = true
+		captureVideoOutput.videoSettings = [kCVPixelBufferPixelFormatTypeKey: UInt(kCVPixelFormatType_32BGRA)]
+		
+		videoOutputQueue = dispatch_queue_create("outputQueue", DISPATCH_QUEUE_SERIAL)
+
+		bufferingModule = DTCmoduleBuffer();
+
 
 		let authorizationStatus = AVCaptureDevice.authorizationStatusForMediaType(AVMediaTypeVideo)
 
@@ -64,20 +78,6 @@ class DTCsceneAVFoundation: UIViewController, AVCaptureVideoDataOutputSampleBuff
 		else {
 			shouldRunSession = true
 		}
-
-
-		captureSession = AVCaptureSession()
-		captureSession.sessionPreset = AVCaptureSessionPresetiFrame1280x720
-		capturedPreview.session = self.captureSession
-
-
-		captureVideoOutput = AVCaptureVideoDataOutput();
-		captureVideoOutput.alwaysDiscardsLateVideoFrames = true
-
-		captureVideoOutput.videoSettings = [kCVPixelBufferPixelFormatTypeKey: UInt(kCVPixelFormatType_32BGRA)]
-		videoOutputQueue = dispatch_queue_create("outputQueue", DISPATCH_QUEUE_SERIAL)
-
-
 
 
 		dispatch_async(capturingQueue) { () -> Void in
@@ -137,7 +137,7 @@ class DTCsceneAVFoundation: UIViewController, AVCaptureVideoDataOutputSampleBuff
 			}
 
 			if (self.captureSession.canAddOutput(self.captureVideoOutput)) {
-				self.captureVideoOutput.setSampleBufferDelegate(self, queue: self.videoOutputQueue)
+				self.captureVideoOutput.setSampleBufferDelegate(self.bufferingModule, queue: self.videoOutputQueue)
 				self.captureSession.addOutput(self.captureVideoOutput)
 			}
 
@@ -146,22 +146,6 @@ class DTCsceneAVFoundation: UIViewController, AVCaptureVideoDataOutputSampleBuff
 
 			self.captureSession.startRunning()
 		}
-	}
-
-
-	func captureOutput(captureOutput: AVCaptureOutput!, didOutputSampleBuffer sampleBuffer: CMSampleBuffer!, fromConnection connection: AVCaptureConnection!) {
-		print(sampleBuffer)
-		
-		let pixelbuffer : CVPixelBufferRef! = CMSampleBufferGetImageBuffer(sampleBuffer)
-		print(pixelbuffer)
-
-		//TODO: check if pixel buffer is h.264
-		//process it to be readable
-		//refer to Direct Encode And Decode WWDC 2014 video for better understanding.
-		//learn about CMBlockBuffer is compressed data. Check if it's h.264 with motion vectors
-		//AVSampleBufferDisplayLayer
-		//VTCompressionSession
-
 	}
 }
 

@@ -3,3 +3,4 @@
 //
 
 #import "DTCmoduleOpenCV.h"
+#import "DTCmoduleBuffer.h"

@@ -12,12 +12,6 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <view contentMode="scaleToFill" id="tBz-1T-Zau" customClass="DTCpreviewCapture" customModule="DetectiveCam" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
-                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                                <animations/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                            </view>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" id="Vxo-nb-fFw">
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                                 <autoresizingMask key="autoresizingMask"/>
@@ -47,7 +41,6 @@
                     </view>
                     <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina47"/>
                     <connections>
-                        <outlet property="capturedPreview" destination="tBz-1T-Zau" id="pfe-gI-8Oi"/>
                         <outlet property="logCoefficientMatrix" destination="uR5-w5-o0o" id="crl-Wz-dVQ"/>
                         <outlet property="logHashTable" destination="DSI-pF-7KD" id="434-RF-8rL"/>
                         <outlet property="opencvScreen" destination="Vxo-nb-fFw" id="y1z-95-ndh"/>
