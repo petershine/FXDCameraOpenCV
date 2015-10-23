@@ -150,6 +150,8 @@ class DTCsceneAVFoundation: UIViewController, AVCaptureVideoDataOutputSampleBuff
 
 
 	func captureOutput(captureOutput: AVCaptureOutput!, didOutputSampleBuffer sampleBuffer: CMSampleBuffer!, fromConnection connection: AVCaptureConnection!) {
+		print(sampleBuffer)
+		
 		let pixelbuffer : CVPixelBufferRef! = CMSampleBufferGetImageBuffer(sampleBuffer)
 		print(pixelbuffer)
 
