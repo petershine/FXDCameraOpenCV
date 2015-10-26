@@ -61,7 +61,6 @@ void _outputCallback(void * CM_NULLABLE decompressionOutputRefCon,
 		NSLog(@"CVPixelBufferGetDataSize(pixelBuffer): %lu", CVPixelBufferGetDataSize(pixelBuffer));
 
 		size_t planeCount = CVPixelBufferGetPlaneCount(pixelBuffer);
-		NSLog(@"planeCount: %lu", planeCount);
 
 		for (size_t planeIndex = 0; planeIndex < planeCount; planeIndex++) {
 
@@ -69,9 +68,18 @@ void _outputCallback(void * CM_NULLABLE decompressionOutputRefCon,
 			size_t height = CVPixelBufferGetHeightOfPlane(pixelBuffer, planeIndex);
 
 			size_t bytesPerRow = CVPixelBufferGetBytesPerRowOfPlane(pixelBuffer, planeIndex);
-			unsigned char *baseAddress = CVPixelBufferGetBaseAddressOfPlane(pixelBuffer, planeIndex);
+			NSLog(@"planeIndex: %lu width: %lu, height: %lu bytesPerRow: %lu", planeIndex, width, height, bytesPerRow);
 
-			NSLog(@"planeIndex: %lu width: %lu, height: %lu bytesPerRow: %lu baseAddress: %p", planeIndex, width, height, bytesPerRow, baseAddress);
+
+			uint8_t *baseAddress = CVPixelBufferGetBaseAddressOfPlane(pixelBuffer, planeIndex);
+
+			
+			for (size_t row = 0; row < height; row++) {
+				for (size_t column = 0; column < width; column++) {
+					size_t pixelIndex = row*width+column;
+					NSLog(@"[%lu*%lu+%lu]=%lu: %u", row, width, column, pixelIndex, baseAddress[pixelIndex]);
+				}
+			}
 		}
 	}
 
