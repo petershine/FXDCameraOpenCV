@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		D907091D1BDEB4D100977129 /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D907091C1BDEB4D100977129 /* CoreMedia.framework */; };
 		D91481A51BC77D26005AC71D /* DTCsceneOpenCV.swift in Sources */ = {isa = PBXBuildFile; fileRef = D91481A41BC77D26005AC71D /* DTCsceneOpenCV.swift */; };
 		D96425FD1BDADB1F00EFB71A /* DTCmoduleBuffer.m in Sources */ = {isa = PBXBuildFile; fileRef = D96425FC1BDADB1F00EFB71A /* DTCmoduleBuffer.m */; };
 		D96425FF1BDAEE7400EFB71A /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D96425FE1BDAEE7400EFB71A /* CoreVideo.framework */; };
@@ -47,6 +48,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		D907091C1BDEB4D100977129 /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = System/Library/Frameworks/CoreMedia.framework; sourceTree = SDKROOT; };
 		D91481A41BC77D26005AC71D /* DTCsceneOpenCV.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DTCsceneOpenCV.swift; sourceTree = "<group>"; };
 		D96425FB1BDADB1F00EFB71A /* DTCmoduleBuffer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DTCmoduleBuffer.h; sourceTree = "<group>"; };
 		D96425FC1BDADB1F00EFB71A /* DTCmoduleBuffer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DTCmoduleBuffer.m; sourceTree = "<group>"; };
@@ -81,6 +83,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D907091D1BDEB4D100977129 /* CoreMedia.framework in Frameworks */,
 				D96425FF1BDAEE7400EFB71A /* CoreVideo.framework in Frameworks */,
 				D9E36E881BD9EE0D005E5D4E /* VideoToolbox.framework in Frameworks */,
 				D9E7C3231BC37E070071582B /* AssetsLibrary.framework in Frameworks */,
@@ -110,6 +113,7 @@
 		D9E7C2951BC334A90071582B = {
 			isa = PBXGroup;
 			children = (
+				D907091C1BDEB4D100977129 /* CoreMedia.framework */,
 				D96425FE1BDAEE7400EFB71A /* CoreVideo.framework */,
 				D9E36E871BD9EE0D005E5D4E /* VideoToolbox.framework */,
 				D9E7C3221BC37E070071582B /* AssetsLibrary.framework */,

@@ -51,7 +51,8 @@ class DTCsceneAVFoundation: UIViewController {
 
 		captureVideoOutput = AVCaptureVideoDataOutput();
 		captureVideoOutput.alwaysDiscardsLateVideoFrames = true
-		captureVideoOutput.videoSettings = [kCVPixelBufferPixelFormatTypeKey: UInt(kCVPixelFormatType_32BGRA)]
+		//captureVideoOutput.videoSettings = [kCVPixelBufferPixelFormatTypeKey: UInt(kCVPixelFormatType_32BGRA)]
+		captureVideoOutput.videoSettings = nil;
 		
 		videoOutputQueue = dispatch_queue_create("outputQueue", DISPATCH_QUEUE_SERIAL)
 

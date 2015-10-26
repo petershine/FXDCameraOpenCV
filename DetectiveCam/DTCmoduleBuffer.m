@@ -43,50 +43,48 @@ void _outputCallback(void * CM_NULLABLE decompressionOutputRefCon,
 	//VTCompressionSession
 
 
+	//NSLog(@"sampleBuffer: %@", sampleBuffer);
+
 	CVPixelBufferRef pixelBuffer = CMSampleBufferGetImageBuffer(sampleBuffer);
-	//NSLog(@"pixelBuffer: %@", pixelBuffer);
-
-
 
 	CVReturn didLock = CVPixelBufferLockBaseAddress(pixelBuffer, kCVPixelBufferLock_ReadOnly);
-	//NSLog(@"didLock: %d", didLock);
+	NSLog(@"didLock: %d", didLock);
 
 	if (didLock == kCVReturnSuccess) {
-		//NSLog(@"CVPixelBufferIsPlanar(pixelBuffer): %d", CVPixelBufferIsPlanar(pixelBuffer));
+		NSLog(@"pixelBuffer: %@", pixelBuffer);
 
-		unsigned char *baseAddress = CVPixelBufferGetBaseAddress(pixelBuffer);
-		//NSLog(@"baseAddress: %p", baseAddress);
+		NSLog(@"CVImageBufferIsFlipped(pixelBuffer): %d", CVImageBufferIsFlipped(pixelBuffer));
+		NSLog(@"CVPixelBufferIsPlanar(pixelBuffer): %d", CVPixelBufferIsPlanar(pixelBuffer));
 
-		size_t width = CVPixelBufferGetWidth(pixelBuffer);
-		size_t height = CVPixelBufferGetHeight(pixelBuffer);
-		size_t bytesPerRow = CVPixelBufferGetBytesPerRow(pixelBuffer);
-		//NSLog(@"width: %lu, height: %lu bytesPerRow: %lu", width, height, bytesPerRow);
+		NSLog(@"CVPixelBufferGetPixelFormatType(pixelBuffer): %u", (unsigned int)CVPixelBufferGetPixelFormatType(pixelBuffer));
 
-		unsigned long element_0 = 0;
-		unsigned long element_1 = 0;
-		unsigned long element_2 = 0;
-		unsigned long element_3 = 0;
+		NSLog(@"CVPixelBufferGetDataSize(pixelBuffer): %lu", CVPixelBufferGetDataSize(pixelBuffer));
 
-		unsigned long elementCount = 0;
+		size_t planeCount = CVPixelBufferGetPlaneCount(pixelBuffer);
+		NSLog(@"planeCount: %lu", planeCount);
 
-		for (size_t row = 0; row < height; row++) {
-			for (size_t column = 0; column < width; column++) {
-				//NSLog(@"(%d, %d): %d %d %d %d", row, column, baseAddress[0], baseAddress[1], baseAddress[2], baseAddress[3]);
-				element_0 += baseAddress[0];
-				element_1 += baseAddress[1];
-				element_2 += baseAddress[2];
-				element_3 += baseAddress[3];
+		for (size_t planeIndex = 0; planeIndex < planeCount; planeIndex++) {
 
-				baseAddress += 4;
-				elementCount += 1;
-			}
+			size_t width = CVPixelBufferGetWidthOfPlane(pixelBuffer, planeIndex);
+			size_t height = CVPixelBufferGetHeightOfPlane(pixelBuffer, planeIndex);
+
+			size_t bytesPerRow = CVPixelBufferGetBytesPerRowOfPlane(pixelBuffer, planeIndex);
+			unsigned char *baseAddress = CVPixelBufferGetBaseAddressOfPlane(pixelBuffer, planeIndex);
+
+			NSLog(@"planeIndex: %lu width: %lu, height: %lu bytesPerRow: %lu baseAddress: %p", planeIndex, width, height, bytesPerRow, baseAddress);
 		}
-
-		NSLog(@"sum: %lu %lu %lu %lu, mean: %f %f %f %f", element_0, element_1, element_2, element_3, ((Float64)element_0/elementCount), ((Float64)element_1/elementCount), ((Float64)element_2/elementCount), ((Float64)element_3/elementCount));
 	}
 
 	CVReturn didUnlock = CVPixelBufferUnlockBaseAddress(pixelBuffer, kCVPixelBufferLock_ReadOnly);
-	//NSLog(@"didUnlock: %d", didUnlock);
+	NSLog(@"didUnlock: %d", didUnlock);
+
+	NSLog(@" ");
+	NSLog(@" ");
+	NSLog(@" ");
+
+
+	//VTCompressionSession
+
 
 }
 
