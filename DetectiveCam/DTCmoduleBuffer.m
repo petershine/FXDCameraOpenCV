@@ -35,7 +35,6 @@ void _outputCallback(void * CM_NULLABLE decompressionOutputRefCon,
 
 
 - (void)captureOutput:(AVCaptureOutput *)captureOutput didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer fromConnection:(AVCaptureConnection *)connection {
-
 	//TODO: check if pixel buffer is h.264
 	//process it to be readable
 	//refer to Direct Encode And Decode WWDC 2014 video for better understanding.
@@ -43,29 +42,30 @@ void _outputCallback(void * CM_NULLABLE decompressionOutputRefCon,
 	//AVSampleBufferDisplayLayer
 	//VTCompressionSession
 
-	if (_decompressionSession == NULL) {
-		CMVideoFormatDescriptionRef formatDescription = CMSampleBufferGetFormatDescription(sampleBuffer);
 
-		VTDecompressionOutputCallbackRecord callbackRecord;
-		callbackRecord.decompressionOutputCallback = _outputCallback;
-		callbackRecord.decompressionOutputRefCon = (__bridge void *)self;
-		VTDecompressionSessionCreate(kCFAllocatorDefault,
-									 formatDescription,
-									 NULL,
-									 NULL,
-									 &callbackRecord,
-									 &_decompressionSession);
+	CVPixelBufferRef pixelBuffer = CMSampleBufferGetImageBuffer(sampleBuffer);
+	NSLog(@"pixelBuffer: %@", pixelBuffer);
+
+
+
+	CVReturn didLock = CVPixelBufferLockBaseAddress(pixelBuffer, kCVPixelBufferLock_ReadOnly);
+	NSLog(@"didLock: %d", didLock);
+
+	if (didLock == kCVReturnSuccess) {
+		NSLog(@"CVPixelBufferIsPlanar(pixelBuffer): %d", CVPixelBufferIsPlanar(pixelBuffer));
+
+		void *baseAddress = CVPixelBufferGetBaseAddress(pixelBuffer);
+		NSLog(@"baseAddress: %p", baseAddress);
+
+		size_t width = CVPixelBufferGetWidth(pixelBuffer);
+		size_t height = CVPixelBufferGetHeight(pixelBuffer);
+		size_t bytesPerRow = CVPixelBufferGetBytesPerRow(pixelBuffer);
+		NSLog(@"width: %lu, height: %lu bytesPerRow: %lu", width, height, bytesPerRow);
 	}
 
+	CVReturn didUnlock = CVPixelBufferUnlockBaseAddress(pixelBuffer, kCVPixelBufferLock_ReadOnly);
+	NSLog(@"didUnlock: %d", didUnlock);
 
-	VTDecodeFrameFlags flags = kVTDecodeFrame_EnableAsynchronousDecompression;
-	VTDecodeInfoFlags flagOut;
-	NSDate *currentTime = [NSDate date];
-	VTDecompressionSessionDecodeFrame(_decompressionSession,
-									  sampleBuffer,
-									  flags,
-									  (void*)CFBridgingRetain(currentTime),
-									  &flagOut);
 }
 
 @end
