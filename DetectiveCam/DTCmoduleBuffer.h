@@ -12,8 +12,8 @@
 @import VideoToolbox;
 
 
-@interface DTCmoduleBuffer : NSObject <AVCaptureVideoDataOutputSampleBufferDelegate> {
-	VTDecompressionSessionRef _decompressionSession;
-}
+@interface DTCmoduleBuffer : NSObject <AVCaptureVideoDataOutputSampleBufferDelegate>
+
+- (void)describeSampleBuffer:(CMSampleBufferRef  _Nullable)sampleBuffer;
 
 @end

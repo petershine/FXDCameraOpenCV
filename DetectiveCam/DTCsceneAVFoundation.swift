@@ -45,7 +45,8 @@ class DTCsceneAVFoundation: UIViewController {
 		// Do any additional setup after loading the view, typically from a nib.
 
 		captureSession = AVCaptureSession()
-		captureSession.sessionPreset = AVCaptureSessionPresetiFrame1280x720
+		//captureSession.sessionPreset = AVCaptureSessionPresetiFrame1280x720
+		captureSession.sessionPreset = AVCaptureSessionPresetHigh;
 		capturingQueue = dispatch_queue_create("session queue", DISPATCH_QUEUE_SERIAL)
 
 

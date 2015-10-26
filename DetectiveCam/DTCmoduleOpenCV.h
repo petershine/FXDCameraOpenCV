@@ -9,6 +9,8 @@
 #import <UIKit/UIKit.h>
 #import <Foundation/Foundation.h>
 
+#import <AVFoundation/AVFoundation.h>
+
 
 @protocol CvVideoCameraDelegate;
 
