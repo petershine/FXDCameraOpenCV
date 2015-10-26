@@ -44,6 +44,18 @@ VTCompressionSessionRef _compressionSession;
 
 
 	CVPixelBufferRef pixelBuffer = CMSampleBufferGetImageBuffer(sampleBuffer);
+
+	CVReturn didLock = CVPixelBufferLockBaseAddress(pixelBuffer, kCVPixelBufferLock_ReadOnly);
+
+	if (didLock != kCVReturnSuccess) {
+		NSLog(@"didLock: %d", didLock);
+		return;
+	}
+
+
+	[self describePixelBuffer:pixelBuffer];
+
+
 	size_t width = CVPixelBufferGetWidthOfPlane(pixelBuffer, 0);
 	size_t height = CVPixelBufferGetHeightOfPlane(pixelBuffer, 0);
 
@@ -66,24 +78,20 @@ VTCompressionSessionRef _compressionSession;
 													 NULL,
 													 ^(OSStatus status, VTEncodeInfoFlags infoFlags, CMSampleBufferRef  _Nullable sampleBuffer) {
 														 NSLog(@"status: %d, infoFlags: %u", status, infoFlags);
+														 NSLog(@"sampleBuffer: %@", sampleBuffer);
 
-														 [self describeSampleBuffer:sampleBuffer];
+														 CVPixelBufferRef pixelBuffer = CMSampleBufferGetImageBuffer(sampleBuffer);
+														 [self describePixelBuffer:pixelBuffer];
 													 });
+
+	CVReturn didUnlock = CVPixelBufferUnlockBaseAddress(pixelBuffer, kCVPixelBufferLock_ReadOnly);
+
+	if (didUnlock != kCVReturnSuccess) {
+		NSLog(@"didUnlock: %d", didUnlock);
+	}
 }
 
-- (void)describeSampleBuffer:(CMSampleBufferRef  _Nullable)sampleBuffer {
-	NSLog(@"sampleBuffer: %@", sampleBuffer);
-
-	CVPixelBufferRef pixelBuffer = CMSampleBufferGetImageBuffer(sampleBuffer);
-
-	CVReturn didLock = CVPixelBufferLockBaseAddress(pixelBuffer, kCVPixelBufferLock_ReadOnly);
-	//NSLog(@"didLock: %d", didLock);
-
-	if (didLock != kCVReturnSuccess) {
-		return;
-	}
-
-
+- (void)describePixelBuffer:(CVPixelBufferRef)pixelBuffer {
 	NSLog(@"pixelBuffer: %@", pixelBuffer);
 
 	NSLog(@"CVImageBufferIsFlipped(pixelBuffer): %d", CVImageBufferIsFlipped(pixelBuffer));
@@ -95,7 +103,7 @@ VTCompressionSessionRef _compressionSession;
 
 
 	size_t planeCount = CVPixelBufferGetPlaneCount(pixelBuffer);
-	NSLog(@"planeCount: %d", planeCount);
+	NSLog(@"planeCount: %lu", planeCount);
 
 	for (size_t planeIndex = 0; planeIndex < planeCount; planeIndex++) {
 
@@ -103,7 +111,7 @@ VTCompressionSessionRef _compressionSession;
 		size_t height = CVPixelBufferGetHeightOfPlane(pixelBuffer, planeIndex);
 
 		size_t bytesPerRow = CVPixelBufferGetBytesPerRowOfPlane(pixelBuffer, planeIndex);
-		//NSLog(@"planeIndex: %lu width: %lu, height: %lu bytesPerRow: %lu", planeIndex, width, height, bytesPerRow);
+		NSLog(@"planeIndex: %lu width: %lu, height: %lu bytesPerRow: %lu", planeIndex, width, height, bytesPerRow);
 
 
 		uint8_t *baseAddress = CVPixelBufferGetBaseAddressOfPlane(pixelBuffer, planeIndex);
@@ -129,9 +137,6 @@ VTCompressionSessionRef _compressionSession;
 		Float64 mean = (rowSum/(Float64)height);
 		NSLog(@"planeIndex: %lu mean: %f", planeIndex, mean);
 	}
-
-	CVReturn didUnlock = CVPixelBufferUnlockBaseAddress(pixelBuffer, kCVPixelBufferLock_ReadOnly);
-	//NSLog(@"didUnlock: %d", didUnlock);
 }
 
 @end

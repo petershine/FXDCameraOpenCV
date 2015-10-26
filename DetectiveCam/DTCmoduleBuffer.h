@@ -14,6 +14,4 @@
 
 @interface DTCmoduleBuffer : NSObject <AVCaptureVideoDataOutputSampleBufferDelegate>
 
-- (void)describeSampleBuffer:(CMSampleBufferRef  _Nullable)sampleBuffer;
-
 @end
