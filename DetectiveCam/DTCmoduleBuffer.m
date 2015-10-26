@@ -9,8 +9,8 @@
 #import "DTCmoduleBuffer.h"
 
 
-OSStatus _compressionStatus;
 VTCompressionSessionRef _compressionSession;
+VTDecompressionSessionRef _decompressionSession;
 
 
 @implementation DTCmoduleBuffer
@@ -19,7 +19,6 @@ VTCompressionSessionRef _compressionSession;
 	self = [super init];
 
 	if (self) {
-		_compressionStatus = 0;
 		_compressionSession = NULL;
 	}
 
@@ -43,27 +42,29 @@ VTCompressionSessionRef _compressionSession;
 	//VTCompressionSession
 
 
+	[self
+	 compressWithSampleBuffer:sampleBuffer
+	 withCallback:^(CMSampleBufferRef compressedSampleBuffer) {
+
+		 [self
+		  decompressWithSampleBuffer:compressedSampleBuffer
+		  withCallback:^(CVImageBufferRef imageBuffer) {
+
+			  [self describePixelBuffer:imageBuffer];
+		  }];
+	 }];
+}
+
+- (void)compressWithSampleBuffer:(CMSampleBufferRef)sampleBuffer withCallback:(void(^)(CMSampleBufferRef compressedSampleBuffer))finishedCallback {
+
 	CVPixelBufferRef pixelBuffer = CMSampleBufferGetImageBuffer(sampleBuffer);
-
-	CVReturn didLock = CVPixelBufferLockBaseAddress(pixelBuffer, kCVPixelBufferLock_ReadOnly);
-
-	if (didLock != kCVReturnSuccess) {
-		NSLog(@"didLock: %d", didLock);
-		return;
-	}
-
-
-	[self describePixelBuffer:pixelBuffer];
-
 
 	size_t width = CVPixelBufferGetWidthOfPlane(pixelBuffer, 0);
 	size_t height = CVPixelBufferGetHeightOfPlane(pixelBuffer, 0);
 
 
-	// VTCompressionSession
 	if (_compressionSession == NULL) {
-		_compressionStatus = VTCompressionSessionCreate(NULL, (int)width, (int)height, kCMVideoCodecType_H264, NULL, NULL, NULL, NULL, NULL, &_compressionSession);
-		NSLog(@"compressionStatus: %d", _compressionStatus);
+		VTCompressionSessionCreate(NULL, (int)width, (int)height, kCMVideoCodecType_H264, NULL, NULL, NULL, NULL, NULL, &_compressionSession);
 	}
 
 
@@ -76,23 +77,63 @@ VTCompressionSessionRef _compressionSession;
 													 duration,
 													 NULL,
 													 NULL,
-													 ^(OSStatus status, VTEncodeInfoFlags infoFlags, CMSampleBufferRef  _Nullable sampleBuffer) {
-														 NSLog(@"status: %d, infoFlags: %u", status, infoFlags);
-														 NSLog(@"sampleBuffer: %@", sampleBuffer);
+													 ^(OSStatus status,
+													   VTEncodeInfoFlags infoFlags,
+													   CMSampleBufferRef  _Nullable compressedSampleBuffer) {
 
-														 CVPixelBufferRef pixelBuffer = CMSampleBufferGetImageBuffer(sampleBuffer);
-														 [self describePixelBuffer:pixelBuffer];
+														 NSLog(@"COMPRESSED: status: %d, infoFlags: %u", status, infoFlags);
+														 NSLog(@"COMPRESSED: compressedSampleBuffer:\n%@", compressedSampleBuffer);
+
+														 if (finishedCallback) {
+															 finishedCallback(compressedSampleBuffer);
+														 }
 													 });
+}
 
-	CVReturn didUnlock = CVPixelBufferUnlockBaseAddress(pixelBuffer, kCVPixelBufferLock_ReadOnly);
+- (void)decompressWithSampleBuffer:(CMSampleBufferRef)sampleBuffer withCallback:(void(^)(CVImageBufferRef imageBuffer))finishedCallback {
 
-	if (didUnlock != kCVReturnSuccess) {
-		NSLog(@"didUnlock: %d", didUnlock);
+	CMBlockBufferRef dataBlock = CMSampleBufferGetDataBuffer(sampleBuffer);
+	NSLog(@"COMPRESSED: dataBlock:\n%@", dataBlock);
+
+	CMFormatDescriptionRef formatDescription = CMSampleBufferGetFormatDescription(sampleBuffer);
+
+	if (_decompressionSession == NULL) {
+		VTDecompressionSessionCreate(NULL, formatDescription, NULL, NULL, NULL, &_decompressionSession);
 	}
+
+	VTDecompressionSessionDecodeFrameWithOutputHandler(_decompressionSession,
+													   sampleBuffer,
+													   kVTDecodeFrame_EnableAsynchronousDecompression,
+													   NULL,
+													   ^(OSStatus status,
+														 VTDecodeInfoFlags infoFlags,
+														 CVImageBufferRef  _Nullable imageBuffer,
+														 CMTime presentationTimeStamp,
+														 CMTime presentationDuration) {
+
+														   NSLog(@"DE-COMPRESSED: status: %d, infoFlags: %u", status, infoFlags);
+														   NSLog(@"DE-COMPRESSED: imageBuffer:\n%@", imageBuffer);
+
+														   if (finishedCallback) {
+															   finishedCallback(imageBuffer);
+														   }
+													   });
 }
 
 - (void)describePixelBuffer:(CVPixelBufferRef)pixelBuffer {
-	NSLog(@"pixelBuffer: %@", pixelBuffer);
+
+	if (pixelBuffer == NULL) {
+		return;
+	}
+
+
+	CVReturn didLock = CVPixelBufferLockBaseAddress(pixelBuffer, kCVPixelBufferLock_ReadOnly);
+
+	if (didLock != kCVReturnSuccess) {
+		NSLog(@"didLock: %d", didLock);
+		return;
+	}
+
 
 	NSLog(@"CVImageBufferIsFlipped(pixelBuffer): %d", CVImageBufferIsFlipped(pixelBuffer));
 	NSLog(@"CVPixelBufferIsPlanar(pixelBuffer): %d", CVPixelBufferIsPlanar(pixelBuffer));
@@ -136,6 +177,12 @@ VTCompressionSessionRef _compressionSession;
 
 		Float64 mean = (rowSum/(Float64)height);
 		NSLog(@"planeIndex: %lu mean: %f", planeIndex, mean);
+	}
+
+	CVReturn didUnlock = CVPixelBufferUnlockBaseAddress(pixelBuffer, kCVPixelBufferLock_ReadOnly);
+
+	if (didUnlock != kCVReturnSuccess) {
+		NSLog(@"didUnlock: %d", didUnlock);
 	}
 }
 
