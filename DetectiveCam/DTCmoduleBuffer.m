@@ -44,27 +44,49 @@ void _outputCallback(void * CM_NULLABLE decompressionOutputRefCon,
 
 
 	CVPixelBufferRef pixelBuffer = CMSampleBufferGetImageBuffer(sampleBuffer);
-	NSLog(@"pixelBuffer: %@", pixelBuffer);
+	//NSLog(@"pixelBuffer: %@", pixelBuffer);
 
 
 
 	CVReturn didLock = CVPixelBufferLockBaseAddress(pixelBuffer, kCVPixelBufferLock_ReadOnly);
-	NSLog(@"didLock: %d", didLock);
+	//NSLog(@"didLock: %d", didLock);
 
 	if (didLock == kCVReturnSuccess) {
-		NSLog(@"CVPixelBufferIsPlanar(pixelBuffer): %d", CVPixelBufferIsPlanar(pixelBuffer));
+		//NSLog(@"CVPixelBufferIsPlanar(pixelBuffer): %d", CVPixelBufferIsPlanar(pixelBuffer));
 
-		void *baseAddress = CVPixelBufferGetBaseAddress(pixelBuffer);
-		NSLog(@"baseAddress: %p", baseAddress);
+		unsigned char *baseAddress = CVPixelBufferGetBaseAddress(pixelBuffer);
+		//NSLog(@"baseAddress: %p", baseAddress);
 
 		size_t width = CVPixelBufferGetWidth(pixelBuffer);
 		size_t height = CVPixelBufferGetHeight(pixelBuffer);
 		size_t bytesPerRow = CVPixelBufferGetBytesPerRow(pixelBuffer);
-		NSLog(@"width: %lu, height: %lu bytesPerRow: %lu", width, height, bytesPerRow);
+		//NSLog(@"width: %lu, height: %lu bytesPerRow: %lu", width, height, bytesPerRow);
+
+		unsigned long element_0 = 0;
+		unsigned long element_1 = 0;
+		unsigned long element_2 = 0;
+		unsigned long element_3 = 0;
+
+		unsigned long elementCount = 0;
+
+		for (size_t row = 0; row < height; row++) {
+			for (size_t column = 0; column < width; column++) {
+				//NSLog(@"(%d, %d): %d %d %d %d", row, column, baseAddress[0], baseAddress[1], baseAddress[2], baseAddress[3]);
+				element_0 += baseAddress[0];
+				element_1 += baseAddress[1];
+				element_2 += baseAddress[2];
+				element_3 += baseAddress[3];
+
+				baseAddress += 4;
+				elementCount += 1;
+			}
+		}
+
+		NSLog(@"sum: %lu %lu %lu %lu, mean: %f %f %f %f", element_0, element_1, element_2, element_3, ((Float64)element_0/elementCount), ((Float64)element_1/elementCount), ((Float64)element_2/elementCount), ((Float64)element_3/elementCount));
 	}
 
 	CVReturn didUnlock = CVPixelBufferUnlockBaseAddress(pixelBuffer, kCVPixelBufferLock_ReadOnly);
-	NSLog(@"didUnlock: %d", didUnlock);
+	//NSLog(@"didUnlock: %d", didUnlock);
 
 }
 
