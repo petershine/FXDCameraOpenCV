@@ -15,109 +15,115 @@
 	self = [super init];
 
 	if (self) {
-		captureSession = [[AVCaptureSession alloc] init];
-
-		//captureSession.sessionPreset = AVCaptureSessionPresetiFrame1280x720
-		captureSession.sessionPreset = AVCaptureSessionPresetHigh;
-
-		capturingQueue = dispatch_queue_create("session queue", DISPATCH_QUEUE_SERIAL);
-
 
 		AVAuthorizationStatus authorizationStatus = [AVCaptureDevice authorizationStatusForMediaType:AVMediaTypeVideo];
+		NSLog(@"authorizationStatus: %ld", (long)authorizationStatus);
 
-		if (authorizationStatus != AVAuthorizationStatusAuthorized) {
-			NSLog(@"authorizationStatus: %ld", (long)authorizationStatus);
-
-			dispatch_suspend(capturingQueue);
-
-			[AVCaptureDevice
-			 requestAccessForMediaType:AVMediaTypeVideo
-			 completionHandler:^(BOOL granted) {
-				 NSLog(@"granted: %d", granted);
-
-				 shouldRunSession = granted;
-
-				 dispatch_resume(capturingQueue);
-			 }];
-		}
-		else {
-			shouldRunSession = YES;
+		if (authorizationStatus == AVAuthorizationStatusAuthorized) {
+			[self prepareCaptureModule];
+			return self;
 		}
 
 
-		dispatch_async
-		(capturingQueue,
-		 ^{
-			 if (shouldRunSession == NO) {
-				 return;
+		[AVCaptureDevice
+		 requestAccessForMediaType:AVMediaTypeVideo
+		 completionHandler:^(BOOL granted) {
+			 NSLog(@"granted: %d", granted);
+
+			 if (granted) {
+				 [self prepareCaptureModule];
 			 }
-
-
-			 AVCaptureDevice *cameraDevice = nil;
-			 NSArray *devices = [AVCaptureDevice devicesWithMediaType:AVMediaTypeVideo];
-
-			 for (AVCaptureDevice *device in devices) {
-				 if (device.position == AVCaptureDevicePositionBack) {
-					 cameraDevice = device;
-					 break;
-				 }
-			 }
-
-			 if (cameraDevice != nil) {
-				 NSLog(@"[videoDevice supportsAVCaptureSessionPreset:AVCaptureSessionPreset1280x720]: %d", [cameraDevice supportsAVCaptureSessionPreset:AVCaptureSessionPresetiFrame1280x720]);
-
-				 NSLog(@"cameraDevice.formats: %@", cameraDevice.formats);
-			 }
-
-			 NSArray *frameRateRanges = cameraDevice.activeFormat.videoSupportedFrameRateRanges;
-			 NSLog(@"frameRateRanges: %@", frameRateRanges);
-
-			 AVFrameRateRange *defaultFrameRate = frameRateRanges.firstObject;
-
-			 NSError *error = nil;
-
-			 if ([cameraDevice lockForConfiguration:&error]) {
-				 cameraDevice.activeVideoMinFrameDuration = defaultFrameRate.minFrameDuration;
-				 cameraDevice.activeVideoMaxFrameDuration = defaultFrameRate.maxFrameDuration;
-			 }
-			 NSLog(@"error: %@", error);
-			 [cameraDevice unlockForConfiguration];
-
-
-			 error = nil;
-			 captureVideoInput = [[AVCaptureDeviceInput alloc] initWithDevice:cameraDevice error:&error];
-			 NSLog(@"error: %@", error);
-
-
-			 [captureSession beginConfiguration];
-
-			 if ([captureSession canAddInput:captureVideoInput]) {
-				 [captureSession addInput:captureVideoInput];
-			 }
-			 else {
-				 shouldRunSession = NO;
-			 }
-
-
-			 sampleDataOutput = [[AVCaptureVideoDataOutput alloc] init];
-			 sampleDataOutput.alwaysDiscardsLateVideoFrames = YES;
-			 sampleDataOutput.videoSettings = nil;
-			 
-			 if ([captureSession canAddOutput:sampleDataOutput]) {
-				 sampleOutputQueue = dispatch_queue_create("outputQueue", DISPATCH_QUEUE_SERIAL);
-
-				 [sampleDataOutput setSampleBufferDelegate:self queue:sampleOutputQueue];
-				 [captureSession addOutput:sampleDataOutput];
-			 }
-
-			 [captureSession commitConfiguration];
-			 
-			 
-			 [captureSession startRunning];
-		 });
+		 }];
 	}
 
 	return self;
+}
+
+#pragma mark -
+- (AVCaptureDeviceInput*)videoDeviceInput {
+	if (_videoDeviceInput) {
+		return _videoDeviceInput;
+	}
+
+
+	AVCaptureDevice *cameraDevice = nil;
+	NSArray *devices = [AVCaptureDevice devicesWithMediaType:AVMediaTypeVideo];
+
+	for (AVCaptureDevice *device in devices) {
+		if (device.position == AVCaptureDevicePositionBack) {
+			cameraDevice = device;
+			break;
+		}
+	}
+
+	NSLog(@"cameraDevice: %@", cameraDevice);
+
+	if (cameraDevice == nil) {
+		return nil;
+	}
+
+
+	NSLog(@"cameraDevice.formats: %@", cameraDevice.formats);
+
+	NSArray *frameRateRanges = cameraDevice.activeFormat.videoSupportedFrameRateRanges;
+	NSLog(@"frameRateRanges: %@", frameRateRanges);
+
+	AVFrameRateRange *defaultFrameRate = frameRateRanges.firstObject;
+
+	NSError *error = nil;
+
+	if ([cameraDevice lockForConfiguration:&error]) {
+		cameraDevice.activeVideoMinFrameDuration = defaultFrameRate.minFrameDuration;
+		cameraDevice.activeVideoMaxFrameDuration = defaultFrameRate.maxFrameDuration;
+	}
+	NSLog(@"error: %@", error);
+	[cameraDevice unlockForConfiguration];
+
+
+	error = nil;
+	_videoDeviceInput = [[AVCaptureDeviceInput alloc] initWithDevice:cameraDevice error:&error];
+	NSLog(@"error: %@", error);
+
+	return _videoDeviceInput;
+}
+
+
+#pragma mark -
+- (void)prepareCaptureModule {
+
+	_capturingQueue = dispatch_queue_create("session queue", DISPATCH_QUEUE_SERIAL);
+
+	dispatch_async
+	(_capturingQueue,
+	 ^{
+		 _captureSession = [[AVCaptureSession alloc] init];
+		 _captureSession.sessionPreset = AVCaptureSessionPresetHigh;
+
+
+		 _sampleOutputQueue = dispatch_queue_create("outputQueue", DISPATCH_QUEUE_SERIAL);
+
+		 _sampleDataOutput = [[AVCaptureVideoDataOutput alloc] init];
+		 _sampleDataOutput.alwaysDiscardsLateVideoFrames = YES;
+		 _sampleDataOutput.videoSettings = nil;
+
+		 [_sampleDataOutput setSampleBufferDelegate:self queue:_sampleOutputQueue];
+
+
+		 [_captureSession beginConfiguration];
+
+		 if ([_captureSession canAddInput:self.videoDeviceInput]) {
+			 [_captureSession addInput:self.videoDeviceInput];
+		 }
+
+		 if ([_captureSession canAddOutput:_sampleDataOutput]) {
+			 [_captureSession addOutput:_sampleDataOutput];
+		 }
+
+		 [_captureSession commitConfiguration];
+
+
+		 [_captureSession startRunning];
+	 });
 }
 
 #pragma mark -
@@ -131,8 +137,9 @@
 
 
 	[self displaySampleBuffer:sampleBuffer];
-	//MARK: Before compression h.264 codec is not used
 
+
+	//MARK: Before compression h.264 codec is not used, even though preset was set with iFrame
 
 	[self
 	 compressWithSampleBuffer:sampleBuffer
@@ -276,6 +283,11 @@
 
 - (void)displaySampleBuffer:(CMSampleBufferRef)sampleBuffer {
 
+	if (_sampleDisplayLayer == nil) {
+		return;
+	}
+
+
 	if ([self.sampleDisplayLayer isReadyForMoreMediaData] == NO) {
 		return;
 	}
@@ -283,12 +295,14 @@
 
 	CFRetain(sampleBuffer);
 
-	dispatch_async(dispatch_get_main_queue(), ^{
-		[self.sampleDisplayLayer enqueueSampleBuffer:sampleBuffer];
-		[self.sampleDisplayLayer setNeedsDisplay];
+	dispatch_async
+	(dispatch_get_main_queue(),
+	 ^{
+		 [self.sampleDisplayLayer enqueueSampleBuffer:sampleBuffer];
+		 [self.sampleDisplayLayer setNeedsDisplay];
 
-		CFRelease(sampleBuffer);
-	});
+		 CFRelease(sampleBuffer);
+	 });
 }
 
 

@@ -21,17 +21,19 @@
 
 
 @interface DTCmoduleCapture : NSObject <AVCaptureVideoDataOutputSampleBufferDelegate> {
-	dispatch_queue_t capturingQueue;
-	dispatch_queue_t sampleOutputQueue;
 
-	BOOL shouldRunSession;
+	dispatch_queue_t _capturingQueue;
+	AVCaptureSession *_captureSession;
 
-	AVCaptureSession *captureSession;
-	AVCaptureDeviceInput *captureVideoInput;
-
-	AVCaptureVideoDataOutput *sampleDataOutput;
+	dispatch_queue_t _sampleOutputQueue;
+	AVCaptureVideoDataOutput *_sampleDataOutput;
 }
 
+@property (strong, nonatomic) AVCaptureDeviceInput *videoDeviceInput;
+
 @property (strong, nonatomic) AVSampleBufferDisplayLayer *sampleDisplayLayer;
+
+
+- (void)prepareCaptureModule;
 
 @end
