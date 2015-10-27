@@ -39,6 +39,8 @@ static VTDecompressionSessionRef decompressionSession;
 		 CMBlockBufferRef dataBlock = CMSampleBufferGetDataBuffer(compressedSample);
 		 [self describeDataBlock:dataBlock];
 
+		 [self displaySampleBuffer:sampleBuffer];
+
 
 		 /*
 		 [self
@@ -204,6 +206,25 @@ static VTDecompressionSessionRef decompressionSession;
 								&dataPointer);
 
 	NSLog(@"lengthAtOffset: %lu, totalLength: %lu dataPointer: %p", lengthAtOffset, totalLength, dataPointer);
+}
+
+- (void)displaySampleBuffer:(CMSampleBufferRef)sampleBuffer {
+
+	dispatch_async(dispatch_get_main_queue(), ^{
+		__strong AVSampleBufferDisplayLayer *strongBufferDisplayLayer = self.bufferDisplayLayer;
+
+		if (strongBufferDisplayLayer == nil) {
+			return;
+		}
+
+
+		NSLog(@"[strongBufferDisplayLayer isReadyForMoreMediaData]: %d", [strongBufferDisplayLayer isReadyForMoreMediaData]);
+
+		if ([strongBufferDisplayLayer isReadyForMoreMediaData]) {
+			[strongBufferDisplayLayer enqueueSampleBuffer:sampleBuffer];
+			[strongBufferDisplayLayer setNeedsDisplay];
+		}
+	});
 }
 
 @end

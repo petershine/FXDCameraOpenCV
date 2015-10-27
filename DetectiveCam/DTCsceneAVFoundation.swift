@@ -42,6 +42,7 @@ class DTCsceneAVFoundation: UIViewController {
 	override func viewDidLoad() {
 		super.viewDidLoad()
 
+
 		// Do any additional setup after loading the view, typically from a nib.
 
 		captureSession = AVCaptureSession()
@@ -58,6 +59,15 @@ class DTCsceneAVFoundation: UIViewController {
 		videoOutputQueue = dispatch_queue_create("outputQueue", DISPATCH_QUEUE_SERIAL)
 
 		bufferingModule = DTCmoduleBuffer();
+
+
+		let bufferDisplayLayer: AVSampleBufferDisplayLayer = AVSampleBufferDisplayLayer()
+		bufferDisplayLayer.bounds = self.view.bounds
+		bufferDisplayLayer.position = CGPointMake(CGRectGetMidX(self.view.bounds), CGRectGetMidY(self.view.bounds))
+		bufferDisplayLayer.videoGravity = AVLayerVideoGravityResizeAspect
+
+		self.view.layer.addSublayer(bufferDisplayLayer);
+		bufferingModule.bufferDisplayLayer = bufferDisplayLayer
 
 
 		let authorizationStatus = AVCaptureDevice.authorizationStatusForMediaType(AVMediaTypeVideo)

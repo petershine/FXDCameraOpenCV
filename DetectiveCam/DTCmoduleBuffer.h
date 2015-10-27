@@ -14,4 +14,6 @@
 
 @interface DTCmoduleBuffer : NSObject <AVCaptureVideoDataOutputSampleBufferDelegate>
 
+@property (weak, nonatomic) AVSampleBufferDisplayLayer *bufferDisplayLayer;
+
 @end
