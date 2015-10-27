@@ -256,29 +256,33 @@
 	NSLog(@"parameterSetCount: %lu", parameterSetCount);
 
 
-	CMBlockBufferRef dataBlock = CMSampleBufferGetDataBuffer(sampleBuffer);
+	CMBlockBufferRef dataBuffer = CMSampleBufferGetDataBuffer(sampleBuffer);
 
-	NSLog(@"dataBlock:\n%@", dataBlock);
+	NSLog(@"dataBlock:\n%@", dataBuffer);
 
-	if (dataBlock == NULL) {
+	if (dataBuffer == NULL) {
 		return;
 	}
 
-
-	NSLog(@"CMBlockBufferIsEmpty(dataBlock): %d", CMBlockBufferIsEmpty(dataBlock));
 
 	size_t offset = 0;
 	size_t lengthAtOffset = 0;
 	size_t totalLength = 0;
 	uint8_t *dataPointer;
 
-	CMBlockBufferGetDataPointer(dataBlock,
+	CMBlockBufferGetDataPointer(dataBuffer,
 								offset,
 								&lengthAtOffset,
 								&totalLength,
 								(char**)&dataPointer);
 
 	NSLog(@"lengthAtOffset: %lu, totalLength: %lu dataPointer: %p", lengthAtOffset, totalLength, dataPointer);
+
+	NSLog(@"CMBlockBufferIsRangeContiguous(dataBuffer, 0, %lu): %d", totalLength, CMBlockBufferIsRangeContiguous(dataBuffer, 0, totalLength));
+
+
+	NSData *blockData = [NSData dataWithBytes:dataPointer length:totalLength];
+	NSLog(@"blockData:\n%@", blockData);
 }
 
 - (void)displaySampleBuffer:(CMSampleBufferRef)sampleBuffer {
