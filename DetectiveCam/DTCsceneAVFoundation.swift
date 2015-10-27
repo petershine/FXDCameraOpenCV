@@ -17,7 +17,8 @@ class DTCsceneAVFoundation: UIViewController {
 	@IBOutlet weak var opencvScreen: UIImageView!
 	@IBOutlet weak var logCoefficientMatrix: UITextView!
 	@IBOutlet weak var logHashTable: UITextView!
-	
+
+	var bufferDisplayLayer: AVSampleBufferDisplayLayer! = nil;
 
 	var capturingQueue : dispatch_queue_t! = nil
 	var shouldRunSession : Bool = false
@@ -59,15 +60,6 @@ class DTCsceneAVFoundation: UIViewController {
 		videoOutputQueue = dispatch_queue_create("outputQueue", DISPATCH_QUEUE_SERIAL)
 
 		bufferingModule = DTCmoduleBuffer();
-
-
-		let bufferDisplayLayer: AVSampleBufferDisplayLayer = AVSampleBufferDisplayLayer()
-		bufferDisplayLayer.bounds = self.view.bounds
-		bufferDisplayLayer.position = CGPointMake(CGRectGetMidX(self.view.bounds), CGRectGetMidY(self.view.bounds))
-		bufferDisplayLayer.videoGravity = AVLayerVideoGravityResizeAspect
-
-		self.view.layer.addSublayer(bufferDisplayLayer);
-		bufferingModule.bufferDisplayLayer = bufferDisplayLayer
 
 
 		let authorizationStatus = AVCaptureDevice.authorizationStatusForMediaType(AVMediaTypeVideo)
@@ -157,6 +149,21 @@ class DTCsceneAVFoundation: UIViewController {
 
 
 			self.captureSession.startRunning()
+		}
+	}
+
+
+	override func viewDidAppear(animated: Bool) {
+		super.viewDidAppear(animated);
+
+		if (bufferDisplayLayer == nil) {
+			bufferDisplayLayer = AVSampleBufferDisplayLayer()
+			bufferDisplayLayer.bounds = opencvScreen.bounds
+			bufferDisplayLayer.position = CGPointMake(CGRectGetMidX(opencvScreen.bounds), CGRectGetMidY(opencvScreen.bounds))
+			bufferDisplayLayer.videoGravity = AVLayerVideoGravityResizeAspect
+
+			opencvScreen.layer.addSublayer(bufferDisplayLayer);
+			bufferingModule.bufferDisplayLayer = bufferDisplayLayer
 		}
 	}
 }

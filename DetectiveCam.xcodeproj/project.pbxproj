@@ -18,7 +18,6 @@
 		D9E7C2A71BC334A90071582B /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D9E7C2A51BC334A90071582B /* Main.storyboard */; };
 		D9E7C2AA1BC334A90071582B /* DetectiveCam.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = D9E7C2A81BC334A90071582B /* DetectiveCam.xcdatamodeld */; };
 		D9E7C2AC1BC334A90071582B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D9E7C2AB1BC334A90071582B /* Assets.xcassets */; };
-		D9E7C2AF1BC334A90071582B /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D9E7C2AD1BC334A90071582B /* LaunchScreen.storyboard */; };
 		D9E7C2BA1BC334A90071582B /* DetectiveCamTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9E7C2B91BC334A90071582B /* DetectiveCamTests.swift */; };
 		D9E7C2C51BC334A90071582B /* DetectiveCamUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9E7C2C41BC334A90071582B /* DetectiveCamUITests.swift */; };
 		D9E7C2D31BC336BD0071582B /* DTCpreviewCapture.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9E7C2D21BC336BD0071582B /* DTCpreviewCapture.swift */; };
@@ -62,7 +61,6 @@
 		D9E7C2A61BC334A90071582B /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		D9E7C2A91BC334A90071582B /* DetectiveCam.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = DetectiveCam.xcdatamodel; sourceTree = "<group>"; };
 		D9E7C2AB1BC334A90071582B /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		D9E7C2AE1BC334A90071582B /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		D9E7C2B01BC334A90071582B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		D9E7C2B51BC334A90071582B /* DetectiveCamTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DetectiveCamTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		D9E7C2B91BC334A90071582B /* DetectiveCamTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetectiveCamTests.swift; sourceTree = "<group>"; };
@@ -148,7 +146,6 @@
 				D91481A41BC77D26005AC71D /* DTCsceneOpenCV.swift */,
 				D9E7C2A51BC334A90071582B /* Main.storyboard */,
 				D9E7C2AB1BC334A90071582B /* Assets.xcassets */,
-				D9E7C2AD1BC334A90071582B /* LaunchScreen.storyboard */,
 				D9E7C2B01BC334A90071582B /* Info.plist */,
 				D9E7C2A81BC334A90071582B /* DetectiveCam.xcdatamodeld */,
 				D9E7C2D21BC336BD0071582B /* DTCpreviewCapture.swift */,
@@ -288,7 +285,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D9E7C2AF1BC334A90071582B /* LaunchScreen.storyboard in Resources */,
 				D9E7C2AC1BC334A90071582B /* Assets.xcassets in Resources */,
 				D9E7C2A71BC334A90071582B /* Main.storyboard in Resources */,
 			);
@@ -365,14 +361,6 @@
 				D9E7C2A61BC334A90071582B /* Base */,
 			);
 			name = Main.storyboard;
-			sourceTree = "<group>";
-		};
-		D9E7C2AD1BC334A90071582B /* LaunchScreen.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				D9E7C2AE1BC334A90071582B /* Base */,
-			);
-			name = LaunchScreen.storyboard;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */
