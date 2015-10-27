@@ -9,7 +9,7 @@
 /* Begin PBXBuildFile section */
 		D907091D1BDEB4D100977129 /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D907091C1BDEB4D100977129 /* CoreMedia.framework */; };
 		D91481A51BC77D26005AC71D /* DTCsceneOpenCV.swift in Sources */ = {isa = PBXBuildFile; fileRef = D91481A41BC77D26005AC71D /* DTCsceneOpenCV.swift */; };
-		D96425FD1BDADB1F00EFB71A /* DTCmoduleBuffer.m in Sources */ = {isa = PBXBuildFile; fileRef = D96425FC1BDADB1F00EFB71A /* DTCmoduleBuffer.m */; };
+		D96425FD1BDADB1F00EFB71A /* DTCmoduleCapture.m in Sources */ = {isa = PBXBuildFile; fileRef = D96425FC1BDADB1F00EFB71A /* DTCmoduleCapture.m */; };
 		D96425FF1BDAEE7400EFB71A /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D96425FE1BDAEE7400EFB71A /* CoreVideo.framework */; };
 		D981209B1BCEA984001F5693 /* DTCmoduleOpenCV.mm in Sources */ = {isa = PBXBuildFile; fileRef = D98120991BCEA984001F5693 /* DTCmoduleOpenCV.mm */; };
 		D9E36E881BD9EE0D005E5D4E /* VideoToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D9E36E871BD9EE0D005E5D4E /* VideoToolbox.framework */; };
@@ -49,8 +49,8 @@
 /* Begin PBXFileReference section */
 		D907091C1BDEB4D100977129 /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = System/Library/Frameworks/CoreMedia.framework; sourceTree = SDKROOT; };
 		D91481A41BC77D26005AC71D /* DTCsceneOpenCV.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DTCsceneOpenCV.swift; sourceTree = "<group>"; };
-		D96425FB1BDADB1F00EFB71A /* DTCmoduleBuffer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DTCmoduleBuffer.h; sourceTree = "<group>"; };
-		D96425FC1BDADB1F00EFB71A /* DTCmoduleBuffer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DTCmoduleBuffer.m; sourceTree = "<group>"; };
+		D96425FB1BDADB1F00EFB71A /* DTCmoduleCapture.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DTCmoduleCapture.h; sourceTree = "<group>"; };
+		D96425FC1BDADB1F00EFB71A /* DTCmoduleCapture.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DTCmoduleCapture.m; sourceTree = "<group>"; };
 		D96425FE1BDAEE7400EFB71A /* CoreVideo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreVideo.framework; path = System/Library/Frameworks/CoreVideo.framework; sourceTree = SDKROOT; };
 		D98120991BCEA984001F5693 /* DTCmoduleOpenCV.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = DTCmoduleOpenCV.mm; sourceTree = "<group>"; };
 		D981209A1BCEA984001F5693 /* DTCmoduleOpenCV.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DTCmoduleOpenCV.h; sourceTree = "<group>"; };
@@ -139,8 +139,8 @@
 				D9E7C2DB1BC35C050071582B /* DetectiveCam-Bridging-Header.h */,
 				D981209A1BCEA984001F5693 /* DTCmoduleOpenCV.h */,
 				D98120991BCEA984001F5693 /* DTCmoduleOpenCV.mm */,
-				D96425FB1BDADB1F00EFB71A /* DTCmoduleBuffer.h */,
-				D96425FC1BDADB1F00EFB71A /* DTCmoduleBuffer.m */,
+				D96425FB1BDADB1F00EFB71A /* DTCmoduleCapture.h */,
+				D96425FC1BDADB1F00EFB71A /* DTCmoduleCapture.m */,
 				D9E7C2A11BC334A90071582B /* AppDelegate.swift */,
 				D9E7C2A31BC334A90071582B /* DTCsceneAVFoundation.swift */,
 				D91481A41BC77D26005AC71D /* DTCsceneOpenCV.swift */,
@@ -312,7 +312,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				D9E7C2AA1BC334A90071582B /* DetectiveCam.xcdatamodeld in Sources */,
-				D96425FD1BDADB1F00EFB71A /* DTCmoduleBuffer.m in Sources */,
+				D96425FD1BDADB1F00EFB71A /* DTCmoduleCapture.m in Sources */,
 				D981209B1BCEA984001F5693 /* DTCmoduleOpenCV.mm in Sources */,
 				D9E7C2A41BC334A90071582B /* DTCsceneAVFoundation.swift in Sources */,
 				D91481A51BC77D26005AC71D /* DTCsceneOpenCV.swift in Sources */,

@@ -15,10 +15,11 @@ import VideoToolbox
 class DTCsceneAVFoundation: UIViewController {
 
 	@IBOutlet weak var opencvScreen: UIImageView!
+	
 	@IBOutlet weak var logCoefficientMatrix: UITextView!
 	@IBOutlet weak var logHashTable: UITextView!
 
-	var bufferingModule: DTCmoduleBuffer! = nil
+	var capturingModule: DTCmoduleCapture! = nil
 
 
 	deinit {
@@ -34,20 +35,20 @@ class DTCsceneAVFoundation: UIViewController {
 
 		// Do any additional setup after loading the view, typically from a nib.
 
-		bufferingModule = DTCmoduleBuffer();
+		capturingModule = DTCmoduleCapture();
 	}
 
 
 	override func viewDidAppear(animated: Bool) {
 		super.viewDidAppear(animated);
 
-		if (bufferingModule.bufferDisplayLayer == nil) {
-			bufferingModule.bufferDisplayLayer = AVSampleBufferDisplayLayer()
-			bufferingModule.bufferDisplayLayer.bounds = opencvScreen.bounds
-			bufferingModule.bufferDisplayLayer.position = CGPointMake(CGRectGetMidX(opencvScreen.bounds), CGRectGetMidY(opencvScreen.bounds))
-			bufferingModule.bufferDisplayLayer.videoGravity = AVLayerVideoGravityResizeAspect
+		if (capturingModule.sampleDisplayLayer == nil) {
+			capturingModule.sampleDisplayLayer = AVSampleBufferDisplayLayer()
+			capturingModule.sampleDisplayLayer.bounds = opencvScreen.bounds
+			capturingModule.sampleDisplayLayer.position = CGPointMake(CGRectGetMidX(opencvScreen.bounds), CGRectGetMidY(opencvScreen.bounds))
+			capturingModule.sampleDisplayLayer.videoGravity = AVLayerVideoGravityResizeAspect
 
-			opencvScreen.layer.addSublayer(bufferingModule.bufferDisplayLayer);
+			opencvScreen.layer.addSublayer(capturingModule.sampleDisplayLayer);
 		}
 	}
 }

@@ -4,4 +4,4 @@
 
 
 #import "DTCmoduleOpenCV.h"
-#import "DTCmoduleBuffer.h"
+#import "DTCmoduleCapture.h"

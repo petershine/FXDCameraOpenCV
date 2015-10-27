@@ -1,15 +1,15 @@
 //
-//  DTCmoduleBuffer.m
+//  DTCmoduleCapture.m
 //  DetectiveCam
 //
 //  Created by petershine on 10/23/15.
 //  Copyright © 2015 fXceed. All rights reserved.
 //
 
-#import "DTCmoduleBuffer.h"
+#import "DTCmoduleCapture.h"
 
 
-@implementation DTCmoduleBuffer
+@implementation DTCmoduleCapture
 
 - (instancetype)init {
 	self = [super init];
@@ -19,13 +19,6 @@
 
 		//captureSession.sessionPreset = AVCaptureSessionPresetiFrame1280x720
 		captureSession.sessionPreset = AVCaptureSessionPresetHigh;
-
-		captureVideoOutput = [[AVCaptureVideoDataOutput alloc] init];
-		captureVideoOutput.alwaysDiscardsLateVideoFrames = YES;
-		//captureVideoOutput.videoSettings = [kCVPixelBufferPixelFormatTypeKey: UInt(kCVPixelFormatType_32BGRA)]
-		captureVideoOutput.videoSettings = nil;
-
-
 
 		capturingQueue = dispatch_queue_create("session queue", DISPATCH_QUEUE_SERIAL);
 
@@ -105,11 +98,16 @@
 				 shouldRunSession = NO;
 			 }
 
-			 if ([captureSession canAddOutput:captureVideoOutput]) {
-				 videoOutputQueue = dispatch_queue_create("outputQueue", DISPATCH_QUEUE_SERIAL);
 
-				 [captureVideoOutput setSampleBufferDelegate:self queue:videoOutputQueue];
-				 [captureSession addOutput:captureVideoOutput];
+			 sampleDataOutput = [[AVCaptureVideoDataOutput alloc] init];
+			 sampleDataOutput.alwaysDiscardsLateVideoFrames = YES;
+			 sampleDataOutput.videoSettings = nil;
+			 
+			 if ([captureSession canAddOutput:sampleDataOutput]) {
+				 sampleOutputQueue = dispatch_queue_create("outputQueue", DISPATCH_QUEUE_SERIAL);
+
+				 [sampleDataOutput setSampleBufferDelegate:self queue:sampleOutputQueue];
+				 [captureSession addOutput:sampleDataOutput];
 			 }
 
 			 [captureSession commitConfiguration];
@@ -278,15 +276,7 @@
 
 - (void)displaySampleBuffer:(CMSampleBufferRef)sampleBuffer {
 
-	__strong AVSampleBufferDisplayLayer *strongDisplayLayer = self.bufferDisplayLayer;
-
-	if (strongDisplayLayer == nil) {
-		return;
-	}
-
-
-	if ([strongDisplayLayer isReadyForMoreMediaData] == NO) {
-		NSLog(@"[strongBufferDisplayLayer isReadyForMoreMediaData]: %d", [strongDisplayLayer isReadyForMoreMediaData]);
+	if ([self.sampleDisplayLayer isReadyForMoreMediaData] == NO) {
 		return;
 	}
 
@@ -294,8 +284,8 @@
 	CFRetain(sampleBuffer);
 
 	dispatch_async(dispatch_get_main_queue(), ^{
-		[strongDisplayLayer enqueueSampleBuffer:sampleBuffer];
-		[strongDisplayLayer setNeedsDisplay];
+		[self.sampleDisplayLayer enqueueSampleBuffer:sampleBuffer];
+		[self.sampleDisplayLayer setNeedsDisplay];
 
 		CFRelease(sampleBuffer);
 	});

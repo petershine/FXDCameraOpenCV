@@ -1,5 +1,5 @@
 //
-//  DTCmoduleBuffer.h
+//  DTCmoduleCapture.h
 //  DetectiveCam
 //
 //  Created by petershine on 10/23/15.
@@ -20,18 +20,18 @@
 @import VideoToolbox;
 
 
-@interface DTCmoduleBuffer : NSObject <AVCaptureVideoDataOutputSampleBufferDelegate> {
+@interface DTCmoduleCapture : NSObject <AVCaptureVideoDataOutputSampleBufferDelegate> {
 	dispatch_queue_t capturingQueue;
-	dispatch_queue_t videoOutputQueue;
+	dispatch_queue_t sampleOutputQueue;
 
 	BOOL shouldRunSession;
 
 	AVCaptureSession *captureSession;
 	AVCaptureDeviceInput *captureVideoInput;
 
-	AVCaptureVideoDataOutput *captureVideoOutput;
+	AVCaptureVideoDataOutput *sampleDataOutput;
 }
 
-@property (strong, nonatomic) AVSampleBufferDisplayLayer *bufferDisplayLayer;
+@property (strong, nonatomic) AVSampleBufferDisplayLayer *sampleDisplayLayer;
 
 @end
