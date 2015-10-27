@@ -37,7 +37,7 @@ static VTDecompressionSessionRef decompressionSession;
 		 //TODO: Check if decompression is necessary
 		 /*
 		 [self
-		  decompressWithSampleBuffer:compressedSample
+		  decompressFromCompressedSample:compressedSample
 		  withCallback:^(CVImageBufferRef imageBuffer) {
 			  //[self describePixelBuffer:imageBuffer];
 		  }];
@@ -47,16 +47,26 @@ static VTDecompressionSessionRef decompressionSession;
 
 - (void)compressWithSampleBuffer:(CMSampleBufferRef)sampleBuffer withCallback:(void(^)(CMSampleBufferRef compressedSampleBuffer))finishedCallback {
 
-	CVPixelBufferRef pixelBuffer = CMSampleBufferGetImageBuffer(sampleBuffer);
-
-	size_t width = CVPixelBufferGetWidthOfPlane(pixelBuffer, 0);
-	size_t height = CVPixelBufferGetHeightOfPlane(pixelBuffer, 0);
+	CMFormatDescriptionRef formatDescription = CMSampleBufferGetFormatDescription(sampleBuffer);
+	CMVideoDimensions videoDimensions = CMVideoFormatDescriptionGetDimensions(formatDescription);
 
 
 	if (compressionSession == NULL) {
-		VTCompressionSessionCreate(NULL, (int)width, (int)height, kCMVideoCodecType_H264, NULL, NULL, NULL, NULL, NULL, &compressionSession);
+		VTCompressionSessionCreate
+		(NULL,
+		 videoDimensions.width,
+		 videoDimensions.height,
+		 kCMVideoCodecType_H264,
+		 NULL,
+		 NULL,
+		 NULL,
+		 NULL,
+		 NULL,
+		 &compressionSession);
 	}
 
+
+	CVPixelBufferRef pixelBuffer = CMSampleBufferGetImageBuffer(sampleBuffer);
 
 	CMTime presentationTimestamp = CMSampleBufferGetPresentationTimeStamp(sampleBuffer);
 	CMTime duration = CMSampleBufferGetDuration(sampleBuffer);
@@ -81,18 +91,24 @@ static VTDecompressionSessionRef decompressionSession;
 	 });
 }
 
-- (void)decompressWithSampleBuffer:(CMSampleBufferRef)sampleBuffer withCallback:(void(^)(CVImageBufferRef imageBuffer))finishedCallback {
+- (void)decompressFromCompressedSample:(CMSampleBufferRef)compressedSample withCallback:(void(^)(CVImageBufferRef imageBuffer))finishedCallback {
 
-	CMFormatDescriptionRef formatDescription = CMSampleBufferGetFormatDescription(sampleBuffer);
+	CMFormatDescriptionRef formatDescription = CMSampleBufferGetFormatDescription(compressedSample);
 
 	if (decompressionSession == NULL) {
-		VTDecompressionSessionCreate(NULL, formatDescription, NULL, NULL, NULL, &decompressionSession);
+		VTDecompressionSessionCreate
+		(NULL,
+		 formatDescription,
+		 NULL,
+		 NULL,
+		 NULL,
+		 &decompressionSession);
 	}
 
 
 	VTDecompressionSessionDecodeFrameWithOutputHandler
 	(decompressionSession,
-	 sampleBuffer,
+	 compressedSample,
 	 kVTDecodeFrame_EnableAsynchronousDecompression,
 	 NULL,
 	 ^(OSStatus status,
@@ -181,7 +197,7 @@ static VTDecompressionSessionRef decompressionSession;
 
 	CMBlockBufferRef dataBlock = CMSampleBufferGetDataBuffer(compressedSample);
 
-	NSLog(@"dataBlock: %@", dataBlock);
+	NSLog(@"dataBlock:\n%@", dataBlock);
 
 	if (dataBlock == NULL) {
 		return;
@@ -193,13 +209,13 @@ static VTDecompressionSessionRef decompressionSession;
 	size_t offset = 0;
 	size_t lengthAtOffset = 0;
 	size_t totalLength = 0;
-	char *dataPointer;
+	uint8_t *dataPointer;
 
 	CMBlockBufferGetDataPointer(dataBlock,
 								offset,
 								&lengthAtOffset,
 								&totalLength,
-								&dataPointer);
+								(char**)&dataPointer);
 
 	NSLog(@"lengthAtOffset: %lu, totalLength: %lu dataPointer: %p", lengthAtOffset, totalLength, dataPointer);
 }
