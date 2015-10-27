@@ -20,12 +20,17 @@
 	}
 
 
+	//MARK: Before compression h.264 codec is not used
+	[self describeSampleBuffer:sampleBuffer];
+
+	[self displaySampleBuffer:sampleBuffer];
+
+
 	[self
 	 compressWithSampleBuffer:sampleBuffer
 	 withCallback:^(CMSampleBufferRef compressedSample) {
 
-		 [self describeDataBlockFromCompressedSample:compressedSample];
-
+		 [self describeSampleBuffer:compressedSample];
 
 		 [self displaySampleBuffer:compressedSample];
 
@@ -80,7 +85,7 @@
 	   VTEncodeInfoFlags infoFlags,
 	   CMSampleBufferRef  _Nullable compressedSample) {
 
-		 NSLog(@"COMPRESSED: status: %d, infoFlags: %u", status, infoFlags);
+		 NSLog(@"COMPRESSED: status: %s, infoFlags: %u", FourCC2Str(status), infoFlags);
 		 NSLog(@"COMPRESSED: compressedSample:\n%@", compressedSample);
 
 		 if (finishedCallback) {
@@ -93,7 +98,7 @@
 
 	CMFormatDescriptionRef formatDescription = CMSampleBufferGetFormatDescription(compressedSample);
 
-	
+
 	static VTDecompressionSessionRef decompressionSession;
 
 	if (decompressionSession == NULL) {
@@ -118,7 +123,7 @@
 	   CMTime presentationTimeStamp,
 	   CMTime presentationDuration) {
 
-		 NSLog(@"DE-COMPRESSED: status: %d, infoFlags: %u", status, infoFlags);
+		 NSLog(@"DE-COMPRESSED: status: %s, infoFlags: %u", FourCC2Str(status), infoFlags);
 		 NSLog(@"DE-COMPRESSED: imageBuffer:\n%@", imageBuffer);
 
 		 if (finishedCallback) {
@@ -126,6 +131,77 @@
 		 }
 	 });
 }
+
+- (void)describeSampleBuffer:(CMSampleBufferRef)sampleBuffer {
+#warning //TODO: learn about CMBlockBuffer is compressed data. Check if it's h.264 with motion vectors
+
+	// dataBuffer: contains 6 H.264 frames in decode order (P2,B0,B1,I5,B3,B4)
+	// dataFormatDescription: describes H.264 video
+
+
+	CMFormatDescriptionRef formatDescription = CMSampleBufferGetFormatDescription(sampleBuffer);
+	NSLog(@"formatDescription:\n%@", formatDescription);
+
+	FourCharCode codecType = CMFormatDescriptionGetMediaSubType(formatDescription);
+	NSLog(@"codecType: %s", FourCC2Str(codecType));
+
+
+	size_t parameterSetCount = 0;
+
+	CMVideoFormatDescriptionGetH264ParameterSetAtIndex(formatDescription, 0, NULL, NULL, &parameterSetCount, NULL);
+	NSLog(@"parameterSetCount: %lu", parameterSetCount);
+
+
+	CMBlockBufferRef dataBlock = CMSampleBufferGetDataBuffer(sampleBuffer);
+
+	NSLog(@"dataBlock:\n%@", dataBlock);
+
+	if (dataBlock == NULL) {
+		return;
+	}
+
+
+	NSLog(@"CMBlockBufferIsEmpty(dataBlock): %d", CMBlockBufferIsEmpty(dataBlock));
+
+	size_t offset = 0;
+	size_t lengthAtOffset = 0;
+	size_t totalLength = 0;
+	uint8_t *dataPointer;
+
+	CMBlockBufferGetDataPointer(dataBlock,
+								offset,
+								&lengthAtOffset,
+								&totalLength,
+								(char**)&dataPointer);
+
+	NSLog(@"lengthAtOffset: %lu, totalLength: %lu dataPointer: %p", lengthAtOffset, totalLength, dataPointer);
+}
+
+- (void)displaySampleBuffer:(CMSampleBufferRef)sampleBuffer {
+
+	__strong AVSampleBufferDisplayLayer *strongDisplayLayer = self.bufferDisplayLayer;
+
+	if (strongDisplayLayer == nil) {
+		return;
+	}
+
+
+	if ([strongDisplayLayer isReadyForMoreMediaData] == NO) {
+		NSLog(@"[strongBufferDisplayLayer isReadyForMoreMediaData]: %d", [strongDisplayLayer isReadyForMoreMediaData]);
+		return;
+	}
+
+
+	CFRetain(sampleBuffer);
+
+	dispatch_async(dispatch_get_main_queue(), ^{
+		[strongDisplayLayer enqueueSampleBuffer:sampleBuffer];
+		[strongDisplayLayer setNeedsDisplay];
+
+		CFRelease(sampleBuffer);
+	});
+}
+
 
 - (void)describePixelBuffer:(CVPixelBufferRef)pixelBuffer {
 
@@ -193,61 +269,5 @@
 	}
 }
 
-- (void)describeDataBlockFromCompressedSample:(CMSampleBufferRef)compressedSample {
-#warning //TODO: learn about CMBlockBuffer is compressed data. Check if it's h.264 with motion vectors
-
-	// dataBuffer: contains 6 H.264 frames in decode order (P2,B0,B1,I5,B3,B4)
-	// dataFormatDescription: describes H.264 video
-
-
-	CMBlockBufferRef dataBlock = CMSampleBufferGetDataBuffer(compressedSample);
-
-	NSLog(@"dataBlock:\n%@", dataBlock);
-
-	if (dataBlock == NULL) {
-		return;
-	}
-
-
-	NSLog(@"CMBlockBufferIsEmpty(dataBlock): %d", CMBlockBufferIsEmpty(dataBlock));
-
-	size_t offset = 0;
-	size_t lengthAtOffset = 0;
-	size_t totalLength = 0;
-	uint8_t *dataPointer;
-
-	CMBlockBufferGetDataPointer(dataBlock,
-								offset,
-								&lengthAtOffset,
-								&totalLength,
-								(char**)&dataPointer);
-
-	NSLog(@"lengthAtOffset: %lu, totalLength: %lu dataPointer: %p", lengthAtOffset, totalLength, dataPointer);
-}
-
-- (void)displaySampleBuffer:(CMSampleBufferRef)sampleBuffer {
-
-	__strong AVSampleBufferDisplayLayer *strongDisplayLayer = self.bufferDisplayLayer;
-
-	if (strongDisplayLayer == nil) {
-		return;
-	}
-
-
-	if ([strongDisplayLayer isReadyForMoreMediaData] == NO) {
-		NSLog(@"[strongBufferDisplayLayer isReadyForMoreMediaData]: %d", [strongDisplayLayer isReadyForMoreMediaData]);
-		return;
-	}
-
-
-	CFRetain(sampleBuffer);
-
-	dispatch_async(dispatch_get_main_queue(), ^{
-		[strongDisplayLayer enqueueSampleBuffer:sampleBuffer];
-		[strongDisplayLayer setNeedsDisplay];
-
-		CFRelease(sampleBuffer);
-	});
-}
 
 @end
