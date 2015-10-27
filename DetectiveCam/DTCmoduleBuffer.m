@@ -24,16 +24,6 @@ static VTDecompressionSessionRef decompressionSession;
 	}
 
 
-	//TODO: check if pixel buffer is h.264
-	//process it to be readable
-	//refer to Direct Encode And Decode WWDC 2014 video for better understanding.
-	//learn about CMBlockBuffer is compressed data. Check if it's h.264 with motion vectors
-	//AVSampleBufferDisplayLayer
-	//VTCompressionSession
-
-	[self displaySampleBuffer:sampleBuffer];
-
-
 	[self
 	 compressWithSampleBuffer:sampleBuffer
 	 withCallback:^(CMSampleBufferRef compressedSample) {
@@ -42,12 +32,15 @@ static VTDecompressionSessionRef decompressionSession;
 		 [self describeDataBlock:dataBlock];
 
 
+		 [self displaySampleBuffer:compressedSample];
+
+
+		 //TODO: Check if decompression is necessary
 		 /*
 		 [self
 		  decompressWithSampleBuffer:compressedSample
 		  withCallback:^(CVImageBufferRef imageBuffer) {
-
-			  [self describePixelBuffer:imageBuffer];
+			  //[self describePixelBuffer:imageBuffer];
 		  }];
 		  */
 	 }];
@@ -185,6 +178,8 @@ static VTDecompressionSessionRef decompressionSession;
 }
 
 - (void)describeDataBlock:(CMBlockBufferRef)dataBlock {
+#warning //TODO: learn about CMBlockBuffer is compressed data. Check if it's h.264 with motion vectors
+
 	NSLog(@"dataBlock: %@", dataBlock);
 
 	if (dataBlock == NULL) {
