@@ -282,7 +282,40 @@
 
 
 	NSData *blockData = [NSData dataWithBytes:dataPointer length:totalLength];
-	NSLog(@"blockData:\n%@", blockData);
+	//NSLog(@"blockData:\n%@", blockData);
+
+
+	size_t readerOffset = 0;
+	size_t readerLength = 4;
+
+	while (readerOffset < totalLength) {
+		uint8_t *iterator;
+
+
+		CMBlockBufferGetDataPointer(dataBuffer,
+									readerOffset,
+									NULL,
+									NULL,
+									(char**)&iterator);
+
+		//NSData *iteratedData = [NSData dataWithBytes:iterator length:readerLength];
+		//NSLog(@"iteratedData: %@", iteratedData);
+		char parsed[(int)readerLength];
+		memcpy(parsed, iterator, readerLength);
+		NSLog(@"%s", parsed);
+
+
+		if ((readerOffset+readerLength) > totalLength) {
+			if ((totalLength-readerOffset) < readerLength) {
+				readerLength = totalLength-readerOffset;
+				NSLog(@"readerOffset: %lu, readerLength: %lu, totalLength: %lu", readerOffset, readerLength, totalLength);
+			}
+		}
+
+
+		readerOffset += readerLength;
+	}
+
 }
 
 - (void)displaySampleBuffer:(CMSampleBufferRef)sampleBuffer {
