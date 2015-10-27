@@ -195,6 +195,10 @@ static VTDecompressionSessionRef decompressionSession;
 - (void)describeDataBlockFromCompressedSample:(CMSampleBufferRef)compressedSample {
 #warning //TODO: learn about CMBlockBuffer is compressed data. Check if it's h.264 with motion vectors
 
+	// dataBuffer: contains 6 H.264 frames in decode order (P2,B0,B1,I5,B3,B4)
+	// dataFormatDescription: describes H.264 video
+
+
 	CMBlockBufferRef dataBlock = CMSampleBufferGetDataBuffer(compressedSample);
 
 	NSLog(@"dataBlock:\n%@", dataBlock);
