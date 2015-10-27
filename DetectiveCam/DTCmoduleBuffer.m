@@ -9,10 +9,6 @@
 #import "DTCmoduleBuffer.h"
 
 
-static VTCompressionSessionRef compressionSession;
-static VTDecompressionSessionRef decompressionSession;
-
-
 @implementation DTCmoduleBuffer
 
 - (void)captureOutput:(AVCaptureOutput *)captureOutput didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer fromConnection:(AVCaptureConnection *)connection {
@@ -50,6 +46,8 @@ static VTDecompressionSessionRef decompressionSession;
 	CMFormatDescriptionRef formatDescription = CMSampleBufferGetFormatDescription(sampleBuffer);
 	CMVideoDimensions videoDimensions = CMVideoFormatDescriptionGetDimensions(formatDescription);
 
+
+	static VTCompressionSessionRef compressionSession;
 
 	if (compressionSession == NULL) {
 		VTCompressionSessionCreate
@@ -94,6 +92,9 @@ static VTDecompressionSessionRef decompressionSession;
 - (void)decompressFromCompressedSample:(CMSampleBufferRef)compressedSample withCallback:(void(^)(CVImageBufferRef imageBuffer))finishedCallback {
 
 	CMFormatDescriptionRef formatDescription = CMSampleBufferGetFormatDescription(compressedSample);
+
+	
+	static VTDecompressionSessionRef decompressionSession;
 
 	if (decompressionSession == NULL) {
 		VTDecompressionSessionCreate
