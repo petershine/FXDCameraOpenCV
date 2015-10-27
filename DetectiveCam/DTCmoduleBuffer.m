@@ -36,8 +36,7 @@ static VTDecompressionSessionRef decompressionSession;
 	 compressWithSampleBuffer:sampleBuffer
 	 withCallback:^(CMSampleBufferRef compressedSample) {
 
-		 CMBlockBufferRef dataBlock = CMSampleBufferGetDataBuffer(sampleBuffer);
-
+		 CMBlockBufferRef dataBlock = CMSampleBufferGetDataBuffer(compressedSample);
 		 [self describeDataBlock:dataBlock];
 
 
@@ -184,6 +183,12 @@ static VTDecompressionSessionRef decompressionSession;
 }
 
 - (void)describeDataBlock:(CMBlockBufferRef)dataBlock {
+	NSLog(@"dataBlock: %@", dataBlock);
+
+	if (dataBlock == NULL) {
+		return;
+	}
+
 
 	NSLog(@"CMBlockBufferIsEmpty(dataBlock): %d", CMBlockBufferIsEmpty(dataBlock));
 
