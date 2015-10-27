@@ -212,17 +212,17 @@ static VTDecompressionSessionRef decompressionSession;
 	}
 
 
-	CFRetain(sampleBuffer);
-	
-	dispatch_async(dispatch_get_main_queue(), ^{
-
+	if ([strongDisplayLayer isReadyForMoreMediaData] == NO) {
 		NSLog(@"[strongBufferDisplayLayer isReadyForMoreMediaData]: %d", [strongDisplayLayer isReadyForMoreMediaData]);
+		return;
+	}
 
-		if ([strongDisplayLayer isReadyForMoreMediaData]) {
 
-			[strongDisplayLayer enqueueSampleBuffer:sampleBuffer];
-			[strongDisplayLayer setNeedsDisplay];
-		}
+	CFRetain(sampleBuffer);
+
+	dispatch_async(dispatch_get_main_queue(), ^{
+		[strongDisplayLayer enqueueSampleBuffer:sampleBuffer];
+		[strongDisplayLayer setNeedsDisplay];
 
 		CFRelease(sampleBuffer);
 	});
