@@ -28,8 +28,7 @@ static VTDecompressionSessionRef decompressionSession;
 	 compressWithSampleBuffer:sampleBuffer
 	 withCallback:^(CMSampleBufferRef compressedSample) {
 
-		 CMBlockBufferRef dataBlock = CMSampleBufferGetDataBuffer(compressedSample);
-		 [self describeDataBlock:dataBlock];
+		 [self describeDataBlockFromCompressedSample:compressedSample];
 
 
 		 [self displaySampleBuffer:compressedSample];
@@ -177,8 +176,10 @@ static VTDecompressionSessionRef decompressionSession;
 	}
 }
 
-- (void)describeDataBlock:(CMBlockBufferRef)dataBlock {
+- (void)describeDataBlockFromCompressedSample:(CMSampleBufferRef)compressedSample {
 #warning //TODO: learn about CMBlockBuffer is compressed data. Check if it's h.264 with motion vectors
+
+	CMBlockBufferRef dataBlock = CMSampleBufferGetDataBuffer(compressedSample);
 
 	NSLog(@"dataBlock: %@", dataBlock);
 
