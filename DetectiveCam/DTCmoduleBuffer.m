@@ -20,10 +20,8 @@
 	}
 
 
-	//MARK: Before compression h.264 codec is not used
-	[self describeSampleBuffer:sampleBuffer];
-
 	[self displaySampleBuffer:sampleBuffer];
+	//MARK: Before compression h.264 codec is not used
 
 
 	[self
@@ -31,18 +29,6 @@
 	 withCallback:^(CMSampleBufferRef compressedSample) {
 
 		 [self describeSampleBuffer:compressedSample];
-
-		 [self displaySampleBuffer:compressedSample];
-
-
-		 //TODO: Check if decompression is necessary
-		 /*
-		 [self
-		  decompressFromCompressedSample:compressedSample
-		  withCallback:^(CVImageBufferRef imageBuffer) {
-			  //[self describePixelBuffer:imageBuffer];
-		  }];
-		  */
 	 }];
 }
 
