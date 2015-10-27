@@ -11,6 +11,118 @@
 
 @implementation DTCmoduleBuffer
 
+- (instancetype)init {
+	self = [super init];
+
+	if (self) {
+		captureSession = [[AVCaptureSession alloc] init];
+
+		//captureSession.sessionPreset = AVCaptureSessionPresetiFrame1280x720
+		captureSession.sessionPreset = AVCaptureSessionPresetHigh;
+
+		captureVideoOutput = [[AVCaptureVideoDataOutput alloc] init];
+		captureVideoOutput.alwaysDiscardsLateVideoFrames = YES;
+		//captureVideoOutput.videoSettings = [kCVPixelBufferPixelFormatTypeKey: UInt(kCVPixelFormatType_32BGRA)]
+		captureVideoOutput.videoSettings = nil;
+
+
+
+		capturingQueue = dispatch_queue_create("session queue", DISPATCH_QUEUE_SERIAL);
+
+
+		AVAuthorizationStatus authorizationStatus = [AVCaptureDevice authorizationStatusForMediaType:AVMediaTypeVideo];
+
+		if (authorizationStatus != AVAuthorizationStatusAuthorized) {
+			NSLog(@"authorizationStatus: %ld", (long)authorizationStatus);
+
+			dispatch_suspend(capturingQueue);
+
+			[AVCaptureDevice
+			 requestAccessForMediaType:AVMediaTypeVideo
+			 completionHandler:^(BOOL granted) {
+				 NSLog(@"granted: %d", granted);
+
+				 shouldRunSession = granted;
+
+				 dispatch_resume(capturingQueue);
+			 }];
+		}
+		else {
+			shouldRunSession = YES;
+		}
+
+
+		dispatch_async
+		(capturingQueue,
+		 ^{
+			 if (shouldRunSession == NO) {
+				 return;
+			 }
+
+
+			 AVCaptureDevice *cameraDevice = nil;
+			 NSArray *devices = [AVCaptureDevice devicesWithMediaType:AVMediaTypeVideo];
+
+			 for (AVCaptureDevice *device in devices) {
+				 if (device.position == AVCaptureDevicePositionBack) {
+					 cameraDevice = device;
+					 break;
+				 }
+			 }
+
+			 if (cameraDevice != nil) {
+				 NSLog(@"[videoDevice supportsAVCaptureSessionPreset:AVCaptureSessionPreset1280x720]: %d", [cameraDevice supportsAVCaptureSessionPreset:AVCaptureSessionPresetiFrame1280x720]);
+
+				 NSLog(@"cameraDevice.formats: %@", cameraDevice.formats);
+			 }
+
+			 NSArray *frameRateRanges = cameraDevice.activeFormat.videoSupportedFrameRateRanges;
+			 NSLog(@"frameRateRanges: %@", frameRateRanges);
+
+			 AVFrameRateRange *defaultFrameRate = frameRateRanges.firstObject;
+
+			 NSError *error = nil;
+
+			 if ([cameraDevice lockForConfiguration:&error]) {
+				 cameraDevice.activeVideoMinFrameDuration = defaultFrameRate.minFrameDuration;
+				 cameraDevice.activeVideoMaxFrameDuration = defaultFrameRate.maxFrameDuration;
+			 }
+			 NSLog(@"error: %@", error);
+			 [cameraDevice unlockForConfiguration];
+
+
+			 error = nil;
+			 captureVideoInput = [[AVCaptureDeviceInput alloc] initWithDevice:cameraDevice error:&error];
+			 NSLog(@"error: %@", error);
+
+
+			 [captureSession beginConfiguration];
+
+			 if ([captureSession canAddInput:captureVideoInput]) {
+				 [captureSession addInput:captureVideoInput];
+			 }
+			 else {
+				 shouldRunSession = NO;
+			 }
+
+			 if ([captureSession canAddOutput:captureVideoOutput]) {
+				 videoOutputQueue = dispatch_queue_create("outputQueue", DISPATCH_QUEUE_SERIAL);
+
+				 [captureVideoOutput setSampleBufferDelegate:self queue:videoOutputQueue];
+				 [captureSession addOutput:captureVideoOutput];
+			 }
+
+			 [captureSession commitConfiguration];
+			 
+			 
+			 [captureSession startRunning];
+		 });
+	}
+
+	return self;
+}
+
+#pragma mark -
 - (void)captureOutput:(AVCaptureOutput *)captureOutput didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer fromConnection:(AVCaptureConnection *)connection {
 
 	CMFormatDescriptionRef formatDescription = CMSampleBufferGetFormatDescription(sampleBuffer);
@@ -32,6 +144,7 @@
 	 }];
 }
 
+#pragma mark -
 - (void)compressWithSampleBuffer:(CMSampleBufferRef)sampleBuffer withCallback:(void(^)(CMSampleBufferRef compressedSampleBuffer))finishedCallback {
 
 	CMFormatDescriptionRef formatDescription = CMSampleBufferGetFormatDescription(sampleBuffer);

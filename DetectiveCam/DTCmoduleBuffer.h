@@ -20,8 +20,18 @@
 @import VideoToolbox;
 
 
-@interface DTCmoduleBuffer : NSObject <AVCaptureVideoDataOutputSampleBufferDelegate>
+@interface DTCmoduleBuffer : NSObject <AVCaptureVideoDataOutputSampleBufferDelegate> {
+	dispatch_queue_t capturingQueue;
+	dispatch_queue_t videoOutputQueue;
 
-@property (weak, nonatomic) AVSampleBufferDisplayLayer *bufferDisplayLayer;
+	BOOL shouldRunSession;
+
+	AVCaptureSession *captureSession;
+	AVCaptureDeviceInput *captureVideoInput;
+
+	AVCaptureVideoDataOutput *captureVideoOutput;
+}
+
+@property (strong, nonatomic) AVSampleBufferDisplayLayer *bufferDisplayLayer;
 
 @end
