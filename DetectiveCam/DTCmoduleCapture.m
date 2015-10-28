@@ -148,12 +148,6 @@
 	//MARK: Before compression h.264 codec is not used, even though preset was set with iFrame
 
 
-	/*
-	if ([self.sampleDisplayLayer isReadyForMoreMediaData]) {
-		[self.sampleDisplayLayer enqueueSampleBuffer:sampleBuffer];
-	}
-	 */
-
 	[self
 	 compressWithSampleBuffer:sampleBuffer
 	 withCallback:^(CMSampleBufferRef compressedSample) {
@@ -260,17 +254,20 @@
 
 	NSLog(@"sampleBuffer:\n%@", sampleBuffer);
 
+
 	// Find out if the sample buffer contains an I-Frame.
     // If so we will write the SPS and PPS NAL units to the elementary stream.
     BOOL isIFrame = NO;
+
     CFArrayRef attachmentsArray = CMSampleBufferGetSampleAttachmentsArray(sampleBuffer, 0);
 	NSLog(@"attachmentsArray: %@", attachmentsArray);
 
     if (CFArrayGetCount(attachmentsArray)) {
-        CFBooleanRef notSync;
+
         CFDictionaryRef dict = CFArrayGetValueAtIndex(attachmentsArray, 0);
 		NSLog(@"dict: %@", dict);
 
+		CFBooleanRef notSync;
         BOOL keyExists = CFDictionaryGetValueIfPresent(dict,
                                                        kCMSampleAttachmentKey_NotSync,
                                                        (const void **)&notSync);
