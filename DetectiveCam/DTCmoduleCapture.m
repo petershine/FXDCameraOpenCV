@@ -91,24 +91,23 @@
 #pragma mark -
 - (void)prepareCaptureModule {
 
-	_capturingQueue = dispatch_queue_create("session queue", DISPATCH_QUEUE_SERIAL);
+	_captureSession = [[AVCaptureSession alloc] init];
+	_captureSession.sessionPreset = AVCaptureSessionPresetHigh;
+
+	_sampleDataOutput = [[AVCaptureVideoDataOutput alloc] init];
+	_sampleDataOutput.alwaysDiscardsLateVideoFrames = YES;
+	_sampleDataOutput.videoSettings = nil;
+
+	
+	_sampleOutputQueue = dispatch_queue_create(NULL, DISPATCH_QUEUE_SERIAL);
+	[_sampleDataOutput setSampleBufferDelegate:self queue:_sampleOutputQueue];
+
+
+	_capturingQueue = dispatch_queue_create(NULL, DISPATCH_QUEUE_SERIAL);
 
 	dispatch_async
 	(_capturingQueue,
 	 ^{
-		 _captureSession = [[AVCaptureSession alloc] init];
-		 _captureSession.sessionPreset = AVCaptureSessionPresetHigh;
-
-
-		 _sampleOutputQueue = dispatch_queue_create("outputQueue", DISPATCH_QUEUE_SERIAL);
-
-		 _sampleDataOutput = [[AVCaptureVideoDataOutput alloc] init];
-		 _sampleDataOutput.alwaysDiscardsLateVideoFrames = YES;
-		 _sampleDataOutput.videoSettings = nil;
-
-		 [_sampleDataOutput setSampleBufferDelegate:self queue:_sampleOutputQueue];
-
-
 		 [_captureSession beginConfiguration];
 
 		 if ([_captureSession canAddInput:self.videoDeviceInput]) {
@@ -136,16 +135,20 @@
 	}
 
 
+	//MARK: Before compression h.264 codec is not used, even though preset was set with iFrame
+
+
 	[self displaySampleBuffer:sampleBuffer];
 
-
-	//MARK: Before compression h.264 codec is not used, even though preset was set with iFrame
 
 	[self
 	 compressWithSampleBuffer:sampleBuffer
 	 withCallback:^(CMSampleBufferRef compressedSample) {
 
 		 [self describeSampleBuffer:compressedSample];
+
+
+		 //TODO: Describe decompressed
 	 }];
 }
 
@@ -252,8 +255,38 @@
 
 	size_t parameterSetCount = 0;
 
-	CMVideoFormatDescriptionGetH264ParameterSetAtIndex(formatDescription, 0, NULL, NULL, &parameterSetCount, NULL);
+	CMVideoFormatDescriptionGetH264ParameterSetAtIndex(formatDescription,
+													   0,
+													   NULL,
+													   NULL,
+													   &parameterSetCount,
+													   NULL);
 	NSLog(@"parameterSetCount: %lu", parameterSetCount);
+
+	uint8_t *parameterSet = NULL;
+
+	for (size_t index = 0; index < parameterSetCount; index++) {
+		const uint8_t *parameterSetPointer;
+		size_t parameterSetLength;
+
+		CMVideoFormatDescriptionGetH264ParameterSetAtIndex(formatDescription,
+														   index,
+														   &parameterSetPointer,
+														   &parameterSetLength,
+														   NULL,
+														   NULL);
+
+		if (parameterSet == NULL) {
+			parameterSet = malloc(parameterSetLength);
+		}
+
+		memcpy(parameterSet, parameterSetPointer, parameterSetLength);
+		NSLog(@"parameterSet: %s", parameterSet);
+	}
+
+	if (parameterSet) {
+		free(parameterSet);
+	}
 
 
 	CMBlockBufferRef dataBuffer = CMSampleBufferGetDataBuffer(sampleBuffer);
@@ -288,6 +321,8 @@
 	size_t readerOffset = 0;
 	size_t readerLength = 4;
 
+	uint8_t *parsedData = NULL;
+
 	while (readerOffset < totalLength) {
 		uint8_t *iterator;
 
@@ -300,9 +335,13 @@
 
 		//NSData *iteratedData = [NSData dataWithBytes:iterator length:readerLength];
 		//NSLog(@"iteratedData: %@", iteratedData);
-		char parsed[(int)readerLength];
-		memcpy(parsed, iterator, readerLength);
-		NSLog(@"%s", parsed);
+
+		if (parsedData == NULL) {
+			parsedData = malloc(readerLength);
+		}
+
+		memcpy(parsedData, iterator, readerLength);
+		//NSLog(@"%s", parsedData);
 
 
 		if ((readerOffset+readerLength) > totalLength) {
@@ -316,6 +355,9 @@
 		readerOffset += readerLength;
 	}
 
+	if (parsedData) {
+		free(parsedData);
+	}
 }
 
 - (void)displaySampleBuffer:(CMSampleBufferRef)sampleBuffer {
@@ -325,18 +367,15 @@
 	}
 
 
-	if ([self.sampleDisplayLayer isReadyForMoreMediaData] == NO) {
-		return;
-	}
-
-
 	CFRetain(sampleBuffer);
 
 	dispatch_async
 	(dispatch_get_main_queue(),
 	 ^{
-		 [self.sampleDisplayLayer enqueueSampleBuffer:sampleBuffer];
-		 [self.sampleDisplayLayer setNeedsDisplay];
+		 if ([self.sampleDisplayLayer isReadyForMoreMediaData]) {
+			 [self.sampleDisplayLayer enqueueSampleBuffer:sampleBuffer];
+			 [self.sampleDisplayLayer setNeedsDisplay];
+		 }
 
 		 CFRelease(sampleBuffer);
 	 });
