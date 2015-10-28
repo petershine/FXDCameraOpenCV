@@ -98,7 +98,7 @@
 	_sampleDataOutput.alwaysDiscardsLateVideoFrames = YES;
 	_sampleDataOutput.videoSettings = nil;
 
-	
+
 	_sampleOutputQueue = dispatch_queue_create(NULL, DISPATCH_QUEUE_SERIAL);
 	[_sampleDataOutput setSampleBufferDelegate:self queue:_sampleOutputQueue];
 
@@ -146,9 +146,6 @@
 	 withCallback:^(CMSampleBufferRef compressedSample) {
 
 		 [self describeSampleBuffer:compressedSample];
-
-
-		 //TODO: Describe decompressed
 	 }];
 }
 
@@ -193,7 +190,6 @@
 	   CMSampleBufferRef  _Nullable compressedSample) {
 
 		 NSLog(@"COMPRESSED: status: %s, infoFlags: %u", FourCC2Str(status), infoFlags);
-		 NSLog(@"COMPRESSED: compressedSample:\n%@", compressedSample);
 
 		 if (finishedCallback) {
 			 finishedCallback(compressedSample);
@@ -231,7 +227,6 @@
 	   CMTime presentationDuration) {
 
 		 NSLog(@"DE-COMPRESSED: status: %s, infoFlags: %u", FourCC2Str(status), infoFlags);
-		 NSLog(@"DE-COMPRESSED: imageBuffer:\n%@", imageBuffer);
 
 		 if (finishedCallback) {
 			 finishedCallback(imageBuffer);
@@ -249,9 +244,6 @@
 	CMFormatDescriptionRef formatDescription = CMSampleBufferGetFormatDescription(sampleBuffer);
 	NSLog(@"formatDescription:\n%@", formatDescription);
 
-	FourCharCode codecType = CMFormatDescriptionGetMediaSubType(formatDescription);
-	NSLog(@"codecType: %s", FourCC2Str(codecType));
-
 
 	size_t parameterSetCount = 0;
 
@@ -262,8 +254,6 @@
 													   &parameterSetCount,
 													   NULL);
 	NSLog(@"parameterSetCount: %lu", parameterSetCount);
-
-	uint8_t *parameterSet = NULL;
 
 	for (size_t index = 0; index < parameterSetCount; index++) {
 		const uint8_t *parameterSetPointer;
@@ -276,88 +266,70 @@
 														   NULL,
 														   NULL);
 
-		if (parameterSet == NULL) {
-			parameterSet = malloc(parameterSetLength);
-		}
+		uint8_t *parameterSet = NULL;
+		parameterSet = malloc(parameterSetLength);
 
 		memcpy(parameterSet, parameterSetPointer, parameterSetLength);
 		NSLog(@"parameterSet: %s", parameterSet);
-	}
 
-	if (parameterSet) {
 		free(parameterSet);
 	}
 
 
 	CMBlockBufferRef dataBuffer = CMSampleBufferGetDataBuffer(sampleBuffer);
 
-	NSLog(@"dataBlock:\n%@", dataBuffer);
+	NSLog(@"dataBuffer:\n%@", dataBuffer);
 
 	if (dataBuffer == NULL) {
 		return;
 	}
 
 
-	size_t offset = 0;
-	size_t lengthAtOffset = 0;
 	size_t totalLength = 0;
-	uint8_t *dataPointer;
 
 	CMBlockBufferGetDataPointer(dataBuffer,
-								offset,
-								&lengthAtOffset,
+								0,
+								NULL,
 								&totalLength,
-								(char**)&dataPointer);
+								NULL);
 
-	NSLog(@"lengthAtOffset: %lu, totalLength: %lu dataPointer: %p", lengthAtOffset, totalLength, dataPointer);
+	NSLog(@"totalLength: %lu", totalLength);
 
-	NSLog(@"CMBlockBufferIsRangeContiguous(dataBuffer, 0, %lu): %d", totalLength, CMBlockBufferIsRangeContiguous(dataBuffer, 0, totalLength));
-
-
-	NSData *blockData = [NSData dataWithBytes:dataPointer length:totalLength];
-	//NSLog(@"blockData:\n%@", blockData);
+	NSLog(@"CMBlockBufferIsRangeContiguous(dataBuffer, 0, %lu): %d",
+		  totalLength,
+		  CMBlockBufferIsRangeContiguous(dataBuffer, 0, totalLength));
 
 
-	size_t readerOffset = 0;
-	size_t readerLength = 4;
+	NSLog(@"sizeof(uint8_t): %lu sizeof(char): %lu", sizeof(uint8_t), sizeof(char));
+
+	size_t offset = 0;
+	size_t lengthAtOffset = 0;
 
 	uint8_t *parsedData = NULL;
+	parsedData = malloc(sizeof(uint8_t));
 
-	while (readerOffset < totalLength) {
-		uint8_t *iterator;
-
+	while ((offset+lengthAtOffset) <= totalLength) {
+		uint8_t *dataPointer = NULL;
 
 		CMBlockBufferGetDataPointer(dataBuffer,
-									readerOffset,
+									offset,
+									&lengthAtOffset,
 									NULL,
-									NULL,
-									(char**)&iterator);
+									(char**)&dataPointer);
 
-		//NSData *iteratedData = [NSData dataWithBytes:iterator length:readerLength];
-		//NSLog(@"iteratedData: %@", iteratedData);
+		size_t parsedLength = (lengthAtOffset < sizeof(uint8_t)) ? lengthAtOffset:sizeof(uint8_t);
 
-		if (parsedData == NULL) {
-			parsedData = malloc(readerLength);
-		}
+		memcpy(parsedData, dataPointer, parsedLength);
 
-		memcpy(parsedData, iterator, readerLength);
-		//NSLog(@"%s", parsedData);
-
-
-		if ((readerOffset+readerLength) > totalLength) {
-			if ((totalLength-readerOffset) < readerLength) {
-				readerLength = totalLength-readerOffset;
-				NSLog(@"readerOffset: %lu, readerLength: %lu, totalLength: %lu", readerOffset, readerLength, totalLength);
-			}
-		}
-
-
-		readerOffset += readerLength;
+		offset += parsedLength;
 	}
 
 	if (parsedData) {
 		free(parsedData);
 	}
+
+
+	NSLog(@"%lu + %lu = %lu > %lu", offset, lengthAtOffset, (offset+lengthAtOffset), totalLength);
 }
 
 - (void)displaySampleBuffer:(CMSampleBufferRef)sampleBuffer {
