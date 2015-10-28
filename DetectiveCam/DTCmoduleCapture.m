@@ -138,14 +138,22 @@
 	//MARK: Before compression h.264 codec is not used, even though preset was set with iFrame
 
 
-	[self displaySampleBuffer:sampleBuffer];
-
+	/*
+	if ([self.sampleDisplayLayer isReadyForMoreMediaData]) {
+		[self.sampleDisplayLayer enqueueSampleBuffer:sampleBuffer];
+	}
+	 */
 
 	[self
 	 compressWithSampleBuffer:sampleBuffer
 	 withCallback:^(CMSampleBufferRef compressedSample) {
 
 		 [self describeSampleBuffer:compressedSample];
+
+		 
+		 if ([self.sampleDisplayLayer isReadyForMoreMediaData]) {
+			 [self.sampleDisplayLayer enqueueSampleBuffer:compressedSample];
+		 }
 	 }];
 }
 
@@ -335,27 +343,6 @@
 	}
 
 	NSLog(@"%lu < %lu - %d", offset, totalLength, AVCCHeaderLength);
-}
-
-- (void)displaySampleBuffer:(CMSampleBufferRef)sampleBuffer {
-
-	if (_sampleDisplayLayer == nil) {
-		return;
-	}
-
-
-	CFRetain(sampleBuffer);
-
-	dispatch_async
-	(dispatch_get_main_queue(),
-	 ^{
-		 if ([self.sampleDisplayLayer isReadyForMoreMediaData]) {
-			 [self.sampleDisplayLayer enqueueSampleBuffer:sampleBuffer];
-			 [self.sampleDisplayLayer setNeedsDisplay];
-		 }
-
-		 CFRelease(sampleBuffer);
-	 });
 }
 
 
