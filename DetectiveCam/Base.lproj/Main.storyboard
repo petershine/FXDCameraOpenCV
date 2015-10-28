@@ -32,27 +32,13 @@
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                             </textView>
-                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="DSI-pF-7KD">
-                                <rect key="frame" x="0.0" y="467" width="600" height="133"/>
-                                <animations/>
-                                <color key="backgroundColor" white="0.0" alpha="0.5" colorSpace="calibratedWhite"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="133" id="KhD-4a-i1D"/>
-                                </constraints>
-                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
-                            </textView>
                         </subviews>
                         <animations/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="Vxo-nb-fFw" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="topMargin" id="OdW-Ji-WHZ"/>
-                            <constraint firstItem="dWz-Tf-I4c" firstAttribute="top" secondItem="DSI-pF-7KD" secondAttribute="bottom" id="Oda-kQ-1UF"/>
                             <constraint firstItem="uR5-w5-o0o" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" constant="-20" id="QxB-gP-Dgu"/>
                             <constraint firstAttribute="trailingMargin" secondItem="Vxo-nb-fFw" secondAttribute="trailing" constant="-20" id="Vwr-l4-SAA"/>
-                            <constraint firstItem="DSI-pF-7KD" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" constant="-20" id="WNr-Aj-6r9"/>
-                            <constraint firstAttribute="trailingMargin" secondItem="DSI-pF-7KD" secondAttribute="trailing" constant="-20" id="XRS-jB-qLh"/>
                             <constraint firstItem="dWz-Tf-I4c" firstAttribute="top" secondItem="Vxo-nb-fFw" secondAttribute="bottom" id="eij-XM-sr6"/>
                             <constraint firstItem="uR5-w5-o0o" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="topMargin" id="kTw-xv-q95"/>
                             <constraint firstAttribute="trailingMargin" secondItem="uR5-w5-o0o" secondAttribute="trailing" constant="-20" id="qZs-E9-VPD"/>
@@ -61,7 +47,6 @@
                     </view>
                     <connections>
                         <outlet property="logCoefficientMatrix" destination="uR5-w5-o0o" id="crl-Wz-dVQ"/>
-                        <outlet property="logHashTable" destination="DSI-pF-7KD" id="434-RF-8rL"/>
                         <outlet property="opencvScreen" destination="Vxo-nb-fFw" id="y1z-95-ndh"/>
                     </connections>
                 </viewController>
