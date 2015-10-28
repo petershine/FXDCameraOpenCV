@@ -317,7 +317,9 @@
 	NSLog(@"setCountOut: %lu", setCountOut);
 
 
-	NSLog(@"CMBlockBufferIsRangeContiguous: %@", CMBlockBufferIsRangeContiguous(dataBuffer, 0, 0) ? @"true":@"false");
+	NSLog(@"CMBlockBufferIsRangeContiguous(dataBuffer, 0, %lu): %@",
+		  CMBlockBufferGetDataLength(dataBuffer),
+		  CMBlockBufferIsRangeContiguous(dataBuffer, CMBlockBufferGetDataLength(dataBuffer), 0) ? @"true":@"false");
 
 
 	size_t lengthAtOffset = 0;
@@ -325,11 +327,15 @@
 
 	uint8_t *dataPointer = NULL;
 
+	
+
 	CMBlockBufferGetDataPointer(dataBuffer,
 								0,
 								&lengthAtOffset,
 								&totalLength,
 								(char**)&dataPointer);
+
+	NSLog(@"totalLength: %lu == %lu %@", totalLength, CMBlockBufferGetDataLength(dataBuffer), (totalLength == CMBlockBufferGetDataLength(dataBuffer)) ? @"true":@"false");
 
 
 	size_t offset = 0;
