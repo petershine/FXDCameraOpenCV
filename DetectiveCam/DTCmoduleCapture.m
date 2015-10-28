@@ -9,8 +9,23 @@
 #import "DTCmoduleCapture.h"
 
 
-@implementation DTCmoduleCapture
+@interface DTCmoduleCapture (Private)
+@property (strong, nonatomic) AVCaptureDeviceInput *videoDeviceInput;
+@end
 
+
+@implementation DTCmoduleCapture {
+
+	AVCaptureSession *_captureSession;
+	AVCaptureVideoDataOutput *_sampleDataOutput;
+
+	AVCaptureDeviceInput *_videoDeviceInput;
+
+	dispatch_queue_t _capturingQueue;
+	dispatch_queue_t _sampleOutputQueue;
+}
+
+#pragma mark -
 - (instancetype)init {
 	self = [super init];
 
