@@ -261,7 +261,7 @@
 														   &setCountOut,
 														   &NALUnitHeaderLengthOut);
 
-		NSLog(@"NALUnitHeaderLengthOut: %d", NALUnitHeaderLengthOut);
+		NSLog(@"%lu: NALUnitHeaderLengthOut: %d", setIndex, NALUnitHeaderLengthOut);
 
 		setIndex++;
 
@@ -279,49 +279,22 @@
 	}
 
 
-	size_t totalLength = 0;
-
-	CMBlockBufferGetDataPointer(dataBuffer,
-								0,
-								NULL,
-								&totalLength,
-								NULL);
-
-	NSLog(@"totalLength: %lu", totalLength);
-
-	NSLog(@"CMBlockBufferIsRangeContiguous(dataBuffer, 0, %lu): %d",
-		  totalLength,
-		  CMBlockBufferIsRangeContiguous(dataBuffer, 0, totalLength));
-
-
-	NSLog(@"sizeof(uint8_t): %lu sizeof(char): %lu", sizeof(uint8_t), sizeof(char));
-
 	size_t offset = 0;
 	size_t lengthAtOffset = 0;
+	size_t totalLength = 0;
 
-	uint8_t *parsedData = NULL;
-	parsedData = malloc(sizeof(uint8_t));
-
-	while ((offset+lengthAtOffset) <= totalLength) {
+	do {
 		uint8_t *dataPointer = NULL;
 
 		CMBlockBufferGetDataPointer(dataBuffer,
 									offset,
 									&lengthAtOffset,
-									NULL,
+									&totalLength,
 									(char**)&dataPointer);
 
-		size_t parsedLength = (lengthAtOffset < sizeof(uint8_t)) ? lengthAtOffset:sizeof(uint8_t);
+		offset += (NALUnitHeaderLengthOut < lengthAtOffset) ? NALUnitHeaderLengthOut:lengthAtOffset;
 
-		memcpy(parsedData, dataPointer, parsedLength);
-
-		offset += parsedLength;
-	}
-
-	if (parsedData) {
-		free(parsedData);
-	}
-
+	} while (offset < totalLength);
 
 	NSLog(@"%lu + %lu = %lu > %lu", offset, lengthAtOffset, (offset+lengthAtOffset), totalLength);
 }
