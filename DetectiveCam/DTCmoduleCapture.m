@@ -245,10 +245,19 @@
 	NSLog(@"formatDescription:\n%@", formatDescription);
 
 
+	CMBlockBufferRef dataBuffer = CMSampleBufferGetDataBuffer(sampleBuffer);
+
+	NSLog(@"dataBuffer:\n%@", dataBuffer);
+
+	if (dataBuffer == NULL) {
+		return;
+	}
+
+
 	size_t setCountOut = 0;
 	size_t setIndex = 0;
 
-	int NALUnitHeaderLengthOut = 0;
+	int unitHeaderLengthOut = 0;
 
 	do {
 		const uint8_t *setPointerOut;
@@ -259,9 +268,9 @@
 														   &setPointerOut,
 														   &setSizeOut,
 														   &setCountOut,
-														   &NALUnitHeaderLengthOut);
+														   &unitHeaderLengthOut);
 
-		NSLog(@"%lu: NALUnitHeaderLengthOut: %d", setIndex, NALUnitHeaderLengthOut);
+		NSLog(@"%lu: unitHeaderLengthOut: %d", setIndex, unitHeaderLengthOut);
 
 		setIndex++;
 
@@ -270,33 +279,30 @@
 	NSLog(@"setCountOut: %lu", setCountOut);
 
 
-	CMBlockBufferRef dataBuffer = CMSampleBufferGetDataBuffer(sampleBuffer);
-
-	NSLog(@"dataBuffer:\n%@", dataBuffer);
-
-	if (dataBuffer == NULL) {
-		return;
-	}
+	NSLog(@"CMBlockBufferIsRangeContiguous: %@", CMBlockBufferIsRangeContiguous(dataBuffer, 0, 0) ? @"true":@"false");
 
 
-	size_t offset = 0;
 	size_t lengthAtOffset = 0;
 	size_t totalLength = 0;
 
-	do {
-		uint8_t *dataPointer = NULL;
+	uint8_t *dataPointer = NULL;
 
-		CMBlockBufferGetDataPointer(dataBuffer,
-									offset,
-									&lengthAtOffset,
-									&totalLength,
-									(char**)&dataPointer);
+	CMBlockBufferGetDataPointer(dataBuffer,
+								0,
+								&lengthAtOffset,
+								&totalLength,
+								(char**)&dataPointer);
 
-		offset += (NALUnitHeaderLengthOut < lengthAtOffset) ? NALUnitHeaderLengthOut:lengthAtOffset;
 
-	} while (offset < totalLength);
+	size_t offset = 0;
 
-	NSLog(@"%lu + %lu = %lu > %lu", offset, lengthAtOffset, (offset+lengthAtOffset), totalLength);
+	while (offset < totalLength) {
+		//NSLog(@"%lu: %x", offset, dataPointer[offset]);
+
+		offset += unitHeaderLengthOut;
+	}
+
+	NSLog(@"%lu + %lu = %lu > %lu %@", offset, lengthAtOffset, (offset+lengthAtOffset), totalLength, ((offset+lengthAtOffset) > totalLength) ? @"true":@"false");
 }
 
 - (void)displaySampleBuffer:(CMSampleBufferRef)sampleBuffer {
