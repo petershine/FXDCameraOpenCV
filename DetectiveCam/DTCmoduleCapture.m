@@ -245,35 +245,29 @@
 	NSLog(@"formatDescription:\n%@", formatDescription);
 
 
-	size_t parameterSetCount = 0;
+	size_t setCountOut = 0;
+	size_t setIndex = 0;
 
-	CMVideoFormatDescriptionGetH264ParameterSetAtIndex(formatDescription,
-													   0,
-													   NULL,
-													   NULL,
-													   &parameterSetCount,
-													   NULL);
-	NSLog(@"parameterSetCount: %lu", parameterSetCount);
+	int NALUnitHeaderLengthOut = 0;
 
-	for (size_t index = 0; index < parameterSetCount; index++) {
-		const uint8_t *parameterSetPointer;
-		size_t parameterSetLength;
+	do {
+		const uint8_t *setPointerOut;
+		size_t setSizeOut = 0;
 
 		CMVideoFormatDescriptionGetH264ParameterSetAtIndex(formatDescription,
-														   index,
-														   &parameterSetPointer,
-														   &parameterSetLength,
-														   NULL,
-														   NULL);
+														   setIndex,
+														   &setPointerOut,
+														   &setSizeOut,
+														   &setCountOut,
+														   &NALUnitHeaderLengthOut);
 
-		uint8_t *parameterSet = NULL;
-		parameterSet = malloc(parameterSetLength);
+		NSLog(@"NALUnitHeaderLengthOut: %d", NALUnitHeaderLengthOut);
 
-		memcpy(parameterSet, parameterSetPointer, parameterSetLength);
-		NSLog(@"parameterSet: %s", parameterSet);
+		setIndex++;
 
-		free(parameterSet);
-	}
+	} while (setIndex < setCountOut);
+
+	NSLog(@"setCountOut: %lu", setCountOut);
 
 
 	CMBlockBufferRef dataBuffer = CMSampleBufferGetDataBuffer(sampleBuffer);
