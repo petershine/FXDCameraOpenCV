@@ -240,6 +240,29 @@
 	// dataBuffer: contains 6 H.264 frames in decode order (P2,B0,B1,I5,B3,B4)
 	// dataFormatDescription: describes H.264 video
 
+	NSLog(@"sampleBuffer:\n%@", sampleBuffer);
+
+	// Find out if the sample buffer contains an I-Frame.
+    // If so we will write the SPS and PPS NAL units to the elementary stream.
+    BOOL isIFrame = NO;
+    CFArrayRef attachmentsArray = CMSampleBufferGetSampleAttachmentsArray(sampleBuffer, 0);
+	NSLog(@"attachmentsArray: %@", attachmentsArray);
+
+    if (CFArrayGetCount(attachmentsArray)) {
+        CFBooleanRef notSync;
+        CFDictionaryRef dict = CFArrayGetValueAtIndex(attachmentsArray, 0);
+		NSLog(@"dict: %@", dict);
+
+        BOOL keyExists = CFDictionaryGetValueIfPresent(dict,
+                                                       kCMSampleAttachmentKey_NotSync,
+                                                       (const void **)&notSync);
+		NSLog(@"keyExists: %d", keyExists);
+
+        // An I-Frame is a sync frame
+        isIFrame = !keyExists || !CFBooleanGetValue(notSync);
+    }
+	NSLog(@"isIFrame: %d", isIFrame);
+
 
 	CMFormatDescriptionRef formatDescription = CMSampleBufferGetFormatDescription(sampleBuffer);
 	NSLog(@"formatDescription:\n%@", formatDescription);
@@ -295,14 +318,23 @@
 
 
 	size_t offset = 0;
+	static const int AVCCHeaderLength = 4;
 
-	while (offset < totalLength) {
-		//NSLog(@"%lu: %x", offset, dataPointer[offset]);
+	while (offset < totalLength - AVCCHeaderLength) {
+		// Read the NAL unit length
+		uint32_t NALUnitLength = 0;
+		memcpy(&NALUnitLength, dataPointer+offset, AVCCHeaderLength);
 
-		offset += unitHeaderLengthOut;
+		// Convert the length value from Big-endian to Little-endian
+		NALUnitLength = CFSwapInt32BigToHost(NALUnitLength);
+
+		// Move to the next NAL unit in the block buffer
+		offset += AVCCHeaderLength + NALUnitLength;
+
+		NSLog(@"offset: %lu, AVCCHeaderLength: %d, NALUnitLength: %u", offset, AVCCHeaderLength, NALUnitLength);
 	}
 
-	NSLog(@"%lu + %lu = %lu > %lu %@", offset, lengthAtOffset, (offset+lengthAtOffset), totalLength, ((offset+lengthAtOffset) > totalLength) ? @"true":@"false");
+	NSLog(@"%lu < %lu - %d", offset, totalLength, AVCCHeaderLength);
 }
 
 - (void)displaySampleBuffer:(CMSampleBufferRef)sampleBuffer {
