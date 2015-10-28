@@ -9,11 +9,6 @@
 #import "DTCmoduleCapture.h"
 
 
-@interface DTCmoduleCapture (Private)
-@property (strong, nonatomic) AVCaptureDeviceInput *videoDeviceInput;
-@end
-
-
 @implementation DTCmoduleCapture {
 
 	AVCaptureSession *_captureSession;
