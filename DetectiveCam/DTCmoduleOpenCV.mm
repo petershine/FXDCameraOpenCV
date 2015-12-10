@@ -223,7 +223,6 @@
 	[_coefficientGroup addObject:integerMatrix];
 
 	if (_coefficientGroup.count < 6) {
-		[self.opencvScene performSelector:@selector(logCoefficientMatrix:) withObject:[coefficientMatrix copy]];
 		return;
 	}
 
@@ -251,10 +250,6 @@
 	[_hashDictionary setObject:@(matchCount.integerValue+1) forKey:hashKey];
 
 	//NSLog(@"%@", _hashTable);
-
-	[self.opencvScene performSelector:@selector(logCoefficientMatrix:) withObject:[coefficientMatrix copy]];
-
-	[self.opencvScene performSelector:@selector(logHashTable:) withObject:[_hashTable copy]];
 }
 
 @end

@@ -130,8 +130,8 @@
 				D96425FB1BDADB1F00EFB71A /* DTCmoduleCapture.h */,
 				D96425FC1BDADB1F00EFB71A /* DTCmoduleCapture.m */,
 				D9E7C2A11BC334A90071582B /* AppDelegate.swift */,
-				D9E7C2A31BC334A90071582B /* DTCsceneAVFoundation.swift */,
 				D91481A41BC77D26005AC71D /* DTCsceneOpenCV.swift */,
+				D9E7C2A31BC334A90071582B /* DTCsceneAVFoundation.swift */,
 				D9E7C2A51BC334A90071582B /* Main.storyboard */,
 				D9E7C2AB1BC334A90071582B /* Assets.xcassets */,
 				D9E7C2B01BC334A90071582B /* Info.plist */,
@@ -237,6 +237,7 @@
 				TargetAttributes = {
 					D9E7C29D1BC334A90071582B = {
 						CreatedOnToolsVersion = 7.1;
+						DevelopmentTeam = 63DC79S99Z;
 					};
 					D9E7C2B41BC334A90071582B = {
 						CreatedOnToolsVersion = 7.1;
@@ -442,6 +443,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -462,6 +464,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",

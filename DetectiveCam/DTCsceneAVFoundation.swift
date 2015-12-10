@@ -12,37 +12,22 @@ import AVFoundation
 import VideoToolbox
 
 
-class DTCsceneAVFoundation: UIViewController {
-
-	@IBOutlet weak var opencvScreen: UIImageView!
-	
-	@IBOutlet weak var logCoefficientMatrix: UITextView!
-	@IBOutlet weak var logHashTable: UITextView!
+class DTCsceneAVFoundation: DTCsceneOpenCV {
 
 	var capturingModule: DTCmoduleCapture! = nil
 
 
-	deinit {
-	}
-
-	override func didReceiveMemoryWarning() {
-		super.didReceiveMemoryWarning()
-	}
-
-
 	override func viewDidLoad() {
 		super.viewDidLoad()
-
-		// Do any additional setup after loading the view, typically from a nib.
-
-		capturingModule = DTCmoduleCapture();
 	}
 
 
 	override func viewDidAppear(animated: Bool) {
 		super.viewDidAppear(animated);
 
-		if (capturingModule.sampleDisplayLayer == nil) {
+		if (capturingModule == nil) {
+			capturingModule = DTCmoduleCapture();
+
 			capturingModule.sampleDisplayLayer = AVSampleBufferDisplayLayer()
 			capturingModule.sampleDisplayLayer.bounds = opencvScreen.bounds
 			capturingModule.sampleDisplayLayer.position = CGPointMake(CGRectGetMidX(opencvScreen.bounds), CGRectGetMidY(opencvScreen.bounds))
