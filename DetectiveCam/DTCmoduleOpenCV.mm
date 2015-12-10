@@ -139,7 +139,7 @@
 	cv::divide(outputStdDev, outputMean, coefficient);
 
 	cv::MatIterator_<double> cvIterator = coefficient.begin<double>();
-	//FXDLog(@"cvIterator: %@ %@ %@ %@", @(cvIterator[0]), @(cvIterator[1]), @(cvIterator[2]), @(cvIterator[3]));
+	FXDLog(@"cvIterator: %@ %@ %@ %@", @(cvIterator[0]), @(cvIterator[1]), @(cvIterator[2]), @(cvIterator[3]));
 }
 
 @end
