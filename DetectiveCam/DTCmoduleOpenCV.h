@@ -14,9 +14,6 @@
 #import "FXDconfigDeveloper.h"
 
 
-#define DEGREES_RADIANS(angle) ((angle) / 180.0 * M_PI)
-
-
 @protocol CvVideoCameraDelegate;
 
 @interface DTCmoduleOpenCV : NSObject <CvVideoCameraDelegate>

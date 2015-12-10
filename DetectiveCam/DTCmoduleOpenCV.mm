@@ -25,32 +25,35 @@
 	[self layoutPreviewLayer];
 }
 
-- (void)layoutPreviewLayer {
+- (void)layoutPreviewLayer {	FXDLog_DEFAULT;
 
-	if (self.parentView != nil) {
-		CALayer* layer = self->customPreviewLayer;
-		CGRect bounds = self->customPreviewLayer.bounds;
-		int rotation_angle = 0;
-
-		switch (defaultAVCaptureVideoOrientation) {
-			case AVCaptureVideoOrientationLandscapeRight:
-				rotation_angle = 270;
-				break;
-			case AVCaptureVideoOrientationPortraitUpsideDown:
-				rotation_angle = 180;
-				break;
-			case AVCaptureVideoOrientationLandscapeLeft:
-				rotation_angle = 90;
-				break;
-			case AVCaptureVideoOrientationPortrait:
-			default:
-				break;
-		}
-
-		layer.position = CGPointMake(self.parentView.frame.size.width/2., self.parentView.frame.size.height/2.);
-		layer.affineTransform = CGAffineTransformMakeRotation( DEGREES_RADIANS(rotation_angle) );
-		layer.bounds = bounds;
+	if (self.parentView == nil) {
+		return;
 	}
+
+
+	CALayer* layer = self->customPreviewLayer;
+	CGRect bounds = self->customPreviewLayer.bounds;
+	int rotation_angle = 0;
+
+	switch (defaultAVCaptureVideoOrientation) {
+		case AVCaptureVideoOrientationLandscapeRight:
+			rotation_angle = 270;
+			break;
+		case AVCaptureVideoOrientationPortraitUpsideDown:
+			rotation_angle = 180;
+			break;
+		case AVCaptureVideoOrientationLandscapeLeft:
+			rotation_angle = 90;
+			break;
+		case AVCaptureVideoOrientationPortrait:
+		default:
+			break;
+	}
+
+	layer.position = CGPointMake(self.parentView.frame.size.width/2., self.parentView.frame.size.height/2.);
+	layer.affineTransform = CGAffineTransformMakeRotation(((rotation_angle) / 180.0 * M_PI));
+	layer.bounds = bounds;
 
 }
 @end
@@ -90,14 +93,14 @@
 	self.videoCamera.defaultFPS = 30;
 
 	AVCaptureDevice *cameraDevice = [AVCaptureDevice defaultDeviceWithMediaType:AVMediaTypeVideo];
-	FXDLog(@"cameraDevice: %@", cameraDevice);
+	FXDLogObject(cameraDevice);
 
 	FXDLog(@"[videoDevice supportsAVCaptureSessionPreset:AVCaptureSessionPreset1280x720]: %d", [cameraDevice supportsAVCaptureSessionPreset:AVCaptureSessionPreset1280x720]);
-	FXDLog(@"cameraDevice.formats: %@", cameraDevice.formats);
+	FXDLogObject(cameraDevice.formats);
 
 
 	NSArray *frameRateRanges = cameraDevice.activeFormat.videoSupportedFrameRateRanges;
-	FXDLog(@"frameRateRanges: %@", frameRateRanges);
+	FXDLogObject(frameRateRanges);
 
 	AVFrameRateRange *defaultFrameRate = frameRateRanges.firstObject;
 
@@ -108,7 +111,7 @@
 		[cameraDevice setActiveVideoMaxFrameDuration:defaultFrameRate.maxFrameDuration];
 	}
 
-	FXDLog(@"error: %@", error);
+	FXDLog_ERROR;
 	[cameraDevice unlockForConfiguration];
 
 
@@ -124,12 +127,6 @@
 	cv::Mat outputMean;
 	cv::Mat outputStdDev;
 	cv::meanStdDev(image, outputMean, outputStdDev);
-
-	cv::MatIterator_<double> meanIterator = outputMean.begin<double>();
-	FXDLog(@"meanIterator: %@ %@ %@ %@", @(meanIterator[0]), @(meanIterator[1]), @(meanIterator[2]), @(meanIterator[3]));
-
-	cv::MatIterator_<double> stddevIterator = outputStdDev.begin<double>();
-	FXDLog(@"stddevIterator: %@ %@ %@ %@", @(stddevIterator[0]), @(stddevIterator[1]), @(stddevIterator[2]), @(stddevIterator[3]));
 
 	cv::Mat coefficient;
 	cv::divide(outputStdDev, outputMean, coefficient);
