@@ -88,14 +88,11 @@
 	self.videoCamera.defaultAVCaptureVideoOrientation = AVCaptureVideoOrientationPortrait;
 
 	self.videoCamera.grayscaleMode = NO;
-
-
 	self.videoCamera.defaultFPS = 30;
 
+	
 	AVCaptureDevice *cameraDevice = [AVCaptureDevice defaultDeviceWithMediaType:AVMediaTypeVideo];
 	FXDLogObject(cameraDevice);
-
-	FXDLog(@"[videoDevice supportsAVCaptureSessionPreset:AVCaptureSessionPreset1280x720]: %d", [cameraDevice supportsAVCaptureSessionPreset:AVCaptureSessionPreset1280x720]);
 	FXDLogObject(cameraDevice.formats);
 
 
@@ -111,7 +108,7 @@
 		[cameraDevice setActiveVideoMaxFrameDuration:defaultFrameRate.maxFrameDuration];
 	}
 
-	FXDLog_ERROR;
+	FXDLogObject(error);
 	[cameraDevice unlockForConfiguration];
 
 
@@ -132,7 +129,26 @@
 	cv::divide(outputStdDev, outputMean, coefficient);
 
 	cv::MatIterator_<double> cvIterator = coefficient.begin<double>();
-	FXDLog(@"cvIterator: %@ %@ %@ %@", @(cvIterator[0]), @(cvIterator[1]), @(cvIterator[2]), @(cvIterator[3]));
+	//FXDLog(@"cvIterator: %@ %@ %@ %@", @(cvIterator[0]), @(cvIterator[1]), @(cvIterator[2]), @(cvIterator[3]));
+}
+
+
+#pragma mark - Observer
+- (void)observedUIDeviceOrientationDidChange:(NSNotification*)notification {
+
+	if (self.videoCamera == nil) {
+		return;
+	}
+
+
+	UIDeviceOrientation deviceOrientation = [UIDevice currentDevice].orientation;
+
+	if (UIDeviceOrientationIsValidInterfaceOrientation(deviceOrientation) == NO) {
+		deviceOrientation = (UIDeviceOrientation)[UIApplication sharedApplication].statusBarOrientation;
+	}
+
+	self.videoCamera.defaultAVCaptureVideoOrientation = (AVCaptureVideoOrientation)deviceOrientation;
+	FXDLogVariable(self.videoCamera.defaultAVCaptureVideoOrientation);
 }
 
 @end

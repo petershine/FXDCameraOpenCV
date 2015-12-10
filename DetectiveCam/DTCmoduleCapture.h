@@ -9,7 +9,10 @@
 #import <Foundation/Foundation.h>
 #import <TargetConditionals.h>
 
-#import "FXDconfigDeveloper.h"
+#import <AVFoundation/AVFoundation.h>
+#import <VideoToolbox/VideoToolbox.h>
+
+#import "DetectiveCam-Bridging-Header.h"
 
 
 #if TARGET_RT_BIG_ENDIAN
@@ -17,11 +20,6 @@
 #else
 #define FourCC2Str(fourcc) (const char[]){*(((char*)&fourcc)+3), *(((char*)&fourcc)+2), *(((char*)&fourcc)+1), *(((char*)&fourcc)+0),0}
 #endif
-
-
-
-@import AVFoundation;
-@import VideoToolbox;
 
 
 @interface DTCmoduleCapture : NSObject <AVCaptureVideoDataOutputSampleBufferDelegate> 

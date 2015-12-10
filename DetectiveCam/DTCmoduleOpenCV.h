@@ -11,7 +11,7 @@
 
 #import <AVFoundation/AVFoundation.h>
 
-#import "FXDconfigDeveloper.h"
+#import "DetectiveCam-Bridging-Header.h"
 
 
 @protocol CvVideoCameraDelegate;
@@ -25,5 +25,6 @@
 
 
 - (void)prepareWithOpenCVpreview:(UIView*)opencvPreview;
+
 
 @end
