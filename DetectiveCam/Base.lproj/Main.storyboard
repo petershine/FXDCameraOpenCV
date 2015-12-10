@@ -2,7 +2,6 @@
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="9531" systemVersion="15C50" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="BYZ-38-t0r">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9529"/>
-        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <scenes>
         <!--Cscene OpenCV-->
@@ -23,12 +22,13 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="Vxo-nb-fFw" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="topMargin" id="OdW-Ji-WHZ"/>
-                            <constraint firstAttribute="trailingMargin" secondItem="Vxo-nb-fFw" secondAttribute="trailing" constant="-20" id="Vwr-l4-SAA"/>
-                            <constraint firstItem="dWz-Tf-I4c" firstAttribute="top" secondItem="Vxo-nb-fFw" secondAttribute="bottom" id="eij-XM-sr6"/>
-                            <constraint firstItem="Vxo-nb-fFw" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" constant="-20" id="uOG-AA-oRN"/>
+                            <constraint firstItem="Vxo-nb-fFw" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="8Lf-Wl-beW"/>
+                            <constraint firstItem="Vxo-nb-fFw" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" id="Ebz-kl-zNj"/>
+                            <constraint firstAttribute="trailing" secondItem="Vxo-nb-fFw" secondAttribute="trailing" id="kfx-nk-PjO"/>
+                            <constraint firstItem="dWz-Tf-I4c" firstAttribute="top" secondItem="Vxo-nb-fFw" secondAttribute="bottom" id="vP5-qY-xnL"/>
                         </constraints>
                     </view>
+                    <extendedEdge key="edgesForExtendedLayout"/>
                     <connections>
                         <outlet property="opencvScreen" destination="Vxo-nb-fFw" id="y1z-95-ndh"/>
                     </connections>

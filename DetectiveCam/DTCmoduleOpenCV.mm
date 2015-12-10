@@ -15,26 +15,32 @@
 
 
 @interface DTCcameraOpenCV : CvVideoCamera
+/*
 - (void)updateOrientation;
 - (void)layoutPreviewLayer;
+ */
 @end
 
 @implementation DTCcameraOpenCV
-- (void)updateOrientation {
+//MARK: TO simplify unnecessary working for orientation
+/*
+- (void)updateOrientation {	FXDLog_DEFAULT;
 	self->customPreviewLayer.bounds = CGRectMake(0, 0, self.parentView.frame.size.width, self.parentView.frame.size.height);
 	[self layoutPreviewLayer];
 }
 
-- (void)layoutPreviewLayer {	FXDLog_DEFAULT;
+- (void)layoutPreviewLayer {
 
 	if (self.parentView == nil) {
 		return;
 	}
 
 
-	CALayer* layer = self->customPreviewLayer;
+	FXDLog_DEFAULT;
+
+	CALayer *layer = self->customPreviewLayer;
 	CGRect bounds = self->customPreviewLayer.bounds;
-	int rotation_angle = 0;
+	Float64 rotation_angle = 0;
 
 	switch (defaultAVCaptureVideoOrientation) {
 		case AVCaptureVideoOrientationLandscapeRight:
@@ -56,6 +62,7 @@
 	layer.bounds = bounds;
 
 }
+ */
 @end
 
 
@@ -84,8 +91,11 @@
 
 	self.videoCamera = [[DTCcameraOpenCV alloc] initWithParentView:opencvPreview];
 	self.videoCamera.defaultAVCaptureDevicePosition = AVCaptureDevicePositionBack;
-	self.videoCamera.defaultAVCaptureSessionPreset = AVCaptureSessionPresetiFrame1280x720;
-	self.videoCamera.defaultAVCaptureVideoOrientation = AVCaptureVideoOrientationPortrait;
+
+	self.videoCamera.defaultAVCaptureSessionPreset = AVCaptureSessionPresetHigh;	//AVCaptureSessionPresetiFrame1280x720;
+
+	//MARK: Use the initial orientation at launch, or matching one at the build setting
+	self.videoCamera.defaultAVCaptureVideoOrientation = AVCaptureVideoOrientationLandscapeRight;	//AVCaptureVideoOrientationPortrait;
 
 	self.videoCamera.grayscaleMode = NO;
 	self.videoCamera.defaultFPS = 30;
@@ -130,25 +140,6 @@
 
 	cv::MatIterator_<double> cvIterator = coefficient.begin<double>();
 	//FXDLog(@"cvIterator: %@ %@ %@ %@", @(cvIterator[0]), @(cvIterator[1]), @(cvIterator[2]), @(cvIterator[3]));
-}
-
-
-#pragma mark - Observer
-- (void)observedUIDeviceOrientationDidChange:(NSNotification*)notification {
-
-	if (self.videoCamera == nil) {
-		return;
-	}
-
-
-	UIDeviceOrientation deviceOrientation = [UIDevice currentDevice].orientation;
-
-	if (UIDeviceOrientationIsValidInterfaceOrientation(deviceOrientation) == NO) {
-		deviceOrientation = (UIDeviceOrientation)[UIApplication sharedApplication].statusBarOrientation;
-	}
-
-	self.videoCamera.defaultAVCaptureVideoOrientation = (AVCaptureVideoOrientation)deviceOrientation;
-	FXDLogVariable(self.videoCamera.defaultAVCaptureVideoOrientation);
 }
 
 @end

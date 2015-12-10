@@ -20,7 +20,6 @@
 
 @property (weak, nonatomic) UIViewController *opencvScene;
 
-
 - (id)opencvVideoCamera;
 
 
