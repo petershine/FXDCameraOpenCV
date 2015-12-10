@@ -27,7 +27,7 @@
 	if (self) {
 
 		AVAuthorizationStatus authorizationStatus = [AVCaptureDevice authorizationStatusForMediaType:AVMediaTypeVideo];
-		NSLog(@"authorizationStatus: %ld", (long)authorizationStatus);
+		FXDLog(@"authorizationStatus: %ld", (long)authorizationStatus);
 
 		if (authorizationStatus == AVAuthorizationStatusAuthorized) {
 			[self prepareCaptureModule];
@@ -38,7 +38,7 @@
 		[AVCaptureDevice
 		 requestAccessForMediaType:AVMediaTypeVideo
 		 completionHandler:^(BOOL granted) {
-			 NSLog(@"granted: %d", granted);
+			 FXDLog(@"granted: %d", granted);
 
 			 if (granted) {
 				 [self prepareCaptureModule];
@@ -66,17 +66,17 @@
 		}
 	}
 
-	NSLog(@"cameraDevice: %@", cameraDevice);
+	FXDLog(@"cameraDevice: %@", cameraDevice);
 
 	if (cameraDevice == nil) {
 		return nil;
 	}
 
 
-	NSLog(@"cameraDevice.formats: %@", cameraDevice.formats);
+	FXDLog(@"cameraDevice.formats: %@", cameraDevice.formats);
 
 	NSArray *frameRateRanges = cameraDevice.activeFormat.videoSupportedFrameRateRanges;
-	NSLog(@"frameRateRanges: %@", frameRateRanges);
+	FXDLog(@"frameRateRanges: %@", frameRateRanges);
 
 	AVFrameRateRange *defaultFrameRate = frameRateRanges.firstObject;
 
@@ -86,13 +86,13 @@
 		cameraDevice.activeVideoMinFrameDuration = defaultFrameRate.minFrameDuration;
 		cameraDevice.activeVideoMaxFrameDuration = defaultFrameRate.maxFrameDuration;
 	}
-	NSLog(@"error: %@", error);
+	FXDLog(@"error: %@", error);
 	[cameraDevice unlockForConfiguration];
 
 
 	error = nil;
 	_videoDeviceInput = [[AVCaptureDeviceInput alloc] initWithDevice:cameraDevice error:&error];
-	NSLog(@"error: %@", error);
+	FXDLog(@"error: %@", error);
 
 	return _videoDeviceInput;
 }
@@ -201,7 +201,7 @@
 	   VTEncodeInfoFlags infoFlags,
 	   CMSampleBufferRef  _Nullable compressedSample) {
 
-		 NSLog(@"COMPRESSED: status: %s, infoFlags: %u", FourCC2Str(status), infoFlags);
+		 FXDLog(@"COMPRESSED: status: %s, infoFlags: %u", FourCC2Str(status), infoFlags);
 
 		 if (finishedCallback) {
 			 finishedCallback(compressedSample);
@@ -238,7 +238,7 @@
 	   CMTime presentationTimeStamp,
 	   CMTime presentationDuration) {
 
-		 NSLog(@"DE-COMPRESSED: status: %s, infoFlags: %u", FourCC2Str(status), infoFlags);
+		 FXDLog(@"DE-COMPRESSED: status: %s, infoFlags: %u", FourCC2Str(status), infoFlags);
 
 		 if (finishedCallback) {
 			 finishedCallback(imageBuffer);
@@ -252,7 +252,7 @@
 	// dataBuffer: contains 6 H.264 frames in decode order (P2,B0,B1,I5,B3,B4)
 	// dataFormatDescription: describes H.264 video
 
-	NSLog(@"sampleBuffer:\n%@", sampleBuffer);
+	FXDLog(@"sampleBuffer:\n%@", sampleBuffer);
 
 
 	// Find out if the sample buffer contains an I-Frame.
@@ -260,32 +260,32 @@
     BOOL isIFrame = NO;
 
     CFArrayRef attachmentsArray = CMSampleBufferGetSampleAttachmentsArray(sampleBuffer, 0);
-	NSLog(@"attachmentsArray: %@", attachmentsArray);
+	FXDLog(@"attachmentsArray: %@", attachmentsArray);
 
     if (CFArrayGetCount(attachmentsArray)) {
 
         CFDictionaryRef dict = CFArrayGetValueAtIndex(attachmentsArray, 0);
-		NSLog(@"dict: %@", dict);
+		FXDLog(@"dict: %@", dict);
 
 		CFBooleanRef notSync;
         BOOL keyExists = CFDictionaryGetValueIfPresent(dict,
                                                        kCMSampleAttachmentKey_NotSync,
                                                        (const void **)&notSync);
-		NSLog(@"keyExists: %d", keyExists);
+		FXDLog(@"keyExists: %d", keyExists);
 
         // An I-Frame is a sync frame
         isIFrame = !keyExists || !CFBooleanGetValue(notSync);
     }
-	NSLog(@"isIFrame: %d", isIFrame);
+	FXDLog(@"isIFrame: %d", isIFrame);
 
 
 	CMFormatDescriptionRef formatDescription = CMSampleBufferGetFormatDescription(sampleBuffer);
-	NSLog(@"formatDescription:\n%@", formatDescription);
+	FXDLog(@"formatDescription:\n%@", formatDescription);
 
 
 	CMBlockBufferRef dataBuffer = CMSampleBufferGetDataBuffer(sampleBuffer);
 
-	NSLog(@"dataBuffer:\n%@", dataBuffer);
+	FXDLog(@"dataBuffer:\n%@", dataBuffer);
 
 	if (dataBuffer == NULL) {
 		return;
@@ -308,16 +308,16 @@
 														   &setCountOut,
 														   &unitHeaderLengthOut);
 
-		NSLog(@"%lu: unitHeaderLengthOut: %d", setIndex, unitHeaderLengthOut);
+		FXDLog(@"%lu: unitHeaderLengthOut: %d", setIndex, unitHeaderLengthOut);
 
 		setIndex++;
 
 	} while (setIndex < setCountOut);
 
-	NSLog(@"setCountOut: %lu", setCountOut);
+	FXDLog(@"setCountOut: %lu", setCountOut);
 
 
-	NSLog(@"CMBlockBufferIsRangeContiguous(dataBuffer, 0, %lu): %@",
+	FXDLog(@"CMBlockBufferIsRangeContiguous(dataBuffer, 0, %lu): %@",
 		  CMBlockBufferGetDataLength(dataBuffer),
 		  CMBlockBufferIsRangeContiguous(dataBuffer, CMBlockBufferGetDataLength(dataBuffer), 0) ? @"true":@"false");
 
@@ -335,7 +335,7 @@
 								&totalLength,
 								(char**)&dataPointer);
 
-	NSLog(@"totalLength: %lu == %lu %@", totalLength, CMBlockBufferGetDataLength(dataBuffer), (totalLength == CMBlockBufferGetDataLength(dataBuffer)) ? @"true":@"false");
+	FXDLog(@"totalLength: %lu == %lu %@", totalLength, CMBlockBufferGetDataLength(dataBuffer), (totalLength == CMBlockBufferGetDataLength(dataBuffer)) ? @"true":@"false");
 
 
 	size_t offset = 0;
@@ -352,10 +352,10 @@
 		// Move to the next NAL unit in the block buffer
 		offset += AVCCHeaderLength + NALUnitLength;
 
-		NSLog(@"offset: %lu, AVCCHeaderLength: %d, NALUnitLength: %u", offset, AVCCHeaderLength, NALUnitLength);
+		FXDLog(@"offset: %lu, AVCCHeaderLength: %d, NALUnitLength: %u", offset, AVCCHeaderLength, NALUnitLength);
 	}
 
-	NSLog(@"%lu < %lu - %d", offset, totalLength, AVCCHeaderLength);
+	FXDLog(@"%lu < %lu - %d", offset, totalLength, AVCCHeaderLength);
 }
 
 
@@ -369,21 +369,21 @@
 	CVReturn didLock = CVPixelBufferLockBaseAddress(pixelBuffer, kCVPixelBufferLock_ReadOnly);
 
 	if (didLock != kCVReturnSuccess) {
-		NSLog(@"didLock: %d", didLock);
+		FXDLog(@"didLock: %d", didLock);
 		return;
 	}
 
 
-	NSLog(@"CVImageBufferIsFlipped(pixelBuffer): %d", CVImageBufferIsFlipped(pixelBuffer));
-	NSLog(@"CVPixelBufferIsPlanar(pixelBuffer): %d", CVPixelBufferIsPlanar(pixelBuffer));
+	FXDLog(@"CVImageBufferIsFlipped(pixelBuffer): %d", CVImageBufferIsFlipped(pixelBuffer));
+	FXDLog(@"CVPixelBufferIsPlanar(pixelBuffer): %d", CVPixelBufferIsPlanar(pixelBuffer));
 
-	NSLog(@"CVPixelBufferGetPixelFormatType(pixelBuffer): %u", (unsigned int)CVPixelBufferGetPixelFormatType(pixelBuffer));
+	FXDLog(@"CVPixelBufferGetPixelFormatType(pixelBuffer): %u", (unsigned int)CVPixelBufferGetPixelFormatType(pixelBuffer));
 
-	NSLog(@"CVPixelBufferGetDataSize(pixelBuffer): %lu", CVPixelBufferGetDataSize(pixelBuffer));
+	FXDLog(@"CVPixelBufferGetDataSize(pixelBuffer): %lu", CVPixelBufferGetDataSize(pixelBuffer));
 
 
 	size_t planeCount = CVPixelBufferGetPlaneCount(pixelBuffer);
-	NSLog(@"planeCount: %lu", planeCount);
+	FXDLog(@"planeCount: %lu", planeCount);
 
 	for (size_t planeIndex = 0; planeIndex < planeCount; planeIndex++) {
 
@@ -391,7 +391,7 @@
 		size_t height = CVPixelBufferGetHeightOfPlane(pixelBuffer, planeIndex);
 
 		size_t bytesPerRow = CVPixelBufferGetBytesPerRowOfPlane(pixelBuffer, planeIndex);
-		NSLog(@"planeIndex: %lu width: %lu, height: %lu bytesPerRow: %lu", planeIndex, width, height, bytesPerRow);
+		FXDLog(@"planeIndex: %lu width: %lu, height: %lu bytesPerRow: %lu", planeIndex, width, height, bytesPerRow);
 
 
 		uint8_t *baseAddress = CVPixelBufferGetBaseAddressOfPlane(pixelBuffer, planeIndex);
@@ -406,7 +406,7 @@
 			for (size_t column = 0; column < width; column++) {
 
 				size_t pixelIndex = row*width+column;
-				//NSLog(@"[%lu*%lu+%lu]=%lu: %u", row, width, column, pixelIndex, baseAddress[pixelIndex]);
+				//FXDLog(@"[%lu*%lu+%lu]=%lu: %u", row, width, column, pixelIndex, baseAddress[pixelIndex]);
 
 				columnSum += baseAddress[pixelIndex];
 			}
@@ -415,13 +415,13 @@
 		}
 
 		Float64 mean = (rowSum/(Float64)height);
-		NSLog(@"planeIndex: %lu mean: %f", planeIndex, mean);
+		FXDLog(@"planeIndex: %lu mean: %f", planeIndex, mean);
 	}
 
 	CVReturn didUnlock = CVPixelBufferUnlockBaseAddress(pixelBuffer, kCVPixelBufferLock_ReadOnly);
 
 	if (didUnlock != kCVReturnSuccess) {
-		NSLog(@"didUnlock: %d", didUnlock);
+		FXDLog(@"didUnlock: %d", didUnlock);
 	}
 }
 

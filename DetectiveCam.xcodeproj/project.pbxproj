@@ -50,6 +50,7 @@
 		D9763DF61BE959370029C423 /* AssetsLibrary.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AssetsLibrary.framework; path = System/Library/Frameworks/AssetsLibrary.framework; sourceTree = SDKROOT; };
 		D98120991BCEA984001F5693 /* DTCmoduleOpenCV.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = DTCmoduleOpenCV.mm; sourceTree = "<group>"; };
 		D981209A1BCEA984001F5693 /* DTCmoduleOpenCV.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DTCmoduleOpenCV.h; sourceTree = "<group>"; };
+		D9BA33181C19F1CB00AD3FE2 /* FXDconfigDeveloper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FXDconfigDeveloper.h; path = ../../../../../_WORK_fXceed/_PROJECT/__FXDKit/Headers/FXDconfigDeveloper.h; sourceTree = "<group>"; };
 		D9E7C29E1BC334A90071582B /* DetectiveCam.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DetectiveCam.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D9E7C2A11BC334A90071582B /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		D9E7C2A31BC334A90071582B /* DTCsceneAVFoundation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DTCsceneAVFoundation.swift; sourceTree = "<group>"; };
@@ -164,6 +165,7 @@
 		D9E7C2D61BC35B280071582B /* _Submodules */ = {
 			isa = PBXGroup;
 			children = (
+				D9BA33181C19F1CB00AD3FE2 /* FXDconfigDeveloper.h */,
 				D9E7C2D71BC35B280071582B /* opencv2.framework */,
 			);
 			name = _Submodules;

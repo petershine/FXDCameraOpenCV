@@ -11,6 +11,11 @@
 
 #import <AVFoundation/AVFoundation.h>
 
+#import "FXDconfigDeveloper.h"
+
+
+#define DEGREES_RADIANS(angle) ((angle) / 180.0 * M_PI)
+
 
 @protocol CvVideoCameraDelegate;
 
