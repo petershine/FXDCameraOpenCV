@@ -28,13 +28,13 @@ class DTCsceneOpenCV: UIViewController {
     }
 
 
-	override func viewDidAppear(animated: Bool) {
+	override func viewDidAppear(_ animated: Bool) {
 		super.viewDidAppear(animated)
 
 		if (opencvModule == nil) {
 			opencvModule = DTCmoduleOpenCV();
 			opencvModule.opencvScene = self;
-			opencvModule.prepareWithOpenCVpreview(opencvScreen);
+			opencvModule.prepare(withOpenCVpreview: opencvScreen);
 		}
 	}
 }

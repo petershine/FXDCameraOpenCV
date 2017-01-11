@@ -16,32 +16,9 @@
 		D9E7C2A71BC334A90071582B /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D9E7C2A51BC334A90071582B /* Main.storyboard */; };
 		D9E7C2AA1BC334A90071582B /* DetectiveCam.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = D9E7C2A81BC334A90071582B /* DetectiveCam.xcdatamodeld */; };
 		D9E7C2AC1BC334A90071582B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D9E7C2AB1BC334A90071582B /* Assets.xcassets */; };
-		D9E7C2BA1BC334A90071582B /* DetectiveCamTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9E7C2B91BC334A90071582B /* DetectiveCamTests.swift */; };
-		D9E7C2C51BC334A90071582B /* DetectiveCamUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9E7C2C41BC334A90071582B /* DetectiveCamUITests.swift */; };
 		D9E7C2D31BC336BD0071582B /* DTCpreviewCapture.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9E7C2D21BC336BD0071582B /* DTCpreviewCapture.swift */; };
-		D9E7C2D41BC336BD0071582B /* DTCpreviewCapture.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9E7C2D21BC336BD0071582B /* DTCpreviewCapture.swift */; };
-		D9E7C2D51BC336BD0071582B /* DTCpreviewCapture.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9E7C2D21BC336BD0071582B /* DTCpreviewCapture.swift */; };
 		D9E7C2D81BC35B280071582B /* opencv2.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D9E7C2D71BC35B280071582B /* opencv2.framework */; };
-		D9E7C2D91BC35B280071582B /* opencv2.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D9E7C2D71BC35B280071582B /* opencv2.framework */; };
-		D9E7C2DA1BC35B280071582B /* opencv2.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D9E7C2D71BC35B280071582B /* opencv2.framework */; };
 /* End PBXBuildFile section */
-
-/* Begin PBXContainerItemProxy section */
-		D9E7C2B61BC334A90071582B /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = D9E7C2961BC334A90071582B /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = D9E7C29D1BC334A90071582B;
-			remoteInfo = DetectiveCam;
-		};
-		D9E7C2C11BC334A90071582B /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = D9E7C2961BC334A90071582B /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = D9E7C29D1BC334A90071582B;
-			remoteInfo = DetectiveCam;
-		};
-/* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
 		D91481A41BC77D26005AC71D /* DTCsceneOpenCV.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DTCsceneOpenCV.swift; sourceTree = "<group>"; };
@@ -51,17 +28,15 @@
 		D98120991BCEA984001F5693 /* DTCmoduleOpenCV.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = DTCmoduleOpenCV.mm; sourceTree = "<group>"; };
 		D981209A1BCEA984001F5693 /* DTCmoduleOpenCV.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DTCmoduleOpenCV.h; sourceTree = "<group>"; };
 		D9BA33181C19F1CB00AD3FE2 /* FXDconfigDeveloper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FXDconfigDeveloper.h; path = ../../../../../_WORK_fXceed/_PROJECT/__FXDKit/Headers/FXDconfigDeveloper.h; sourceTree = "<group>"; };
-		D9E7C29E1BC334A90071582B /* DetectiveCam.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DetectiveCam.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		D9E7C29E1BC334A90071582B /* DetectiveCam.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; name = DetectiveCam.app; path = fXDCameraOpenCV.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D9E7C2A11BC334A90071582B /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		D9E7C2A31BC334A90071582B /* DTCsceneAVFoundation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DTCsceneAVFoundation.swift; sourceTree = "<group>"; };
 		D9E7C2A61BC334A90071582B /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		D9E7C2A91BC334A90071582B /* DetectiveCam.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = DetectiveCam.xcdatamodel; sourceTree = "<group>"; };
 		D9E7C2AB1BC334A90071582B /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		D9E7C2B01BC334A90071582B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		D9E7C2B51BC334A90071582B /* DetectiveCamTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DetectiveCamTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		D9E7C2B91BC334A90071582B /* DetectiveCamTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetectiveCamTests.swift; sourceTree = "<group>"; };
 		D9E7C2BB1BC334A90071582B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		D9E7C2C01BC334A90071582B /* DetectiveCamUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DetectiveCamUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		D9E7C2C41BC334A90071582B /* DetectiveCamUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetectiveCamUITests.swift; sourceTree = "<group>"; };
 		D9E7C2C61BC334A90071582B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		D9E7C2D21BC336BD0071582B /* DTCpreviewCapture.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DTCpreviewCapture.swift; sourceTree = "<group>"; };
@@ -78,22 +53,6 @@
 			files = (
 				D9763DF71BE959370029C423 /* AssetsLibrary.framework in Frameworks */,
 				D9E7C2D81BC35B280071582B /* opencv2.framework in Frameworks */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		D9E7C2B21BC334A90071582B /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				D9E7C2D91BC35B280071582B /* opencv2.framework in Frameworks */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		D9E7C2BD1BC334A90071582B /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				D9E7C2DA1BC35B280071582B /* opencv2.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -116,8 +75,6 @@
 			isa = PBXGroup;
 			children = (
 				D9E7C29E1BC334A90071582B /* DetectiveCam.app */,
-				D9E7C2B51BC334A90071582B /* DetectiveCamTests.xctest */,
-				D9E7C2C01BC334A90071582B /* DetectiveCamUITests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -175,9 +132,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		D9E7C29D1BC334A90071582B /* DetectiveCam */ = {
+		D9E7C29D1BC334A90071582B /* fXDCameraOpenCV */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = D9E7C2C91BC334A90071582B /* Build configuration list for PBXNativeTarget "DetectiveCam" */;
+			buildConfigurationList = D9E7C2C91BC334A90071582B /* Build configuration list for PBXNativeTarget "fXDCameraOpenCV" */;
 			buildPhases = (
 				D9E7C29A1BC334A90071582B /* Sources */,
 				D9E7C29B1BC334A90071582B /* Frameworks */,
@@ -187,46 +144,10 @@
 			);
 			dependencies = (
 			);
-			name = DetectiveCam;
+			name = fXDCameraOpenCV;
 			productName = DetectiveCam;
 			productReference = D9E7C29E1BC334A90071582B /* DetectiveCam.app */;
 			productType = "com.apple.product-type.application";
-		};
-		D9E7C2B41BC334A90071582B /* DetectiveCamTests */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = D9E7C2CC1BC334A90071582B /* Build configuration list for PBXNativeTarget "DetectiveCamTests" */;
-			buildPhases = (
-				D9E7C2B11BC334A90071582B /* Sources */,
-				D9E7C2B21BC334A90071582B /* Frameworks */,
-				D9E7C2B31BC334A90071582B /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				D9E7C2B71BC334A90071582B /* PBXTargetDependency */,
-			);
-			name = DetectiveCamTests;
-			productName = DetectiveCamTests;
-			productReference = D9E7C2B51BC334A90071582B /* DetectiveCamTests.xctest */;
-			productType = "com.apple.product-type.bundle.unit-test";
-		};
-		D9E7C2BF1BC334A90071582B /* DetectiveCamUITests */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = D9E7C2CF1BC334A90071582B /* Build configuration list for PBXNativeTarget "DetectiveCamUITests" */;
-			buildPhases = (
-				D9E7C2BC1BC334A90071582B /* Sources */,
-				D9E7C2BD1BC334A90071582B /* Frameworks */,
-				D9E7C2BE1BC334A90071582B /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				D9E7C2C21BC334A90071582B /* PBXTargetDependency */,
-			);
-			name = DetectiveCamUITests;
-			productName = DetectiveCamUITests;
-			productReference = D9E7C2C01BC334A90071582B /* DetectiveCamUITests.xctest */;
-			productType = "com.apple.product-type.bundle.ui-testing";
 		};
 /* End PBXNativeTarget section */
 
@@ -234,24 +155,17 @@
 		D9E7C2961BC334A90071582B /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0710;
+				LastUpgradeCheck = 0820;
 				ORGANIZATIONNAME = fXceed;
 				TargetAttributes = {
 					D9E7C29D1BC334A90071582B = {
 						CreatedOnToolsVersion = 7.1;
 						DevelopmentTeam = 63DC79S99Z;
-					};
-					D9E7C2B41BC334A90071582B = {
-						CreatedOnToolsVersion = 7.1;
-						TestTargetID = D9E7C29D1BC334A90071582B;
-					};
-					D9E7C2BF1BC334A90071582B = {
-						CreatedOnToolsVersion = 7.1;
-						TestTargetID = D9E7C29D1BC334A90071582B;
+						LastSwiftMigration = 0820;
 					};
 				};
 			};
-			buildConfigurationList = D9E7C2991BC334A90071582B /* Build configuration list for PBXProject "DetectiveCam" */;
+			buildConfigurationList = D9E7C2991BC334A90071582B /* Build configuration list for PBXProject "FXDCameraOpenCV" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
@@ -264,9 +178,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				D9E7C29D1BC334A90071582B /* DetectiveCam */,
-				D9E7C2B41BC334A90071582B /* DetectiveCamTests */,
-				D9E7C2BF1BC334A90071582B /* DetectiveCamUITests */,
+				D9E7C29D1BC334A90071582B /* fXDCameraOpenCV */,
 			);
 		};
 /* End PBXProject section */
@@ -278,20 +190,6 @@
 			files = (
 				D9E7C2AC1BC334A90071582B /* Assets.xcassets in Resources */,
 				D9E7C2A71BC334A90071582B /* Main.storyboard in Resources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		D9E7C2B31BC334A90071582B /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		D9E7C2BE1BC334A90071582B /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -312,38 +210,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		D9E7C2B11BC334A90071582B /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				D9E7C2BA1BC334A90071582B /* DetectiveCamTests.swift in Sources */,
-				D9E7C2D41BC336BD0071582B /* DTCpreviewCapture.swift in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		D9E7C2BC1BC334A90071582B /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				D9E7C2C51BC334A90071582B /* DetectiveCamUITests.swift in Sources */,
-				D9E7C2D51BC336BD0071582B /* DTCpreviewCapture.swift in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXSourcesBuildPhase section */
-
-/* Begin PBXTargetDependency section */
-		D9E7C2B71BC334A90071582B /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = D9E7C29D1BC334A90071582B /* DetectiveCam */;
-			targetProxy = D9E7C2B61BC334A90071582B /* PBXContainerItemProxy */;
-		};
-		D9E7C2C21BC334A90071582B /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = D9E7C29D1BC334A90071582B /* DetectiveCam */;
-			targetProxy = D9E7C2C11BC334A90071582B /* PBXContainerItemProxy */;
-		};
-/* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
 		D9E7C2A51BC334A90071582B /* Main.storyboard */ = {
@@ -370,8 +237,10 @@
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
@@ -421,44 +290,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "DetectiveCam/DetectiveCam-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-			};
-			name = ForDEVELOPER;
-		};
-		D9BA331B1C19FD1900AD3FE2 /* ForDEVELOPER */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				BUNDLE_LOADER = "$(TEST_HOST)";
-				CLANG_ENABLE_MODULES = YES;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(PROJECT_DIR)/DetectiveCam/_Submodules",
-				);
-				INFOPLIST_FILE = DetectiveCamTests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.fxceed.udccs.DetectiveCamTests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_OBJC_BRIDGING_HEADER = "DetectiveCam/DetectiveCamTests-Bridging-Header.h";
-				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/DetectiveCam.app/DetectiveCam";
-			};
-			name = ForDEVELOPER;
-		};
-		D9BA331C1C19FD1900AD3FE2 /* ForDEVELOPER */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CLANG_ENABLE_MODULES = YES;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(PROJECT_DIR)/DetectiveCam/_Submodules",
-				);
-				INFOPLIST_FILE = DetectiveCamUITests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.fxceed.udccs.DetectiveCamUITests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_OBJC_BRIDGING_HEADER = "DetectiveCam/DetectiveCamUITests-Bridging-Header.h";
-				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				TEST_TARGET_NAME = DetectiveCam;
-				USES_XCTRUNNER = YES;
+				SWIFT_VERSION = 3.0;
 			};
 			name = ForDEVELOPER;
 		};
@@ -475,8 +307,10 @@
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
@@ -520,8 +354,10 @@
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
@@ -540,6 +376,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
 			};
@@ -563,6 +400,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "DetectiveCam/DetectiveCam-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 3.0;
 			};
 			name = Debug;
 		};
@@ -583,87 +421,14 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.fxceed.udccs.DetectiveCam;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "DetectiveCam/DetectiveCam-Bridging-Header.h";
-			};
-			name = Release;
-		};
-		D9E7C2CD1BC334A90071582B /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				BUNDLE_LOADER = "$(TEST_HOST)";
-				CLANG_ENABLE_MODULES = YES;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(PROJECT_DIR)/DetectiveCam/_Submodules",
-				);
-				INFOPLIST_FILE = DetectiveCamTests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.fxceed.udccs.DetectiveCamTests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_OBJC_BRIDGING_HEADER = "DetectiveCam/DetectiveCamTests-Bridging-Header.h";
-				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/DetectiveCam.app/DetectiveCam";
-			};
-			name = Debug;
-		};
-		D9E7C2CE1BC334A90071582B /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				BUNDLE_LOADER = "$(TEST_HOST)";
-				CLANG_ENABLE_MODULES = YES;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(PROJECT_DIR)/DetectiveCam/_Submodules",
-				);
-				INFOPLIST_FILE = DetectiveCamTests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.fxceed.udccs.DetectiveCamTests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_OBJC_BRIDGING_HEADER = "DetectiveCam/DetectiveCamTests-Bridging-Header.h";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/DetectiveCam.app/DetectiveCam";
-			};
-			name = Release;
-		};
-		D9E7C2D01BC334A90071582B /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CLANG_ENABLE_MODULES = YES;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(PROJECT_DIR)/DetectiveCam/_Submodules",
-				);
-				INFOPLIST_FILE = DetectiveCamUITests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.fxceed.udccs.DetectiveCamUITests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_OBJC_BRIDGING_HEADER = "DetectiveCam/DetectiveCamUITests-Bridging-Header.h";
-				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				TEST_TARGET_NAME = DetectiveCam;
-				USES_XCTRUNNER = YES;
-			};
-			name = Debug;
-		};
-		D9E7C2D11BC334A90071582B /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CLANG_ENABLE_MODULES = YES;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(PROJECT_DIR)/DetectiveCam/_Submodules",
-				);
-				INFOPLIST_FILE = DetectiveCamUITests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.fxceed.udccs.DetectiveCamUITests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_OBJC_BRIDGING_HEADER = "DetectiveCam/DetectiveCamUITests-Bridging-Header.h";
-				TEST_TARGET_NAME = DetectiveCam;
-				USES_XCTRUNNER = YES;
+				SWIFT_VERSION = 3.0;
 			};
 			name = Release;
 		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		D9E7C2991BC334A90071582B /* Build configuration list for PBXProject "DetectiveCam" */ = {
+		D9E7C2991BC334A90071582B /* Build configuration list for PBXProject "FXDCameraOpenCV" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				D9E7C2C71BC334A90071582B /* Debug */,
@@ -673,32 +438,12 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		D9E7C2C91BC334A90071582B /* Build configuration list for PBXNativeTarget "DetectiveCam" */ = {
+		D9E7C2C91BC334A90071582B /* Build configuration list for PBXNativeTarget "fXDCameraOpenCV" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				D9E7C2CA1BC334A90071582B /* Debug */,
 				D9BA331A1C19FD1900AD3FE2 /* ForDEVELOPER */,
 				D9E7C2CB1BC334A90071582B /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		D9E7C2CC1BC334A90071582B /* Build configuration list for PBXNativeTarget "DetectiveCamTests" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				D9E7C2CD1BC334A90071582B /* Debug */,
-				D9BA331B1C19FD1900AD3FE2 /* ForDEVELOPER */,
-				D9E7C2CE1BC334A90071582B /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		D9E7C2CF1BC334A90071582B /* Build configuration list for PBXNativeTarget "DetectiveCamUITests" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				D9E7C2D01BC334A90071582B /* Debug */,
-				D9BA331C1C19FD1900AD3FE2 /* ForDEVELOPER */,
-				D9E7C2D11BC334A90071582B /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

@@ -2,6 +2,6 @@
 <Workspace
    version = "1.0">
    <FileRef
-      location = "self:DetectiveCam.xcodeproj">
+      location = "self:/Users/thckbrws/_WORK_fXceed/_PROJECT/fXDCameraOpenCV/FXDCameraOpenCV.xcodeproj">
    </FileRef>
 </Workspace>

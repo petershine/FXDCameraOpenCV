@@ -22,7 +22,7 @@ class DTCsceneAVFoundation: DTCsceneOpenCV {
 	}
 
 
-	override func viewDidAppear(animated: Bool) {
+	override func viewDidAppear(_ animated: Bool) {
 		super.viewDidAppear(animated);
 
 		if (capturingModule == nil) {
@@ -30,7 +30,7 @@ class DTCsceneAVFoundation: DTCsceneOpenCV {
 
 			capturingModule.sampleDisplayLayer = AVSampleBufferDisplayLayer()
 			capturingModule.sampleDisplayLayer.bounds = opencvScreen.bounds
-			capturingModule.sampleDisplayLayer.position = CGPointMake(CGRectGetMidX(opencvScreen.bounds), CGRectGetMidY(opencvScreen.bounds))
+			capturingModule.sampleDisplayLayer.position = CGPoint(x: opencvScreen.bounds.midX, y: opencvScreen.bounds.midY)
 			capturingModule.sampleDisplayLayer.videoGravity = AVLayerVideoGravityResizeAspect
 
 			opencvScreen.layer.addSublayer(capturingModule.sampleDisplayLayer);
